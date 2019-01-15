@@ -1,0 +1,37 @@
+{
+  "presets": [
+    "next/babel"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "module-resolver",
+      {
+        "root": [
+          "."
+        ],
+        "alias": {
+          "api": "./api",
+          "components": "./components",
+          "constants": "./constants",
+          "store": "./store",
+          "utils": "./utils",
+          "burek": "./burek"
+        }
+      }
+    ],
+    [
+      "styled-jsx/babel",
+      {
+        "plugins": [
+          "styled-jsx-plugin-stylelint"
+        ]
+      }
+    ],
+  ]
+}
