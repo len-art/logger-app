@@ -35,7 +35,7 @@ Mobx supports them by default. They are already enabled through `@babel/plugin-p
 
 ## Linting
 
-Files are lintend with https://github.com/okonet/lint-staged. lint-staged is triggered with a pre-commit hook. The hook is set automatically when you run boiler install. You can configure linter inside `.eslintrc`. Basic setup uses airbnb linter config with a few custom rules.
+Files are linted with https://github.com/okonet/lint-staged. lint-staged is triggered with a pre-commit hook. The hook is set automatically when you run boiler install. You can configure linter inside `.eslintrc`. Basic setup uses airbnb linter config with a few custom rules.
 
 ## Aliases
 
@@ -50,7 +50,7 @@ Preconfigured:
 
 ## Classnames
 
-For css class composition we use https://github.com/JedWatson/classnames.
+For CSS class composition we use https://github.com/JedWatson/classnames.
 
 Example usage:
 ```
