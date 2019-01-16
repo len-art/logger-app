@@ -17,11 +17,11 @@
         ],
         "alias": {
           "api": "./api",
+          "env": "./env",
           "components": "./components",
           "constants": "./constants",
           "store": "./store",
           "utils": "./utils",
-          "burek": "./burek"
         }
       }
     ],

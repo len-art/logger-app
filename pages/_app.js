@@ -1,8 +1,10 @@
 import React from 'react';
 import App, { Container } from 'next/app';
+import * as Sentry from '@sentry/browser';
 import { Provider } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import { initStore } from 'store';
+import { SENTRY_PUBLIC_DSN } from 'env';
 
 class Layout extends React.Component {
   render() {
@@ -18,6 +20,18 @@ class Layout extends React.Component {
 }
 
 export default class MyApp extends App {
+  constructor(props) {
+    super(props);
+
+    if (SENTRY_PUBLIC_DSN) {
+      Sentry.init({
+        dsn: SENTRY_PUBLIC_DSN,
+      });
+    }
+
+    this.store = initStore(props.isServer, props.initialState);
+  }
+
   static async getInitialProps({ Component, ctx, req }) {
     const isServer = !!req;
     const store = initStore(isServer);
@@ -35,16 +49,16 @@ export default class MyApp extends App {
     };
   }
 
-  constructor(props) {
-    super(props);
-
-    this.store = initStore(props.isServer, props.initialState);
-  }
-
   componentDidCatch(error, errorInfo) {
-    // eslint-disable-next-line no-console
-    console.log('CUSTOM ERROR HANDLING', error);
-    // This is needed to render errors correctly in development / production
+    if (SENTRY_PUBLIC_DSN) {
+      Sentry.configureScope((scope) => {
+        Object.keys(errorInfo).forEach((key) => {
+          scope.setExtra(key, errorInfo[key]);
+        });
+      });
+      Sentry.captureException(error);
+    }
+
     super.componentDidCatch(error, errorInfo);
   }
 

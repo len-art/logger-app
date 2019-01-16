@@ -1,12 +1,15 @@
 import axios from 'axios';
 
-const API_URL = 'http://www.example.com/api/v1/';
+import {
+  API_VERSION,
+  BACKEND_URL,
+} from 'env';
 
-export const fetchExample = async () => {
+export const fetchRandomFlower = async () => {
   try {
     const data = await axios({
       method: 'POST',
-      url: `${API_URL}/example`,
+      url: `${BACKEND_URL}/api/${API_VERSION}/flowers/random`,
       responseType: 'json',
     });
     return data.json();

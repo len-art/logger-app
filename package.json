@@ -4,21 +4,22 @@
   "description": "A boilerplate to start a React based project from.",
   "main": "index.js",
   "scripts": {
-    "dev": "NEXT_ENV=staging next",
+    "dev": "NEXT_ENV=development next",
     "build": "next build",
     "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint"
   },
   "dependencies": {
-    "next": "^7.0.2",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "@sentry/browser": "^4.5.1",
+    "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "mobx": "^5.1.1",
     "mobx-react": "^5.2.8",
     "mobx-state-tree": "^3.3.0",
-    "axios": "^0.18.0",
+    "next": "^7.0.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "styled-jsx-plugin-stylelint": "^0.1.0"
   },
   "repository": {

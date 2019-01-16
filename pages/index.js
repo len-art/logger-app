@@ -5,13 +5,27 @@ import { CONSTANTS_TEST } from 'constants';
 @inject('store')
 @observer
 class IndexPage extends Component {
-  componentDidMount() {
-    // this.props.store.example.testAction('UPDATED');
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      raiseError: false,
+    };
+  }
+
+  componentDidUpdate() {
+    if (this.state.raiseError) {
+      throw new Error('Houston, we have a problem');
+    }
   }
 
   handleTestUpdateClick = () => {
     console.log(this.props.store);
     this.props.store.example.setTest();
+  }
+
+  raiseError = () => {
+    this.setState({ raiseError: true });
   }
 
   render() {
@@ -21,6 +35,7 @@ class IndexPage extends Component {
         <div>{CONSTANTS_TEST}</div>
         <div>{this.props.store.example.test}</div>
         <button onClick={() => this.handleTestUpdateClick()}>Test update</button>
+        <button onClick={() => this.raiseError()}>Test error reporting</button>
       </div>
     );
   }

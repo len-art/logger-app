@@ -33,6 +33,10 @@ Global store is managed by Mobx State Tree https://github.com/mobxjs/mobx-state-
 
 Mobx supports them by default. They are already enabled through `@babel/plugin-proposal-decorators` and ready to use. Use them also outside the scope of Mobx, for any wrapper functions you may integrate later - it keeps the code much more cleaner and readable. If you are not sure how decorators work google it :)
 
+## Error reporting
+
+Error reporting by default is set with https://sentry.io/. You will need to setup your `SENTRY_PUBLIC_DSN` inside the `env.js` config to enable it. You can switch the error reporting service if you swap Sentry inside `pages/_app.js` with whatever you want. Reporting is initialized inside `constructor` and errors are caught by `componentDidCatch` method.
+
 ## Linting
 
 Files are linted with https://github.com/okonet/lint-staged. lint-staged is triggered with a pre-commit hook. The hook is set automatically when you run boiler install. You can configure linter inside `.eslintrc`. Basic setup uses airbnb linter config with a few custom rules.
