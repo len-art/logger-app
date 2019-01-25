@@ -8,12 +8,6 @@
         "loose": true
       }
     ],
-    [
-      "styled-jsx/babel",
-      {
-        "plugins": ["styled-jsx-plugin-stylelint"]
-      }
-    ],
     ["@babel/plugin-proposal-class-properties", { "loose": true }]
   ]
 }

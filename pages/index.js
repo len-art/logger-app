@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
+const columns = ['day', 'start', 'end', 'hours', 'description'];
 @inject('store')
 @observer
 class IndexPage extends Component {
@@ -29,9 +30,45 @@ class IndexPage extends Component {
   render() {
     return (
       <div>
-        {this.props.store.test}
-        <button onClick={() => this.handleTestUpdateClick()}>Test update</button>
-        <button onClick={() => this.raiseError()}>Test error reporting</button>
+        <h1>Work logger</h1>
+        <p>Log your work hours</p>
+        <div className="justFlex">
+          {/* buttons */}
+          <button>Start work day</button>
+          <button>End</button>
+        </div>
+        <div>
+          <div className="list">
+            {columns.map(name => (
+              <div key={name} className={name}>
+                {name}
+              </div>
+            ))}
+            {columns.map(name => (
+              <div key={name} className={name}>
+                nekaj
+              </div>
+            ))}
+          </div>
+        </div>
+        <style jsx>
+          {`
+            .justFlex {
+              display: flex;
+            }
+            .list {
+              display: grid;
+              grid-template-columns: repeat(4, 0.5fr) 3fr;
+              grid-template-areas: 'day start end hours description';
+              grid-column-gap: 10px;
+              grid-row-gap: 10px;
+            }
+            .list > div {
+              padding: 10px;
+              background-color: #eee;
+            }
+          `}
+        </style>
       </div>
     );
   }
