@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { computed } from 'mobx'
+import { computed, observable } from 'mobx'
 import { startOfMonth, getDaysInMonth } from 'date-fns'
 
 const columns = ['day', 'start', 'end', 'hours', 'description']
@@ -15,6 +15,9 @@ class IndexPage extends Component {
       raiseError: false,
     }
   }
+
+  @observable
+  isDropdownOpen = false
 
   @computed
   get monthList() {
@@ -35,6 +38,8 @@ class IndexPage extends Component {
     }
   }
 
+  handleDropdown = () => (this.isDropdownOpen = !this.isDropdownOpen)
+
   handleTestUpdateClick = () => {
     this.props.store.handleTestChange()
   }
@@ -45,10 +50,21 @@ class IndexPage extends Component {
 
   render() {
     console.log(this.monthList)
+    const { projects, selectedProject, setSelectedProject } = this.props.store
     return (
       <div>
         <h1>Work logger</h1>
         <p>Log your work hours</p>
+        <div>
+          <button className="dropdown" onClick={this.handleDropdown}>
+            Select a project
+          </button>
+          <div className={`dropdownContent ${this.isDropdownOpen ? 'visible' : ''}`}>
+            {projects.map(p => (
+              <div>{p}</div>
+            ))}
+          </div>
+        </div>
         <div className="justFlex">
           {/* buttons */}
           <button>Start work day</button>
@@ -94,13 +110,23 @@ class IndexPage extends Component {
             }
 
             .weekend {
-              padding: 5px 10px !important;
+              padding: 0px 10px !important;
               background-color: transparent !important;
               grid-row-gap: 5px;
             }
             .weekSummary {
               grid-column-start: 1;
               grid-column-end: 6;
+            }
+            .dropdown {
+              position: relative;
+            }
+            .dropdownContent {
+              display: none;
+              position: absolute;
+            }
+            .visible {
+              display: block;
             }
           `}
         </style>

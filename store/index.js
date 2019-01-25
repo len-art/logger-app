@@ -1,5 +1,4 @@
 import { action, observable } from 'mobx'
-import { format } from 'date-fns'
 
 export default class {
   // constructor() {
@@ -7,10 +6,21 @@ export default class {
   // }
 
   @observable
+  projects = ['proj1']
+
+  @observable
+  selectedProject = 0
+
+  @observable
   selectedMonth = 0
 
   @action
   setSelectedMonth(nextState) {
     this.selectedMonth = nextState
+  }
+
+  @action
+  setSelectedProject(nextState) {
+    this.selectedProject = nextState
   }
 }
