@@ -56,12 +56,11 @@ class IndexPage extends Component {
         <h1>Work logger</h1>
         <p>Log your work hours</p>
         <div>
-          <button className="dropdown" onClick={this.handleDropdown}>
-            Select a project
-          </button>
-          <div className={`dropdownContent ${this.isDropdownOpen ? 'visible' : ''}`}>
+          <h2>Projects</h2>
+          <div className="justFlex tabs">
+            {/* TODO: if project list is too long move last ones to a dropdown menu */}
             {projects.map(p => (
-              <div>{p}</div>
+              <button>{p}</button>
             ))}
           </div>
         </div>
@@ -118,15 +117,7 @@ class IndexPage extends Component {
               grid-column-start: 1;
               grid-column-end: 6;
             }
-            .dropdown {
-              position: relative;
-            }
-            .dropdownContent {
-              display: none;
-              position: absolute;
-            }
-            .visible {
-              display: block;
+            .tabs {
             }
           `}
         </style>

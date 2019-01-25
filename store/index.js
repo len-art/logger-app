@@ -6,7 +6,7 @@ export default class {
   // }
 
   @observable
-  projects = ['proj1']
+  projects = ['proj1', 'proj2', 'proj3']
 
   @observable
   selectedProject = 0
