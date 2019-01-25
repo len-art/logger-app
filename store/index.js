@@ -1,4 +1,5 @@
-import { action, observable } from 'mobx';
+import { action, observable } from 'mobx'
+import { format } from 'date-fns'
 
 export default class {
   // constructor() {
@@ -6,10 +7,10 @@ export default class {
   // }
 
   @observable
-  test = 'foo';
+  selectedMonth = 0
 
   @action
-  handleTestChange() {
-    this.test = 'bar';
+  setSelectedMonth(nextState) {
+    this.selectedMonth = nextState
   }
 }

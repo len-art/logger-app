@@ -1,33 +1,50 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
+import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react'
+import { computed } from 'mobx'
+import { startOfMonth, getDaysInMonth } from 'date-fns'
 
-const columns = ['day', 'start', 'end', 'hours', 'description'];
+const columns = ['day', 'start', 'end', 'hours', 'description']
+
 @inject('store')
 @observer
 class IndexPage extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       raiseError: false,
-    };
+    }
+  }
+
+  @computed
+  get monthList() {
+    const { selectedMonth } = this.props.store
+    console.log(selectedMonth)
+    // TODO: take selected month into consideration here
+    const month = startOfMonth(new Date())
+    const startDay = month.getDay()
+    return Array.from(new Array(getDaysInMonth(month)), (_, i) => {
+      const day = (startDay + i) % 7
+      return day
+    })
   }
 
   componentDidUpdate() {
     if (this.state.raiseError) {
-      throw new Error('Houston, we have a problem');
+      throw new Error('Houston, we have a problem')
     }
   }
 
   handleTestUpdateClick = () => {
-    this.props.store.handleTestChange();
-  };
+    this.props.store.handleTestChange()
+  }
 
   raiseError = () => {
-    this.setState({ raiseError: true });
-  };
+    this.setState({ raiseError: true })
+  }
 
   render() {
+    console.log(this.monthList)
     return (
       <div>
         <h1>Work logger</h1>
@@ -44,10 +61,18 @@ class IndexPage extends Component {
                 {name}
               </div>
             ))}
-            {columns.map(name => (
-              <div key={name} className={name}>
-                nekaj
-              </div>
+            {this.monthList.map((day, index) => (
+              <React.Fragment>
+                {columns.map((name, i) => (
+                  <div
+                    key={name}
+                    className={`${name} ${day % 7 === 0 || day % 7 === 6 ? 'weekend' : ''}`}
+                  >
+                    {i === 0 && index + 1}
+                  </div>
+                ))}
+                {day === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
+              </React.Fragment>
             ))}
           </div>
         </div>
@@ -67,11 +92,21 @@ class IndexPage extends Component {
               padding: 10px;
               background-color: #eee;
             }
+
+            .weekend {
+              padding: 5px 10px !important;
+              background-color: transparent !important;
+              grid-row-gap: 5px;
+            }
+            .weekSummary {
+              grid-column-start: 1;
+              grid-column-end: 6;
+            }
           `}
         </style>
       </div>
-    );
+    )
   }
 }
 
-export default IndexPage;
+export default IndexPage

@@ -1,14 +1,14 @@
-import React from 'react';
-import App, { Container } from 'next/app';
-import * as Sentry from '@sentry/browser';
-import { Provider } from 'mobx-react';
-import { format } from 'date-fns';
-import Store from '../store';
+import React from 'react'
+import App, { Container } from 'next/app'
+import * as Sentry from '@sentry/browser'
+import { Provider } from 'mobx-react'
+import { format } from 'date-fns'
+import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
 
 class Layout extends React.Component {
   render() {
-    const { children } = this.props;
+    const { children } = this.props
     return (
       <div className="layout">
         <header>Header</header>
@@ -16,9 +16,9 @@ class Layout extends React.Component {
         <footer className="footer">
           {/* past 12 months */}
           {Array.from(new Array(12), (_, i) => {
-            const month = (11 - i + 1) % 12;
-            const date = new Date(2010, month, 1);
-            return <button>{format(date, 'MMM')}</button>;
+            const month = (11 - i + 1) % 12
+            const date = new Date(2010, month, 1)
+            return <button key={month}>{format(date, 'MMM')}</button>
           })}
         </footer>
         <style jsx>
@@ -33,13 +33,13 @@ class Layout extends React.Component {
           `}
         </style>
       </div>
-    );
+    )
   }
 }
 
 export default class MyApp extends App {
   constructor(props) {
-    super(props);
+    super(props)
 
     // if (SENTRY_PUBLIC_DSN) {
     //   Sentry.init({
@@ -47,24 +47,24 @@ export default class MyApp extends App {
     //   });
     // }
 
-    this.store = new Store(); // initStore(props.isServer, props.initialState);
+    this.store = new Store() // initStore(props.isServer, props.initialState);
   }
 
   static async getInitialProps({ Component, ctx, req }) {
-    const isServer = !!req;
+    const isServer = !!req
     // const store = initStore(isServer);
 
-    let pageProps = {};
+    let pageProps = {}
 
     if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+      pageProps = await Component.getInitialProps(ctx)
     }
 
     return {
       // initialState: getSnapshot(store),
       pageProps,
       isServer,
-    };
+    }
   }
 
   componentDidCatch(error, errorInfo) {
@@ -77,11 +77,11 @@ export default class MyApp extends App {
     //   Sentry.captureException(error);
     // }
 
-    super.componentDidCatch(error, errorInfo);
+    super.componentDidCatch(error, errorInfo)
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps } = this.props
 
     return (
       <Container>
@@ -91,6 +91,6 @@ export default class MyApp extends App {
           </Layout>
         </Provider>
       </Container>
-    );
+    )
   }
 }
