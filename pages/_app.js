@@ -2,9 +2,8 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
 import { Provider } from 'mobx-react';
-import { getSnapshot } from 'mobx-state-tree';
-import { initStore } from 'store';
-import { SENTRY_PUBLIC_DSN } from 'env';
+import Store from '../store';
+// import { SENTRY_PUBLIC_DSN } from 'env';
 
 class Layout extends React.Component {
   render() {
@@ -23,18 +22,18 @@ export default class MyApp extends App {
   constructor(props) {
     super(props);
 
-    if (SENTRY_PUBLIC_DSN) {
-      Sentry.init({
-        dsn: SENTRY_PUBLIC_DSN,
-      });
-    }
+    // if (SENTRY_PUBLIC_DSN) {
+    //   Sentry.init({
+    //     dsn: SENTRY_PUBLIC_DSN,
+    //   });
+    // }
 
-    this.store = initStore(props.isServer, props.initialState);
+    this.store = new Store(); // initStore(props.isServer, props.initialState);
   }
 
   static async getInitialProps({ Component, ctx, req }) {
     const isServer = !!req;
-    const store = initStore(isServer);
+    // const store = initStore(isServer);
 
     let pageProps = {};
 
@@ -43,30 +42,27 @@ export default class MyApp extends App {
     }
 
     return {
-      initialState: getSnapshot(store),
+      // initialState: getSnapshot(store),
       pageProps,
       isServer,
     };
   }
 
   componentDidCatch(error, errorInfo) {
-    if (SENTRY_PUBLIC_DSN) {
-      Sentry.configureScope((scope) => {
-        Object.keys(errorInfo).forEach((key) => {
-          scope.setExtra(key, errorInfo[key]);
-        });
-      });
-      Sentry.captureException(error);
-    }
+    // if (SENTRY_PUBLIC_DSN) {
+    //   Sentry.configureScope((scope) => {
+    //     Object.keys(errorInfo).forEach((key) => {
+    //       scope.setExtra(key, errorInfo[key]);
+    //     });
+    //   });
+    //   Sentry.captureException(error);
+    // }
 
     super.componentDidCatch(error, errorInfo);
   }
 
   render() {
-    const {
-      Component,
-      pageProps,
-    } = this.props;
+    const { Component, pageProps } = this.props;
 
     return (
       <Container>

@@ -1,26 +1,15 @@
-import { types, applySnapshot } from 'mobx-state-tree';
-import { ExampleStore } from './exampleStore';
+import { action, observable } from 'mobx';
 
-let store = null;
+export default class {
+  // constructor() {
 
-// actual store where you put your store models
-const Store = types.model('Store', {
-  example: types.optional(ExampleStore, {}),
-}).actions(self => ({
-  afterCreate() {
-    console.log('Store created!', JSON.stringify(self));
-  },
-}));
+  // }
 
-export const initStore = (isServer, snapshot = null) => {
-  if (isServer) {
-    store = Store.create({ lastUpdate: Date.now() });
+  @observable
+  test = 'foo';
+
+  @action
+  handleTestChange() {
+    this.test = 'bar';
   }
-  if (store === null) {
-    store = Store.create({ lastUpdate: Date.now() });
-  }
-  if (snapshot) {
-    applySnapshot(store, snapshot);
-  }
-  return store;
-};
+}

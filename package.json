@@ -1,7 +1,7 @@
 {
   "name": "boiler",
-  "version": "1.0.0",
-  "description": "A boilerplate to start a React based project from.",
+  "version": "0.1.0",
+  "description": "A simple app for logging work hours.",
   "main": "index.js",
   "scripts": {
     "dev": "NEXT_ENV=development next",
@@ -14,7 +14,7 @@
     "@sentry/browser": "^4.5.1",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "mobx": "^5.1.1",
+    "mobx": "^5.9.0",
     "mobx-react": "^5.2.8",
     "mobx-state-tree": "^3.3.0",
     "next": "^7.0.2",
@@ -30,29 +30,23 @@
     "boilerplate",
     "react"
   ],
-  "author": "easwee",
+  "author": "len-art",
   "license": "Unlicense",
   "bugs": {
     "url": "https://github.com/easwee/boiler/issues"
   },
   "homepage": "https://github.com/easwee/boiler#readme",
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.3.0",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
     "babel-eslint": "^8.2.6",
-    "babel-plugin-module-resolver": "2.6.2",
     "eslint": "^5.12.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.12.3",
-    "husky": "^1.3.1",
     "lint-staged": "^8.1.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.js": [

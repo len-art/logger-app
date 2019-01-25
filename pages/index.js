@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { CONSTANTS_TEST } from 'constants';
 
 @inject('store')
 @observer
@@ -20,20 +19,17 @@ class IndexPage extends Component {
   }
 
   handleTestUpdateClick = () => {
-    console.log(this.props.store);
-    this.props.store.example.setTest();
-  }
+    this.props.store.handleTestChange();
+  };
 
   raiseError = () => {
     this.setState({ raiseError: true });
-  }
+  };
 
   render() {
-    console.log(this.props);
     return (
       <div>
-        <div>{CONSTANTS_TEST}</div>
-        <div>{this.props.store.example.test}</div>
+        {this.props.store.test}
         <button onClick={() => this.handleTestUpdateClick()}>Test update</button>
         <button onClick={() => this.raiseError()}>Test error reporting</button>
       </div>

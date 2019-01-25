@@ -1,37 +1,19 @@
 {
-  "presets": [
-    "next/babel"
-  ],
+  "presets": ["next/babel"],
   "plugins": [
     [
       "@babel/plugin-proposal-decorators",
       {
-        "legacy": true
-      }
-    ],
-    [
-      "module-resolver",
-      {
-        "root": [
-          "."
-        ],
-        "alias": {
-          "api": "./api",
-          "env": "./env",
-          "components": "./components",
-          "constants": "./constants",
-          "store": "./store",
-          "utils": "./utils",
-        }
+        "legacy": true,
+        "loose": true
       }
     ],
     [
       "styled-jsx/babel",
       {
-        "plugins": [
-          "styled-jsx-plugin-stylelint"
-        ]
+        "plugins": ["styled-jsx-plugin-stylelint"]
       }
     ],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }]
   ]
 }
