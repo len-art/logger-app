@@ -3,7 +3,9 @@ import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 import { startOfMonth, getDaysInMonth } from 'date-fns'
 
-const columns = ['day', 'start', 'end', 'hours', 'description']
+import { columnData } from '../constants'
+
+const { columns } = columnData
 
 @inject('store')
 @observer
@@ -22,7 +24,6 @@ class IndexPage extends Component {
   @computed
   get monthList() {
     const { selectedMonth } = this.props.store
-    console.log(selectedMonth)
     // TODO: take selected month into consideration here
     const month = startOfMonth(new Date())
     const startDay = month.getDay()
@@ -84,6 +85,7 @@ class IndexPage extends Component {
                     className={`${name} ${day % 7 === 0 || day % 7 === 6 ? 'weekend' : ''}`}
                   >
                     {i === 0 && index + 1}
+                    {name === 'details' && <button>To clipboard</button>}
                   </div>
                 ))}
                 {day === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
