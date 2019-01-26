@@ -50,7 +50,6 @@ class IndexPage extends Component {
   }
 
   render() {
-    console.log(this.monthList)
     const { projects, selectedProject, setSelectedProject } = this.props.store
     return (
       <div>
