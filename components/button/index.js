@@ -24,6 +24,10 @@ const Button = props => (
           cursor: pointer;
         }
 
+        .button:hover .div1 {
+          transform: translate(-10px);
+        }
+
         .div1 {
           height: 30px;
           width: 50%;
@@ -32,9 +36,6 @@ const Button = props => (
           left: 0px;
           right: 10px;
           background-color: #0000ff;
-        }
-        .div1:hover {
-          transform: translate(-10px);
         }
 
         .div2 {
