@@ -49,6 +49,8 @@ class IndexPage extends Component {
 
   handleEnd = () => console.log('handleEnd')
 
+  handleToClipboard = () => console.log('handleToClipboard')
+
   handleTestUpdateClick = () => {
     this.props.store.handleTestChange()
   }
@@ -92,7 +94,9 @@ class IndexPage extends Component {
                     className={`${name} ${day % 7 === 0 || day % 7 === 6 ? 'weekend' : ''}`}
                   >
                     {i === 0 && index + 1}
-                    {name === 'details' && <button>To clipboard</button>}
+                    {name === 'details' && (
+                      <Button handleClick={this.handleToClipboard} text="To clipboard" />
+                    )}
                   </div>
                 ))}
                 {day === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
