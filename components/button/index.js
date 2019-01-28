@@ -2,9 +2,9 @@ import React from 'react'
 
 const Button = props => (
   <button onClick={props.handleClick} className="button">
+    {props.text}
     <div className="div1" />
     <div className="div2" />
-    {props.text}
     <style jsx>
       {`
         .button {
@@ -14,18 +14,26 @@ const Button = props => (
           padding: 8px 12px;
           border-style: none;
           border-radius: 5px;
-          color: #fff;
+          color: rgba(255, 255, 255, 0.8);
           text-transform: uppercase;
           box-shadow: 0px 1px 2px #222;
           transition: 0.25s;
+          overflow: hidden;
+          z-index: 1;
         }
         .button:hover {
           background-color: #759ee9;
           cursor: pointer;
+          color: rgba(255, 255, 255, 1);
         }
 
         .button:hover .div1 {
-          transform: translate(-10px);
+          transform: translate(-120px);
+          transition: 1s;
+        }
+        .button:hover .div2 {
+          transform: translate(120px);
+          transition: 1s;
         }
 
         .div1 {
@@ -35,7 +43,8 @@ const Button = props => (
           top: 0px;
           left: 0px;
           right: 10px;
-          background-color: #0000ff;
+          background-color: #083b99;
+          z-index: -1;
         }
 
         .div2 {
@@ -44,10 +53,8 @@ const Button = props => (
           top: 0px;
           right: 0px;
           position: absolute;
-          background-color: #ff0000;
-        }
-        .div2:hover {
-          transform: translate(10px);
+          background-color: #083b99;
+          z-index: -1;
         }
       `}
     </style>
