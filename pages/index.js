@@ -3,6 +3,8 @@ import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 import { startOfMonth, getDaysInMonth } from 'date-fns'
 
+import Button from '../components/button'
+
 import { columnData } from '../constants'
 
 const { columns } = columnData
@@ -41,6 +43,12 @@ class IndexPage extends Component {
 
   handleDropdown = () => (this.isDropdownOpen = !this.isDropdownOpen)
 
+  handleProj = () => console.log('handleProj')
+
+  handleStart = () => console.log('handleStart')
+
+  handleEnd = () => console.log('handleEnd')
+
   handleTestUpdateClick = () => {
     this.props.store.handleTestChange()
   }
@@ -59,15 +67,15 @@ class IndexPage extends Component {
           <h2>Projects</h2>
           <div className="justFlex tabs">
             {/* TODO: if project list is too long move last ones to a dropdown menu */}
-            {projects.map(p => (
-              <button>{p}</button>
+            {projects.map((p, index) => (
+              <Button handleClick={this.handleProj} text={p} key={index.toString()} />
             ))}
           </div>
         </div>
         <div className="justFlex">
           {/* buttons */}
-          <button>Start work day</button>
-          <button>End</button>
+          <Button handleClick={this.handleStart} text="Start work day" />
+          <Button handleClick={this.handleEnd} text="End" />
         </div>
         <div>
           <div className="list">
@@ -77,7 +85,7 @@ class IndexPage extends Component {
               </div>
             ))}
             {this.monthList.map((day, index) => (
-              <React.Fragment>
+              <React.Fragment key={index.toString()}>
                 {columns.map((name, i) => (
                   <div
                     key={name}
