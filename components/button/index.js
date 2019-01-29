@@ -29,33 +29,33 @@ const Button = props => (
         }
 
         .button:hover .div1 {
-          transform: translate(-120px);
+          transform: translateX(-120px);
           transition: 1s;
         }
         .button:hover .div2 {
-          transform: translate(120px);
+          transform: translateX(120px);
           transition: 1s;
         }
 
-        .div1 {
-          height: 30px;
-          width: 50%;
-          position: absolute;
-          top: 0px;
-          left: 0px;
-          right: 10px;
-          background-color: #2868dd;
-          z-index: -1;
-        }
-
+        .div1,
         .div2 {
           height: 30px;
           width: 50%;
-          top: 0px;
-          right: 0px;
           position: absolute;
+          top: 0px;
           background-color: #2868dd;
+          transform: translateX(0px);
           z-index: -1;
+        }
+
+        .div1 {
+          top: 0px;
+          right: 50%;
+        }
+
+        .div2 {
+          top: 0px;
+          left: 50%;
         }
       `}
     </style>
