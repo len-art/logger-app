@@ -15,6 +15,7 @@ const Button = props => (
           border-style: none;
           border-radius: 5px;
           color: rgba(255, 255, 255, 0.8);
+          font-size: 10px;
           text-transform: uppercase;
           box-shadow: 0px 1px 2px #222;
           transition: 0.25s;
@@ -22,9 +23,11 @@ const Button = props => (
           z-index: 1;
         }
         .button:hover {
-          background-color: #759ee9;
+          background-color: #083b99;
           cursor: pointer;
           color: rgba(255, 255, 255, 1);
+          font-size: 11px;
+          padding: 7px 10px;
         }
 
         .button:hover .div1 {
@@ -43,7 +46,7 @@ const Button = props => (
           top: 0px;
           left: 0px;
           right: 10px;
-          background-color: #083b99;
+          background-color: #2868dd;
           z-index: -1;
         }
 
@@ -53,7 +56,7 @@ const Button = props => (
           top: 0px;
           right: 0px;
           position: absolute;
-          background-color: #083b99;
+          background-color: #2868dd;
           z-index: -1;
         }
       `}
