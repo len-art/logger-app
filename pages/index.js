@@ -134,6 +134,13 @@ class IndexPage extends Component {
             }
           `}
         </style>
+        <style jsx global>
+          {`
+            body {
+              font-family: helvetica;
+            }
+          `}
+        </style>
       </div>
     )
   }
