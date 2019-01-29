@@ -23,18 +23,15 @@ const Button = props => (
           z-index: 1;
         }
         .button:hover {
-          background-color: #083b99;
           cursor: pointer;
           color: rgba(255, 255, 255, 1);
         }
 
         .button:hover .div1 {
           transform: translateX(-120px);
-          transition: 1s;
         }
         .button:hover .div2 {
           transform: translateX(120px);
-          transition: 1s;
         }
 
         .div1,
@@ -43,8 +40,9 @@ const Button = props => (
           width: 50%;
           position: absolute;
           top: 0px;
-          background-color: #2868dd;
+          background-color: #083b99;
           transform: translateX(0px);
+          transition: 0.5s;
           z-index: -1;
         }
 
