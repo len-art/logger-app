@@ -15,7 +15,7 @@ const Button = props => (
           border-style: none;
           border-radius: 5px;
           color: rgba(255, 255, 255, 0.8);
-          font-size: 10px;
+          font-size: 14px;
           text-transform: uppercase;
           box-shadow: 0px 1px 2px #222;
           transition: 0.25s;
@@ -36,7 +36,7 @@ const Button = props => (
 
         .div1,
         .div2 {
-          height: 30px;
+          height: 100%;
           width: 50%;
           position: absolute;
           top: 0px;
