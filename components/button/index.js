@@ -26,8 +26,6 @@ const Button = props => (
           background-color: #083b99;
           cursor: pointer;
           color: rgba(255, 255, 255, 1);
-          font-size: 11px;
-          padding: 7px 10px;
         }
 
         .button:hover .div1 {
