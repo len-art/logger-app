@@ -3,20 +3,21 @@ import React from 'react'
 export default ({
   type = 'text', placeholder = '\u00A0', label = '', value, onChange,
 }) => (
-  <label htmlFor="input" className="input">
-    <input id="input" type={type} placeholder={placeholder} />
+  <label htmlFor="input" className="wrapper">
+    <input className="input" type={type} placeholder={placeholder} />
     <span className="label" value={value} onChange={onChange}>
       {label}
     </span>
     <span className="border" />
     <style jsx>
       {`
-        .input {
+        .wrapper {
           position: relative;
           width: 100%;
           max-width: 280px;
           padding: 15px 0 5px;
           transition: all 0.2s ease;
+          outline: none;
         }
         .label {
           position: absolute;
@@ -31,7 +32,7 @@ export default ({
         }
         .border {
           position: absolute;
-          bottom: 0;
+          bottom: 5px;
           left: 0;
           height: 1px;
           width: 100%;
@@ -40,7 +41,7 @@ export default ({
           transform-origin: 0 0;
           transition: all .25s ease;
         }
-        input {
+        .input {
           -webkit-appearance: none;
           width: 100%;
           border: 0;
@@ -56,24 +57,21 @@ export default ({
           outline: none;
           z-index: 1;
         }
-        .input input:not(:placeholder-shown) + span {
+        .wrapper input:not(:placeholder-shown) + span {
           transform: translateY(-15px) scale(.75);
         }
-        .input:hover  {
+        .wrapper:hover  {
           background: rgba(34, 50, 84, .05);
         }
-        {/* input:hover:not(span) {
-          color #5A667F;
-        } */}
-        input:focus + span {
+        .input:focus + span {
           background: none;
           outline: none;
         }
-        input:focus + .label {
+        .input:focus + .label {
           color #0077FF;
           transform: translateY(-15px) scale(.75);
         }
-        input:focus + .label + .border {
+        .input:focus + .label + .border {
           transform: scaleX(1)
         }
       `}
