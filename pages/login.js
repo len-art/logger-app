@@ -30,6 +30,9 @@ export default class extends React.Component {
   isLoading = false
 
   @observable
+  showRegister = false
+
+  @observable
   email = ''
 
   @observable
@@ -73,6 +76,8 @@ export default class extends React.Component {
             />
           ))}
           <Button onClick={this.handleLogin} text="Login" />
+          <div>Don't have an account yet?</div>
+          <Button unstyled text="Sign Up" />
         </div>
         <style jsx>
           {`
