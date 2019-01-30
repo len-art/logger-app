@@ -1,15 +1,18 @@
 import React from 'react'
 
-export default ({ type = 'text', placeholder = '\u00A0', label = '' }) => (
+export default ({
+  type = 'text', placeholder = '\u00A0', label = '', value, onChange,
+}) => (
   <label htmlFor="input" className="input">
     <input id="input" type={type} placeholder={placeholder} />
-    <span className="label">{label}</span>
+    <span className="label" value={value} onChange={onChange}>
+      {label}
+    </span>
     <span className="border" />
     <style jsx>
       {`
         .input {
           position: relative;
-          margin: auto;
           width: 100%;
           max-width: 280px;
         }
