@@ -15,7 +15,7 @@ const Button = props => (
           border-style: none;
           border-radius: 5px;
           color: rgba(255, 255, 255, 0.8);
-          font-size: 10px;
+          font-size: 14px;
           text-transform: uppercase;
           box-shadow: 0px 1px 2px #222;
           transition: 0.25s;
@@ -23,39 +23,37 @@ const Button = props => (
           z-index: 1;
         }
         .button:hover {
-          background-color: #083b99;
           cursor: pointer;
           color: rgba(255, 255, 255, 1);
         }
 
         .button:hover .div1 {
-          transform: translate(-120px);
-          transition: 1s;
+          transform: translateX(-120px);
         }
         .button:hover .div2 {
-          transform: translate(120px);
-          transition: 1s;
+          transform: translateX(120px);
+        }
+
+        .div1,
+        .div2 {
+          height: 100%;
+          width: 50%;
+          position: absolute;
+          top: 0px;
+          background-color: #083b99;
+          transform: translateX(0px);
+          transition: 0.5s;
+          z-index: -1;
         }
 
         .div1 {
-          height: 30px;
-          width: 50%;
-          position: absolute;
           top: 0px;
-          left: 0px;
-          right: 10px;
-          background-color: #2868dd;
-          z-index: -1;
+          right: 50%;
         }
 
         .div2 {
-          height: 30px;
-          width: 50%;
           top: 0px;
-          right: 0px;
-          position: absolute;
-          background-color: #2868dd;
-          z-index: -1;
+          left: 50%;
         }
       `}
     </style>
