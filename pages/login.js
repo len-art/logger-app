@@ -27,6 +27,9 @@ const inputFields = [
 @observer
 export default class extends React.Component {
   @observable
+  isLoading = false
+
+  @observable
   email = ''
 
   @observable
@@ -39,7 +42,18 @@ export default class extends React.Component {
     this[field] = e.target.value
   }
 
-  handleLogin = () => {}
+  handleLogin = async () => {
+    const { email, userName, password } = this
+    this.isLoading = true
+
+    await this.props.store.handleLogin({
+      email,
+      userName,
+      password,
+    })
+
+    this.isLoading = false
+  }
 
   handleRegister = () => {}
 

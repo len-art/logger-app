@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Button = props => (
-  <button onClick={props.handleClick} className="button">
+  <button onClick={props.onClick} className="button">
     {props.text}
     <div className="div1" />
     <div className="div2" />

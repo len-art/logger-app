@@ -70,14 +70,14 @@ class IndexPage extends Component {
           <div className="justFlex tabs">
             {/* TODO: if project list is too long move last ones to a dropdown menu */}
             {projects.map((p, index) => (
-              <Button handleClick={this.handleProj} text={p} key={index.toString()} />
+              <Button onClick={this.handleProj} text={p} key={index.toString()} />
             ))}
           </div>
         </div>
         <div className="justFlex">
           {/* buttons */}
-          <Button handleClick={this.handleStart} text="Start work day" />
-          <Button handleClick={this.handleEnd} text="End" />
+          <Button onClick={this.handleStart} text="Start work day" />
+          <Button onClick={this.handleEnd} text="End" />
         </div>
         <div>
           <div className="list">
@@ -95,7 +95,7 @@ class IndexPage extends Component {
                   >
                     {i === 0 && index + 1}
                     {name === 'details' && (
-                      <Button handleClick={this.handleToClipboard} text="To clipboard" />
+                      <Button onClick={this.handleToClipboard} text="To clipboard" />
                     )}
                   </div>
                 ))}
