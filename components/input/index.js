@@ -4,10 +4,14 @@ export default ({
   type = 'text', placeholder = '\u00A0', label = '', value, onChange,
 }) => (
   <label htmlFor="input" className="wrapper">
-    <input className="input" type={type} placeholder={placeholder} />
-    <span className="label" value={value} onChange={onChange}>
-      {label}
-    </span>
+    <input
+      className="input"
+      value={value}
+      onChange={onChange}
+      type={type}
+      placeholder={placeholder}
+    />
+    <span className="label">{label}</span>
     <span className="border" />
     <style jsx>
       {`

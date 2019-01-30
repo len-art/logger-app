@@ -1,8 +1,9 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
+import { observable } from 'mobx'
 
 import Input from '../components/input'
+import Button from '../components/button'
 
 const inputFields = [
   {
@@ -38,6 +39,10 @@ export default class extends React.Component {
     this[field] = e.target.value
   }
 
+  handleLogin = () => {}
+
+  handleRegister = () => {}
+
   render() {
     return (
       <div className="wrapper">
@@ -50,9 +55,10 @@ export default class extends React.Component {
               label={label}
               value={this[field]}
               type={type}
-              onChange={e => this.onChange(e, field)}
+              onChange={e => this.handleInputChange(e, field)}
             />
           ))}
+          <Button onClick={this.handleLogin} text="Login" />
         </div>
         <style jsx>
           {`
