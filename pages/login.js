@@ -1,6 +1,6 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { computed, observable } from 'mobx'
 
 import Input from '../components/input'
 import Button from '../components/button'
@@ -10,16 +10,19 @@ const inputFields = [
     label: 'E-mail',
     field: 'email',
     type: 'email',
+    onLogin: true,
   },
   {
     label: 'User Name',
     field: 'userName',
     type: 'text',
+    onLogin: false,
   },
   {
     label: 'Password',
     field: 'password',
     type: 'password',
+    onLogin: true,
   },
 ]
 
@@ -41,6 +44,11 @@ export default class extends React.Component {
   @observable
   password = ''
 
+  @computed
+  get displayText() {
+    return this.showRegister ? 'Register' : 'Login'
+  }
+
   handleInputChange = (e, field) => {
     this[field] = e.target.value
   }
@@ -58,26 +66,28 @@ export default class extends React.Component {
     this.isLoading = false
   }
 
-  handleRegister = () => {}
+  toggleRegister = () => (this.showRegister = !this.showRegister)
 
   render() {
     return (
       <div className="wrapper">
         <div className="container">
-          <h3>Login</h3>
-          {inputFields.map(({ label, field, type }) => (
-            <Input
-              key={field}
-              className="margined"
-              label={label}
-              value={this[field]}
-              type={type}
-              onChange={e => this.handleInputChange(e, field)}
-            />
-          ))}
+          <h3>{this.displayText}</h3>
+          {inputFields
+            .filter(({ onLogin }) => (this.showRegister ? true : onLogin))
+            .map(({ label, field, type }) => (
+              <Input
+                key={field}
+                className="margined"
+                label={label}
+                value={this[field]}
+                type={type}
+                onChange={e => this.handleInputChange(e, field)}
+              />
+            ))}
           <Button onClick={this.handleLogin} text="Login" />
           <div>Don't have an account yet?</div>
-          <Button unstyled text="Sign Up" />
+          <Button unstyled text="Sign Up" onClick={this.toggleRegister} />
         </div>
         <style jsx>
           {`
