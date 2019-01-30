@@ -18,6 +18,28 @@ export default class {
   projects = ['proj1', 'proj2', 'proj3']
 
   @observable
+  months = [
+    {
+      id: 'fakeId414',
+      projectId: 'proj1',
+      createdAt: new Date('2018-12-12T12:47:08.439Z'),
+      monthId: 11,
+    },
+    {
+      id: 'fakeId424d',
+      projectId: 'proj1',
+      createdAt: new Date('2018-11-02T19:47:08.439Z'),
+      monthId: 10,
+    },
+    {
+      id: 'fakeIdbdx',
+      projectId: 'proj1',
+      createdAt: new Date('2018-10-28T19:47:08.439Z'),
+      monthId: 9,
+    },
+  ]
+
+  @observable
   selectedProject = 0
 
   @observable
