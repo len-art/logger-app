@@ -7,7 +7,7 @@ import Button from '../components/button'
 
 import { columnData } from '../constants'
 
-const { columns } = columnData
+const { listColumns } = columnData
 
 @inject('store')
 @observer
@@ -81,14 +81,14 @@ class IndexPage extends Component {
         </div>
         <div>
           <div className="list">
-            {columns.map(name => (
+            {listColumns.map(name => (
               <div key={name} className={name}>
                 {name}
               </div>
             ))}
             {this.monthList.map((day, index) => (
               <React.Fragment key={index.toString()}>
-                {columns.map((name, i) => (
+                {listColumns.map((name, i) => (
                   <div
                     key={name}
                     className={`${name} ${day % 7 === 0 || day % 7 === 6 ? 'weekend' : ''}`}

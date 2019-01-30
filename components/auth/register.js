@@ -5,26 +5,7 @@ import { computed, observable } from 'mobx'
 import Input from '../input'
 import Button from '../button'
 
-const inputFields = [
-  {
-    label: 'E-mail',
-    field: 'email',
-    type: 'email',
-    onLogin: true,
-  },
-  {
-    label: 'User Name',
-    field: 'userName',
-    type: 'text',
-    onLogin: false,
-  },
-  {
-    label: 'Password',
-    field: 'password',
-    type: 'password',
-    onLogin: true,
-  },
-]
+import { columnData } from '../../constants'
 
 @inject('store')
 @observer
@@ -46,7 +27,7 @@ export default class extends React.Component {
     return (
       <div className="register">
         <h3>Register</h3>
-        {inputFields.map(({ label, field, type }) => (
+        {columnData.registerFields.map(({ label, field, type }) => (
           <Input
             key={field}
             className="margined"

@@ -5,20 +5,9 @@ import { computed, observable } from 'mobx'
 import Input from '../input'
 import Button from '../button'
 
-const inputFields = [
-  {
-    label: 'E-mail',
-    field: 'email',
-    type: 'email',
-    onLogin: true,
-  },
-  {
-    label: 'Password',
-    field: 'password',
-    type: 'password',
-    onLogin: true,
-  },
-]
+import { columnData } from '../../constants'
+
+const loginFields = columnData.registerFields.filter(({ field }) => field !== 'userName')
 
 @inject('store')
 @observer
@@ -40,7 +29,7 @@ export default class extends React.Component {
     return (
       <div className="login">
         <h3>Login</h3>
-        {inputFields.map(({ label, field, type }) => (
+        {loginFields.map(({ label, field, type }) => (
           <Input
             key={field}
             className="margined"
