@@ -56,6 +56,9 @@ class Layout extends React.Component {
             #__next {
               height: 100%;
             }
+            .small {
+              font-size: 0.8em;
+            }
           `}
         </style>
       </div>

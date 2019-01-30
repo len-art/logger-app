@@ -5,6 +5,9 @@ import { computed, observable } from 'mobx'
 import Input from '../components/input'
 import Button from '../components/button'
 
+import Login from '../components/auth/login'
+import Register from '../components/auth/register'
+
 const inputFields = [
   {
     label: 'E-mail',
@@ -35,58 +38,19 @@ export default class extends React.Component {
   @observable
   showRegister = false
 
-  @observable
-  email = ''
-
-  @observable
-  userName = ''
-
-  @observable
-  password = ''
-
-  @computed
-  get displayText() {
-    return this.showRegister ? 'Register' : 'Login'
-  }
-
-  handleInputChange = (e, field) => {
-    this[field] = e.target.value
-  }
-
-  handleLogin = async () => {
-    const { email, userName, password } = this
-    this.isLoading = true
-
-    await this.props.store.handleLogin({
-      email,
-      userName,
-      password,
-    })
-
-    this.isLoading = false
-  }
-
   toggleRegister = () => (this.showRegister = !this.showRegister)
 
   render() {
     return (
       <div className="wrapper">
-        <div className="container">
-          <h3>{this.displayText}</h3>
-          {inputFields
-            .filter(({ onLogin }) => (this.showRegister ? true : onLogin))
-            .map(({ label, field, type }) => (
-              <Input
-                key={field}
-                className="margined"
-                label={label}
-                value={this[field]}
-                type={type}
-                onChange={e => this.handleInputChange(e, field)}
-              />
-            ))}
-          <Button onClick={this.handleLogin} text="Login" />
-          <div>Don't have an account yet?</div>
+        <div className={this.showRegister ? 'container register' : 'container'}>
+          {/* todo: animate (div flip) when switching */}
+          {this.showRegister ? (
+            <Register toggleRegister={this.toggleRegister} isLoading={this.isLoading} />
+          ) : (
+            <Login toggleRegister={this.toggleRegister} isLoading={this.isLoading} />
+          )}
+          <div className="small">Don't have an account yet?</div>
           <Button unstyled text="Sign Up" onClick={this.toggleRegister} />
         </div>
         <style jsx>
@@ -103,11 +67,6 @@ export default class extends React.Component {
               flex-direction: column;
               justify-content: center;
               align-items: center;
-              height: 100%;
-              width: 100%;
-              border-radius: 10px;
-              box-shadow: 0px 1px 4px -1px;
-              padding: 20px;
             }
             h3 {
               text-align: center;

@@ -21,7 +21,7 @@ const Button = props => (
           color: ${props.unstyled ? 'rgba(40, 104, 221, .8)' : 'rgba(255, 255, 255, .8)'};
           font-size: 14px;
           text-transform: uppercase;
-          box-shadow: ${props.unstyled ? '' : '0px 1px 2px #222'};
+          box-shadow: ${props.unstyled ? 'none' : '0px 1px 2px #222'};
           transition: 0.25s;
           overflow: hidden;
           z-index: 1;
