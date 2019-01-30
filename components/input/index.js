@@ -19,7 +19,7 @@ export default ({
           position: relative;
           width: 100%;
           max-width: 280px;
-          padding: 15px 0 5px;
+          padding: 25px 0 10px;
           transition: all 0.2s ease;
           outline: none;
         }
@@ -36,7 +36,7 @@ export default ({
         }
         .border {
           position: absolute;
-          bottom: 5px;
+          bottom: 10px;
           left: 0;
           height: 1px;
           width: 100%;
