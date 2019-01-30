@@ -1,32 +1,38 @@
 import React from 'react'
 
 const Button = props => (
-  <button onClick={props.handleClick} className="button">
+  <button onClick={props.onClick} className="button">
     {props.text}
-    <div className="div1" />
-    <div className="div2" />
+    {!props.unstyled && (
+      <>
+        <div className="div1" />
+        <div className="div2" />
+      </>
+    )}
     <style jsx>
       {`
         .button {
           position: relative;
-          background-color: #2868dd;
+          background-color: ${props.unstyled ? 'transparent' : '#2868dd'};
           margin: 5px;
           padding: 8px 12px;
           border-style: none;
           border-radius: 5px;
-          color: rgba(255, 255, 255, 0.8);
+          color: ${props.unstyled ? 'rgba(40, 104, 221, .8)' : 'rgba(255, 255, 255, .8)'};
           font-size: 14px;
           text-transform: uppercase;
-          box-shadow: 0px 1px 2px #222;
+          box-shadow: ${props.unstyled ? 'none' : '0px 1px 2px #222'};
           transition: 0.25s;
           overflow: hidden;
           z-index: 1;
         }
         .button:hover {
           cursor: pointer;
-          color: rgba(255, 255, 255, 1);
+          color: ${props.unstyled ? 'rgba(17, 50, 110, 1)' : 'rgba(255, 255, 255, 1)'};
         }
-
+        .button:focus {
+          outline: none;
+        }
         .button:hover .div1 {
           transform: translateX(-120px);
         }

@@ -9,6 +9,7 @@ import Store from '../store'
 class Layout extends React.Component {
   render() {
     const { children } = this.props
+
     return (
       <div className="layout">
         <header>Header</header>
@@ -23,12 +24,40 @@ class Layout extends React.Component {
         </footer>
         <style jsx>
           {`
+            header {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+            }
+            .layout {
+              height: 100%;
+              width: 100%;
+            }
             .footer {
               position: fixed;
               padding: 20px;
               bottom: 0;
               left: 0;
               display: flex;
+            }
+          `}
+        </style>
+        <style jsx global>
+          {`
+            html,
+            document,
+            body {
+              height: 100%;
+              width: 100%;
+              margin: 0;
+              font-family: sans-serif;
+            }
+            #__next {
+              height: 100%;
+            }
+            .small {
+              font-size: 0.8em;
             }
           `}
         </style>

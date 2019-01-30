@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx'
+import { PromiseBuffer } from '@sentry/core'
 /*
 res.json({
           user: {
@@ -23,7 +24,19 @@ export default class {
   selectedMonth = 0
 
   @action
-  async handleLogin(name, password) {}
+  async handleLogin({ email = '', name, password }) {
+    /* fake an API async call */
+    try {
+      const { data } = await new Promise((res, rej) => {
+        setTimeout(() => res({ data: { user: { name: 'Fake name' } } }), Math.random() * 500)
+      })
+      this.user = data.user
+      return true
+    } catch (error) {
+      console.error(error)
+      return false
+    }
+  }
 
   @action
   setSelectedMonth(nextState) {
