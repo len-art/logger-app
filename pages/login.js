@@ -8,14 +8,17 @@ const inputFields = [
   {
     label: 'E-mail',
     field: 'email',
+    type: 'email',
   },
   {
     label: 'User Name',
     field: 'userName',
+    type: 'text',
   },
   {
     label: 'Password',
     field: 'password',
+    type: 'password',
   },
 ]
 
@@ -40,12 +43,13 @@ export default class extends React.Component {
       <div className="wrapper">
         <div className="container">
           <h3>Login</h3>
-          {inputFields.map(({ label, field }) => (
+          {inputFields.map(({ label, field, type }) => (
             <Input
               key={field}
               className="margined"
               label={label}
               value={this[field]}
+              type={type}
               onChange={e => this.onChange(e, field)}
             />
           ))}
