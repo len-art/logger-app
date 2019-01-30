@@ -53,9 +53,6 @@ export default class extends React.Component {
               onChange={e => this.onChange(e, field)}
             />
           ))}
-          {/* <Input className="margined" label="e-mail" value />
-          <Input className="margined" label="User name" />
-          <Input className="margined" label="Password" /> */}
         </div>
         <style jsx>
           {`

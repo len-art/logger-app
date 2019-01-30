@@ -15,12 +15,12 @@ export default ({
           position: relative;
           width: 100%;
           max-width: 280px;
-          margin: 15px 0 5px;
+          padding: 15px 0 5px;
           transition: all 0.2s ease;
         }
         .label {
           position: absolute;
-          top: -1px;
+          top: 15px;
           left: 0;
           font-size: 16px;
           color: #9098a9;
@@ -59,12 +59,12 @@ export default ({
         .input input:not(:placeholder-shown) + span {
           transform: translateY(-15px) scale(.75);
         }
-        input:hover {
-          background: rgba(#223254,.03)
+        .input:hover  {
+          background: rgba(34, 50, 84, .05);
         }
-        input:hover:not(span) {
+        {/* input:hover:not(span) {
           color #5A667F;
-        }
+        } */}
         input:focus + span {
           background: none;
           outline: none;
