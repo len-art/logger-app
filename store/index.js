@@ -20,7 +20,7 @@ export default class {
   user = undefined
 
   @observable
-  projects = []
+  projects = [{ name: 'placeholder1' }]
 
   @observable
   selectedProject = 0
