@@ -14,7 +14,7 @@ export default class extends React.Component {
   email = ''
 
   @observable
-  userName = ''
+  name = ''
 
   @observable
   password = ''
@@ -24,6 +24,7 @@ export default class extends React.Component {
   }
 
   render() {
+    const { email, name, password } = this
     return (
       <div className="register">
         <h3>Register</h3>
@@ -37,7 +38,7 @@ export default class extends React.Component {
             onChange={e => this.handleInputChange(e, field)}
           />
         ))}
-        <Button onClick={this.handleLogin} text="Login" />
+        <Button onClick={() => this.props.handleRegister({ email, name, password })} text="Login" />
         <style jsx>
           {`
             .register {

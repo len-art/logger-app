@@ -6,13 +6,15 @@ import { format } from 'date-fns'
 import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
 
+import Header from '../components/header'
+
 class Layout extends React.Component {
   render() {
     const { children } = this.props
 
     return (
       <div className="layout">
-        <header>Header</header>
+        <Header />
         {children}
         <footer className="footer">
           {/* past 12 months */}
@@ -24,12 +26,6 @@ class Layout extends React.Component {
         </footer>
         <style jsx>
           {`
-            header {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-            }
             .layout {
               height: 100%;
               width: 100%;

@@ -70,7 +70,7 @@ class IndexPage extends Component {
           <div className="justFlex tabs">
             {/* TODO: if project list is too long move last ones to a dropdown menu */}
             {projects.map((p, index) => (
-              <Button onClick={this.handleProj} text={p} key={index.toString()} />
+              <Button onClick={this.handleProj} text={p.name} key={index.toString()} />
             ))}
           </div>
         </div>

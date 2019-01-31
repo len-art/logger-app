@@ -9,7 +9,7 @@ const registerFields = [
   },
   {
     label: 'User Name',
-    field: 'userName',
+    field: 'name',
     type: 'text',
     onLogin: false,
   },
