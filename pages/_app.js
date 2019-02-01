@@ -5,6 +5,7 @@ import { Provider } from 'mobx-react'
 import { format } from 'date-fns'
 import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
+import Footer from '../components/footer'
 
 class Layout extends React.Component {
   render() {
@@ -14,14 +15,7 @@ class Layout extends React.Component {
       <div className="layout">
         <header>Header</header>
         {children}
-        <footer className="footer">
-          {/* past 12 months */}
-          {Array.from(new Array(12), (_, i) => {
-            const month = (11 - i + 1) % 12
-            const date = new Date(2010, month, 1)
-            return <button key={month}>{format(date, 'MMM')}</button>
-          })}
-        </footer>
+        <Footer />
         <style jsx>
           {`
             header {
@@ -33,13 +27,6 @@ class Layout extends React.Component {
             .layout {
               height: 100%;
               width: 100%;
-            }
-            .footer {
-              position: fixed;
-              padding: 20px;
-              bottom: 0;
-              left: 0;
-              display: flex;
             }
           `}
         </style>
