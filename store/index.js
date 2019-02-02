@@ -32,14 +32,18 @@ export default class {
       const refreshToken = localStorage.getItem('refreshToken')
       const refreshSecret = localStorage.getItem('refreshSecret')
       if (refreshToken && refreshSecret) {
-        this.getToken({ refreshToken, refreshSecret })
+        await this.getToken({ refreshToken, refreshSecret })
+        await this.getUserData()
       }
     }
   }
 
   async getUserData() {
     try {
-      // call api
+      const { data } = await this.client.post('users/data')
+      this.projects = data.projects
+      this.month = data.month
+      this.user = data.user
     } catch (error) {
       console.error(error)
     }
@@ -48,7 +52,7 @@ export default class {
   async getToken({ refreshToken, refreshSecret }) {
     try {
       console.log('gettingtoken')
-      const { data } = await this.client.get('users/token', { refreshToken, refreshSecret })
+      const { data } = await this.client.post('users/token', { refreshToken, refreshSecret })
       this.handleLoginSuccess(data)
       return true
     } catch (error) {
@@ -66,6 +70,7 @@ export default class {
         password,
       })
       this.handleLoginSuccess(data)
+      this.getUserData()
       return true
     } catch (error) {
       console.error(error)
@@ -85,10 +90,10 @@ export default class {
       this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     }
     if (refreshToken) {
-      localStorage.setItem('refreshToken', refresh)
+      localStorage.setItem('refreshToken', refreshToken)
     }
     if (refreshSecret) {
-      localStorage.setItem('refreshSecret', secret)
+      localStorage.setItem('refreshSecret', refreshSecret)
     }
   }
 
