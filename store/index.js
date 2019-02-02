@@ -51,7 +51,6 @@ export default class {
 
   async getToken({ refreshToken, refreshSecret }) {
     try {
-      console.log('gettingtoken')
       const { data } = await this.client.post('users/token', { refreshToken, refreshSecret })
       this.handleLoginSuccess(data)
       return true
@@ -111,6 +110,17 @@ export default class {
     } catch (error) {
       console.error(error)
       return false
+    }
+  }
+
+  async addProject({ name }) {
+    try {
+      const { data } = await this.client.post('projects/create', {
+        name,
+      })
+      this.projects.push(data.project)
+    } catch (error) {
+      console.error(error)
     }
   }
 

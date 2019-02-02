@@ -4,6 +4,7 @@ import { computed, observable } from 'mobx'
 import { startOfMonth, getDaysInMonth } from 'date-fns'
 
 import Button from '../components/button'
+import Projects from '../components/projects'
 
 import { columnData } from '../constants'
 
@@ -43,8 +44,6 @@ class IndexPage extends Component {
 
   handleDropdown = () => (this.isDropdownOpen = !this.isDropdownOpen)
 
-  handleProj = () => console.log('handleProj')
-
   handleStart = () => console.log('handleStart')
 
   handleEnd = () => console.log('handleEnd')
@@ -60,20 +59,11 @@ class IndexPage extends Component {
   }
 
   render() {
-    const { projects, selectedProject, setSelectedProject } = this.props.store
     return (
       <div>
         <h1>Work logger</h1>
         <p>Log your work hours</p>
-        <div>
-          <h2>Projects</h2>
-          <div className="justFlex tabs">
-            {/* TODO: if project list is too long move last ones to a dropdown menu */}
-            {projects.map((p, index) => (
-              <Button onClick={this.handleProj} text={p.name} key={index.toString()} />
-            ))}
-          </div>
-        </div>
+        <Projects />
         <div className="justFlex">
           {/* buttons */}
           <Button onClick={this.handleStart} text="Start work day" />
@@ -129,8 +119,6 @@ class IndexPage extends Component {
             .weekSummary {
               grid-column-start: 1;
               grid-column-end: 6;
-            }
-            .tabs {
             }
           `}
         </style>
