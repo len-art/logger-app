@@ -2,18 +2,20 @@ import React from 'react'
 
 import Button from '../button'
 
-export default props => (
+export default ({
+  open, onClose, title, children, footer, onCancel, onConfirm, dim,
+}) => (
   <div className="wrapper">
     <div className="content">
-      <button className="closeButton" onClick={props.onClose}>
+      <button className="closeButton" onClick={onClose}>
         X
       </button>
-      <div className="title">{props.title}</div>
-      {props.children}
-      {props.footer && props.onCancel && props.onConfirm && (
+      <div className="title">{title}</div>
+      {children}
+      {footer && onCancel && onConfirm && (
         <div className="footer">
-          <Button unstyled text="Cancel" onClick={props.onCancel} />
-          <Button text="Create" onClick={props.onConfirm} />
+          <Button unstyled text="Cancel" onClick={onCancel} />
+          <Button text="Create" onClick={onConfirm} />
         </div>
       )}
     </div>
@@ -39,20 +41,24 @@ export default props => (
           padding: 20px;
           border-radius: 5px;
           background-color: #fff;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+        }
+        .footer {
+          display: flex;
+          justify-content: flex-end;
         }
         .wrapper {
-          display: ${props.open ? 'block' : 'none'};
-          z-index: 500;
+          opacity: ${open ? 1 : 0};
+          transition: 0.25s;
+          display: flex;
+          z-index: ${open ? 500 : -1};
           position: fixed;
           top: 0;
           left: 0;
           height: 100%;
           width: 100%;
-          background-color: ${props.dim ? 'rgba(0, 20, 20, .7)' : 'transparent'};
+          background-color: ${dim ? 'rgba(0, 20, 20, .7)' : 'transparent'};
+          justify-content: center;
+          align-items: center;
         }
       `}
     </style>
