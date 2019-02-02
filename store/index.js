@@ -118,7 +118,7 @@ export default class {
       const { data } = await this.client.post('projects/create', {
         name,
       })
-      this.projects.push(data.project)
+      this.projects.unshift(data.project)
     } catch (error) {
       console.error(error)
     }
