@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 
 import Button from '../button'
+import Fab from '../fab'
 import Input from '../input'
 import Modal from '../modal'
 
@@ -42,7 +43,7 @@ class Projects extends React.Component {
           {projects.map((p, index) => (
             <Button onClick={this.selectProject} text={p.name} key={index.toString()} />
           ))}
-          <Button onClick={this.handleModalSwitch} text="+" />
+          <Fab onClick={this.handleModalSwitch} text="+" />
         </div>
         <Modal
           dim

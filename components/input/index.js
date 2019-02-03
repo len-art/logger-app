@@ -34,7 +34,7 @@ export default ({
           font-weight: 500;
           transform-origin: 0 0;
           transition: all 0.2s ease;
-          z-index: -1;
+          z-index: 0;
         }
         .border {
           position: absolute;
