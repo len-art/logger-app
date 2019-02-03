@@ -50,6 +50,7 @@ export default ({ onClick, text }) => (
 
         .fab:hover:after {
           transform: scale(1);
+          transition: 0.25s;
         }
       `}
     </style>
