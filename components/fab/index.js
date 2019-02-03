@@ -15,26 +15,23 @@ export default ({ onClick, text }) => (
           color: rgba(255, 255, 255, 0.8);
           font-size: 14px;
           text-transform: uppercase;
-          box-shadow: 0px 1px 2px #222;
+          box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
           transition: 0.25s;
           overflow: hidden;
           z-index: 1;
+          transform: scale(1);
         }
         .fab:hover {
           cursor: pointer;
           color: rgba(255, 255, 255, 1);
+          transform: scale(1.05);
+          box-shadow: 2px 3px 7px -1px rgba(50, 50, 50, 0.6);
         }
         .fab:focus {
           outline: none;
         }
-        .fab:hover .div1 {
-          transform: translateX(-120px);
-        }
-        .fab:hover .div2 {
-          transform: translateX(120px);
-        }
 
-        .fab:after {
+        .fab:before {
           content: '';
           position: absolute;
           top: 0;
@@ -48,7 +45,7 @@ export default ({ onClick, text }) => (
           z-index: -1;
         }
 
-        .fab:hover:after {
+        .fab:hover:before {
           transform: scale(1);
           transition: 0.25s;
         }
