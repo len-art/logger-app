@@ -5,6 +5,7 @@ import { startOfMonth, getDaysInMonth } from 'date-fns'
 
 import Button from '../components/button'
 import Projects from '../components/projects'
+import Table from '../components/table'
 
 import { columnData } from '../constants'
 
@@ -70,7 +71,8 @@ class IndexPage extends Component {
           <Button onClick={this.handleEnd} text="End" />
         </div>
         <div>
-          <div className="list">
+          <Table />
+          {/* <div className="list">
             {listColumns.map(name => (
               <div key={name} className={name}>
                 {name}
@@ -92,7 +94,7 @@ class IndexPage extends Component {
                 {day === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
               </React.Fragment>
             ))}
-          </div>
+          </div> */}
         </div>
         <style jsx>
           {`
