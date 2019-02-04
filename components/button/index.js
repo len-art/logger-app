@@ -21,7 +21,7 @@ const Button = props => (
           color: ${props.unstyled ? 'rgba(40, 104, 221, .8)' : 'rgba(255, 255, 255, .8)'};
           font-size: 14px;
           text-transform: uppercase;
-          box-shadow: ${props.unstyled ? 'none' : '0px 1px 2px #222'};
+          box-shadow: ${props.unstyled ? 'none' : '1px 2px 5px -1px rgba(50, 50, 50, 0.8)'};
           transition: 0.25s;
           overflow: hidden;
           z-index: 1;
@@ -29,6 +29,8 @@ const Button = props => (
         .button:hover {
           cursor: pointer;
           color: ${props.unstyled ? 'rgba(17, 50, 110, 1)' : 'rgba(255, 255, 255, 1)'};
+          transform: scale(1.03);
+          box-shadow: 2px 3px 7px -1px rgba(50, 50, 50, 0.6);
         }
         .button:focus {
           outline: none;

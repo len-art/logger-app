@@ -7,23 +7,19 @@ import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
 import Footer from '../components/footer'
 
+import Header from '../components/header'
+
 class Layout extends React.Component {
   render() {
     const { children } = this.props
 
     return (
       <div className="layout">
-        <header>Header</header>
+        <Header />
         {children}
         <Footer />
         <style jsx>
           {`
-            header {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-            }
             .layout {
               height: 100%;
               width: 100%;

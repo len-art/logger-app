@@ -1,34 +1,14 @@
 import React from 'react'
+import { withRouter } from 'next/router'
 import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 
-import Input from '../components/input'
 import Button from '../components/button'
 
 import Login from '../components/auth/login'
 import Register from '../components/auth/register'
 
-const inputFields = [
-  {
-    label: 'E-mail',
-    field: 'email',
-    type: 'email',
-    onLogin: true,
-  },
-  {
-    label: 'User Name',
-    field: 'userName',
-    type: 'text',
-    onLogin: false,
-  },
-  {
-    label: 'Password',
-    field: 'password',
-    type: 'password',
-    onLogin: true,
-  },
-]
-
+@withRouter
 @inject('store')
 @observer
 export default class extends React.Component {
@@ -40,15 +20,46 @@ export default class extends React.Component {
 
   toggleRegister = () => (this.showRegister = !this.showRegister)
 
+  handleLogin = async ({ email, password }) => {
+    try {
+      this.isLoading = true
+      const isLoggedIn = await this.props.store.handleLogin({ email, password, withData: true })
+      if (isLoggedIn) this.props.router.push('/')
+    } catch (error) {
+      console.error(error)
+    } finally {
+      this.isLoading = false
+    }
+  }
+
+  handleRegister = ({ email, name, password }) => {
+    try {
+      this.isLoading = true
+      this.props.store.handleRegister({ email, name, password })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      this.isLoading = false
+    }
+  }
+
   render() {
     return (
       <div className="wrapper">
         <div className={this.showRegister ? 'container register' : 'container'}>
           {/* todo: animate (div flip) when switching */}
           {this.showRegister ? (
-            <Register toggleRegister={this.toggleRegister} isLoading={this.isLoading} />
+            <Register
+              handleRegister={this.handleRegister}
+              toggleRegister={this.toggleRegister}
+              isLoading={this.isLoading}
+            />
           ) : (
-            <Login toggleRegister={this.toggleRegister} isLoading={this.isLoading} />
+            <Login
+              handleLogin={this.handleLogin}
+              toggleRegister={this.toggleRegister}
+              isLoading={this.isLoading}
+            />
           )}
           <div className="small">Don't have an account yet?</div>
           <Button unstyled text="Sign Up" onClick={this.toggleRegister} />

@@ -7,16 +7,13 @@ import Button from '../button'
 
 import { columnData } from '../../constants'
 
-const loginFields = columnData.registerFields.filter(({ field }) => field !== 'userName')
+const loginFields = columnData.registerFields.filter(({ field }) => field !== 'name')
 
 @inject('store')
 @observer
 export default class extends React.Component {
   @observable
   email = ''
-
-  @observable
-  userName = ''
 
   @observable
   password = ''
@@ -26,6 +23,7 @@ export default class extends React.Component {
   }
 
   render() {
+    const { name, password } = this
     return (
       <div className="login">
         <h3>Login</h3>
@@ -39,7 +37,7 @@ export default class extends React.Component {
             onChange={e => this.handleInputChange(e, field)}
           />
         ))}
-        <Button onClick={this.handleLogin} text="Login" />
+        <Button onClick={() => this.props.handleLogin({ name, password })} text="Login" />
         <style jsx>
           {`
             .login {

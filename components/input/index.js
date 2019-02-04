@@ -18,25 +18,27 @@ export default ({
         .wrapper {
           position: relative;
           width: 100%;
-          max-width: 280px;
-          padding: 25px 0 10px;
+          max-width: 300px;
           transition: all 0.2s ease;
           outline: none;
+          display: inline-flex;
+          align-items: flex-end;
+          height: 50px
         }
         .label {
           position: absolute;
-          top: 15px;
+          bottom: 2px;
           left: 0;
           font-size: 16px;
           color: #9098a9;
           font-weight: 500;
           transform-origin: 0 0;
           transition: all 0.2s ease;
-          z-index: -1;
+          z-index: 0;
         }
         .border {
           position: absolute;
-          bottom: 10px;
+          bottom: 0px;
           left: 0;
           height: 1px;
           width: 100%;
@@ -49,6 +51,7 @@ export default ({
           -webkit-appearance: none;
           width: 100%;
           border: 0;
+          height: 21px;
           font-family: inherit;
           padding: 0;
           font-size: 16px;
@@ -62,7 +65,7 @@ export default ({
           z-index: 1;
         }
         .wrapper input:not(:placeholder-shown) + span {
-          transform: translateY(-15px) scale(.75);
+          transform: translateY(-20px) scale(.75);
         }
         .wrapper:hover  {
           background: rgba(34, 50, 84, .05);
@@ -73,7 +76,7 @@ export default ({
         }
         .input:focus + .label {
           color #0077FF;
-          transform: translateY(-15px) scale(.75);
+          transform: translateY(-20px) scale(.75);
         }
         .input:focus + .label + .border {
           transform: scaleX(1)
