@@ -7,7 +7,7 @@ const Footer = inject('store')(
     const { months } = props.store
     return (
       <footer className="footer">
-        <div>{}</div>
+        <div>asdasd</div>
       </footer>
     )
   }),
