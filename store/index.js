@@ -61,8 +61,6 @@ export default class {
   }
 
   async handleLogin({ email, password }) {
-    email = 'lenart.velkavrh@gmail.com'
-    password = 'foo'
     try {
       const { data } = await this.client.post('users/login', {
         email,

@@ -23,7 +23,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const { name, password } = this
+    const { email, password } = this
     return (
       <div className="login">
         <h3>Login</h3>
@@ -37,7 +37,7 @@ export default class extends React.Component {
             onChange={e => this.handleInputChange(e, field)}
           />
         ))}
-        <Button onClick={() => this.props.handleLogin({ name, password })} text="Login" />
+        <Button onClick={() => this.props.handleLogin({ email, password })} text="Login" />
         <style jsx>
           {`
             .login {
