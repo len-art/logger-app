@@ -1,6 +1,6 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
+import { observable } from 'mobx'
 
 import Input from '../input'
 import Button from '../button'

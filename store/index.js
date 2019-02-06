@@ -28,7 +28,6 @@ export default class {
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       const success = await this.getUserData()
-      console.log(success)
       if (!success) this.resetCookies()
     } else {
       const refreshToken = localStorage.getItem('refreshToken')
@@ -43,7 +42,6 @@ export default class {
   async getUserData() {
     try {
       const { data } = await this.client.post('users/data')
-      // TODO: fix on backend
       this.projects = data.projects || []
       this.month = data.month || {}
       this.user = data.user || {}
@@ -70,7 +68,6 @@ export default class {
       email,
       password,
     })
-    console.log(data)
     this.handleLoginSuccess(data)
     this.getUserData()
   }
