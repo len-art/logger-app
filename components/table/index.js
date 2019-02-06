@@ -20,6 +20,12 @@ class IndexPage extends Component {
     // TODO: take selected month into consideration here
     const month = startOfMonth(new Date())
     const startDay = month.getDay()
+    console.log(
+      Array.from(new Array(getDaysInMonth(month)), (_, i) => {
+        const day = (startDay + i) % 7
+        return day
+      }),
+    )
     return Array.from(new Array(getDaysInMonth(month)), (_, i) => {
       const day = (startDay + i) % 7
       return day

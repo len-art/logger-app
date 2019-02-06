@@ -14,7 +14,7 @@ export default class {
   user = undefined
 
   @observable
-  projects = [{ name: 'placeholder1' }]
+  projects = []
 
   @observable
   selectedProject = 0
@@ -27,7 +27,9 @@ export default class {
     const accessToken = sessionStorage.getItem('accessToken')
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      this.getUserData()
+      const success = await this.getUserData()
+      console.log(success)
+      if (!success) this.resetCookies()
     } else {
       const refreshToken = localStorage.getItem('refreshToken')
       const refreshSecret = localStorage.getItem('refreshSecret')
@@ -41,11 +43,14 @@ export default class {
   async getUserData() {
     try {
       const { data } = await this.client.post('users/data')
-      this.projects = data.projects
-      this.month = data.month
-      this.user = data.user
+      // TODO: fix on backend
+      this.projects = data.projects || []
+      this.month = data.month || {}
+      this.user = data.user || {}
+      return true
     } catch (error) {
       console.error(error)
+      return false
     }
   }
 
@@ -94,6 +99,13 @@ export default class {
     }
   }
 
+  resetCookies() {
+    sessionStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('refreshSecret')
+    this.user = undefined
+  }
+
   @action
   async handleRegister({ email, name, password }) {
     /* fake an API async call */
@@ -103,7 +115,7 @@ export default class {
         name,
         password,
       })
-      this.user = data.user
+      this.handleLogin({ email, password })
       return true
     } catch (error) {
       console.error(error)
