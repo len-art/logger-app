@@ -17,6 +17,7 @@ export default () => (
           left: 0;
           width: 100%;
           height: 50px;
+          z-index: 400;
         }
         .wrapper {
           display: flex;

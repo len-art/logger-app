@@ -1,7 +1,6 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
 import format from 'date-fns/format'
-import Button from '../button'
 
 const Footer = inject('store')(
   observer((props) => {
@@ -10,12 +9,37 @@ const Footer = inject('store')(
       <div>
         <footer className="footer">
           {months.map((month, index) => (
-            <Button text={format(month.startsAt, 'MMM')} />
+            <button
+              onClick={() => props.store.setSelectedMonth(month.monthId)}
+              className={month.monthId === props.store.selectedMonth ? 'buttonSelected' : 'button'}
+            >
+              {format(month.startsAt, 'MMM')}
+            </button>
           ))}
           <style jsx>
             {`
+              .button {
+                margin: 5px 12px 5px 6px;
+                padding: 8px 12px;
+                background-color: #eeeeee;
+                border-style: none;
+                border-radius: 3px;
+                text-transform: uppercase;
+                font-size: 13px;
+              }
+              .buttonSelected {
+                margin: 5px 12px 5px 6px;
+                padding: 8px 12px;
+                border-style: none;
+                border-radius: 3px;
+                text-transform: uppercase;
+                font-size: 13px;
+                background-color: #705c5c;
+                font-weight: bold;
+                color: white;
+              }
               .footer {
-                background-color: #cad9f5;
+                background-color: #a7a6a6;
                 width: 100%;
                 height: 50px;
                 position: fixed;
@@ -23,6 +47,8 @@ const Footer = inject('store')(
                 bottom: 0;
                 left: 0;
                 display: flex;
+                z-index: 400;
+                box-shadow: 0px 0px 4px 0px rgba(50, 50, 50, 0.4);
               }
             `}
           </style>
