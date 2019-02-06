@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Button = props => (
-  <button onClick={props.onClick} className="button">
+  <button type={props.type || 'button'} onClick={props.onClick} className="button">
     {props.text}
     {!props.unstyled && (
       <>

@@ -66,18 +66,13 @@ export default class {
   }
 
   async handleLogin({ email, password }) {
-    try {
-      const { data } = await this.client.post('users/login', {
-        email,
-        password,
-      })
-      this.handleLoginSuccess(data)
-      this.getUserData()
-      return true
-    } catch (error) {
-      console.error(error)
-      return false
-    }
+    const { data } = await this.client.post('users/login', {
+      email,
+      password,
+    })
+    console.log(data)
+    this.handleLoginSuccess(data)
+    this.getUserData()
   }
 
   @action
@@ -108,19 +103,11 @@ export default class {
 
   @action
   async handleRegister({ email, name, password }) {
-    /* fake an API async call */
-    try {
-      await this.client.post('users/register', {
-        email,
-        name,
-        password,
-      })
-      this.handleLogin({ email, password })
-      return true
-    } catch (error) {
-      console.error(error)
-      return false
-    }
+    await this.client.post('users/register', {
+      email,
+      name,
+      password,
+    })
   }
 
   async addProject({ name }) {

@@ -24,10 +24,17 @@ export default class extends React.Component {
   }
 
   render() {
-    const { email, name, password } = this
+    const {
+      email,
+      name,
+      password,
+      props: { error },
+    } = this
     return (
-      <div className="register">
+      <form className="register" onSubmit={e => e.preventDefault()}>
         <h3>Register</h3>
+        {/* TODO: style error */}
+        {error || ''}
         {columnData.registerFields.map(({ label, field, type }) => (
           <Input
             key={field}
@@ -38,7 +45,10 @@ export default class extends React.Component {
             onChange={e => this.handleInputChange(e, field)}
           />
         ))}
-        <Button onClick={() => this.props.handleRegister({ email, name, password })} text="Login" />
+        <Button
+          onClick={() => this.props.handleRegister({ email, name, password })}
+          text="Register"
+        />
         <style jsx>
           {`
             .register {
@@ -53,7 +63,7 @@ export default class extends React.Component {
             }
           `}
         </style>
-      </div>
+      </form>
     )
   }
 }
