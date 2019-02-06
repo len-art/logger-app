@@ -43,7 +43,7 @@ class Projects extends React.Component {
           {projects.map((p, index) => (
             <Button onClick={this.selectProject} text={p.name} key={index.toString()} />
           ))}
-          <Fab onClick={this.handleModalSwitch} text="+" />
+          <Fab onClick={this.handleModalSwitch} />
         </div>
         <Modal
           dim
