@@ -1,6 +1,7 @@
 import { action, observable } from 'mobx'
 import axios from 'axios'
 import { init } from '@sentry/browser'
+import { startOfMonth } from 'date-fns'
 import { config } from '../api'
 import { tokenHelper } from '../helpers'
 
@@ -21,18 +22,21 @@ export default class {
     {
       id: 'fakeId414',
       projectId: 'proj1',
+      startsAt: startOfMonth(new Date('2018-12-12T12:47:08.439Z')),
       createdAt: new Date('2018-12-12T12:47:08.439Z'),
       monthId: 11,
     },
     {
       id: 'fakeId424d',
       projectId: 'proj1',
+      startsAt: startOfMonth(new Date('2018-11-02T19:47:08.439Z')),
       createdAt: new Date('2018-11-02T19:47:08.439Z'),
       monthId: 10,
     },
     {
       id: 'fakeIdbdx',
       projectId: 'proj1',
+      startsAt: startOfMonth(new Date('2018-10-28T19:47:08.439Z')),
       createdAt: new Date('2018-10-28T19:47:08.439Z'),
       monthId: 9,
     },
@@ -42,7 +46,9 @@ export default class {
   selectedProject = 0
 
   @observable
-  selectedMonth = 0
+  selectedMonth = {
+    id: 10,
+  }
 
   async init() {
     if (typeof window === 'undefined') return
@@ -63,9 +69,9 @@ export default class {
   async getUserData() {
     try {
       const { data } = await this.client.post('users/data')
-      this.projects = data.projects
-      this.month = data.month
-      this.user = data.user
+      this.projects = data.projects || []
+      this.month = data.month || {}
+      this.user = data.user || {}
     } catch (error) {
       console.error(error)
     }
