@@ -15,7 +15,7 @@ export default class {
   user = undefined
 
   @observable
-  projects = [{ name: 'placeholder1' }]
+  projects = []
 
   @observable
   months = [
@@ -55,7 +55,8 @@ export default class {
     const accessToken = sessionStorage.getItem('accessToken')
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      this.getUserData()
+      const success = await this.getUserData()
+      if (!success) this.resetCookies()
     } else {
       const refreshToken = localStorage.getItem('refreshToken')
       const refreshSecret = localStorage.getItem('refreshSecret')
@@ -72,8 +73,10 @@ export default class {
       this.projects = data.projects || []
       this.month = data.month || {}
       this.user = data.user || {}
+      return true
     } catch (error) {
       console.error(error)
+      return false
     }
   }
 
@@ -89,18 +92,12 @@ export default class {
   }
 
   async handleLogin({ email, password }) {
-    try {
-      const { data } = await this.client.post('users/login', {
-        email,
-        password,
-      })
-      this.handleLoginSuccess(data)
-      this.getUserData()
-      return true
-    } catch (error) {
-      console.error(error)
-      return false
-    }
+    const { data } = await this.client.post('users/login', {
+      email,
+      password,
+    })
+    this.handleLoginSuccess(data)
+    this.getUserData()
   }
 
   @action
@@ -122,21 +119,20 @@ export default class {
     }
   }
 
+  resetCookies() {
+    sessionStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('refreshSecret')
+    this.user = undefined
+  }
+
   @action
   async handleRegister({ email, name, password }) {
-    /* fake an API async call */
-    try {
-      await this.client.post('users/register', {
-        email,
-        name,
-        password,
-      })
-      this.user = data.user
-      return true
-    } catch (error) {
-      console.error(error)
-      return false
-    }
+    await this.client.post('users/register', {
+      email,
+      name,
+      password,
+    })
   }
 
   async addProject({ name }) {

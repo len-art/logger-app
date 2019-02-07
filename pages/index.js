@@ -7,9 +7,7 @@ import Button from '../components/button'
 import Projects from '../components/projects'
 import Table from '../components/table'
 
-import { columnData } from '../constants'
-
-const { listColumns } = columnData
+console.log(startOfMonth(new Date()))
 
 @inject('store')
 @observer

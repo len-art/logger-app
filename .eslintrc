@@ -16,7 +16,8 @@
     "react/jsx-filename-extension": 0,
     "react/button-has-type": 0,
     "import/prefer-default-export": 0,
-    "import/no-unresolved": 0
+    "import/no-unresolved": 0,
+    "react/no-unescaped-entities": 0
   },
   "settings": {
     "import/resolver": {

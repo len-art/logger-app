@@ -1,6 +1,6 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
+import { observable } from 'mobx'
 
 import Input from '../input'
 import Button from '../button'
@@ -23,10 +23,16 @@ export default class extends React.Component {
   }
 
   render() {
-    const { email, password } = this
+    const {
+      email,
+      password,
+      props: { error },
+    } = this
     return (
-      <div className="login">
+      <form className="login" onSubmit={e => e.preventDefault()}>
         <h3>Login</h3>
+        {/* TODO: style error */}
+        {error || ''}
         {loginFields.map(({ label, field, type }) => (
           <Input
             key={field}
@@ -37,7 +43,11 @@ export default class extends React.Component {
             onChange={e => this.handleInputChange(e, field)}
           />
         ))}
-        <Button onClick={() => this.props.handleLogin({ email, password })} text="Login" />
+        <Button
+          type="submit"
+          onClick={() => this.props.handleLogin({ email, password })}
+          text="Login"
+        />
         <style jsx>
           {`
             .login {
@@ -52,7 +62,7 @@ export default class extends React.Component {
             }
           `}
         </style>
-      </div>
+      </form>
     )
   }
 }
