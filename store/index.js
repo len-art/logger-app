@@ -3,7 +3,7 @@ import axios from 'axios'
 import { init } from '@sentry/browser'
 import { startOfMonth } from 'date-fns'
 import { config } from '../api'
-import { tokenHelper } from '../helpers'
+import { tokenHelper, agregate } from '../helpers'
 
 export default class {
   constructor() {
@@ -69,7 +69,10 @@ export default class {
     try {
       const { data } = await this.client.post('users/data')
       this.projects = data.projects || []
-      this.month = data.month || {}
+      this.months = data.months && data.months.map(m => agregate.toMonth(m))
+      if (this.months.length) {
+        this.selectedMonth = this.months[0].id
+      }
       this.user = data.user || {}
       return true
     } catch (error) {

@@ -9,8 +9,8 @@ const Footer = inject('store')(
       <footer className="footer">
         {months.map(month => (
           <button
-            onClick={() => props.store.setSelectedMonth(month.monthId)}
-            className={month.monthId === props.store.selectedMonth ? 'button selected' : 'button'}
+            onClick={() => props.store.setSelectedMonth(month.id)}
+            className={month.id === props.store.selectedMonth ? 'button selected' : 'button'}
           >
             {format(month.startsAt, 'MMM')}
           </button>
