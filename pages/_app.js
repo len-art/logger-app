@@ -35,6 +35,8 @@ class Layout extends React.Component {
               width: 100%;
               margin: 0;
               font-family: sans-serif;
+              font-size: 14px;
+              background-color: #fafafa;
             }
             #__next {
               height: 100%;
