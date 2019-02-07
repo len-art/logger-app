@@ -11,7 +11,7 @@ const Footer = inject('store')(
           {months.map((month, index) => (
             <button
               onClick={() => props.store.setSelectedMonth(month.monthId)}
-              className={month.monthId === props.store.selectedMonth ? 'buttonSelected' : 'button'}
+              className={month.monthId === props.store.selectedMonth ? 'button selected' : 'button'}
             >
               {format(month.startsAt, 'MMM')}
             </button>
@@ -27,13 +27,7 @@ const Footer = inject('store')(
                 text-transform: uppercase;
                 font-size: 13px;
               }
-              .buttonSelected {
-                margin: 5px 12px 5px 6px;
-                padding: 8px 12px;
-                border-style: none;
-                border-radius: 3px;
-                text-transform: uppercase;
-                font-size: 13px;
+              .selected {
                 background-color: #705c5c;
                 font-weight: bold;
                 color: white;

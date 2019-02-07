@@ -46,9 +46,7 @@ export default class {
   selectedProject = 0
 
   @observable
-  selectedMonth = {
-    id: 10,
-  }
+  selectedMonth = undefined
 
   async init() {
     if (typeof window === 'undefined') return
