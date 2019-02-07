@@ -2,12 +2,14 @@ import React from 'react'
 
 export default ({ onClick, text }) => (
   <button onClick={onClick} className="fab">
-    {text}
+    <div className="fabBg" />
     <style jsx>
       {`
         .fab {
           position: relative;
           background-color: #083b99;
+          height: 32px;
+          width: 32px;
           margin: 5px;
           padding: 8px 12px;
           border-style: none;
@@ -31,7 +33,7 @@ export default ({ onClick, text }) => (
           outline: none;
         }
 
-        .fab:before {
+        .fabBg {
           content: '';
           position: absolute;
           top: 0;
@@ -45,9 +47,40 @@ export default ({ onClick, text }) => (
           z-index: -1;
         }
 
-        .fab:hover:before {
+        .fab:hover .fabBg {
           transform: scale(1);
           transition: 0.25s;
+        }
+        .fab:before,
+        .fab:after {
+          content: '';
+          position: absolute;
+          transition: 0.25s;
+          background-color: rgba(255, 255, 255, 0.8);
+        }
+        .fab:before {
+          left: 50%;
+          top: 0;
+          width: 1px;
+          height: 100%;
+          transform: scaleY(0.4);
+        }
+        .fab:after {
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          transform: scaleX(0.4);
+        }
+        .fab:hover:before,
+        .fab:hover:after {
+          background-color: rgba(255, 255, 255, 1);
+        }
+        .fab:hover:before {
+          transform: scaleY(0.6);
+        }
+        .fab:hover:after {
+          transform: scaleX(0.6);
         }
       `}
     </style>
