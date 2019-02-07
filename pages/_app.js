@@ -1,8 +1,8 @@
 import React from 'react'
 import App, { Container } from 'next/app'
+import Head from 'next/head'
 import * as Sentry from '@sentry/browser'
 import { Provider } from 'mobx-react'
-import { format } from 'date-fns'
 import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
 import Footer from '../components/footer'
@@ -15,6 +15,13 @@ class Layout extends React.Component {
 
     return (
       <div className="layout">
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,shrink-to-fit=no"
+            key="viewport"
+          />
+        </Head>
         <Header />
         {children}
         <Footer />
@@ -28,12 +35,8 @@ class Layout extends React.Component {
         </style>
         <style jsx global>
           {`
-            html,
             document,
             body {
-              height: 100%;
-              width: 100%;
-              margin: 0;
               font-family: sans-serif;
               font-size: 14px;
               background-color: #fafafa;
