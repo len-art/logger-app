@@ -3,6 +3,20 @@ import React from 'react'
 import Button from '../button'
 
 class Modal extends React.Component {
+  componentDidMount() {
+    window.addEventListener('keydown', this.esc)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.esc)
+  }
+
+  esc = (target) => {
+    if (target.keyCode === 27) {
+      this.props.onCancel()
+    }
+  }
+
   render() {
     const {
       open, onClose, title, children, footer, onCancel, onConfirm, dim,
@@ -68,20 +82,6 @@ class Modal extends React.Component {
         </style>
       </div>
     )
-  }
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.esc)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.esc)
-  }
-
-  esc = (target) => {
-    if (target.keyCode === 27) {
-      this.props.onCancel()
-    }
   }
 }
 
