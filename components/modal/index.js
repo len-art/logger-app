@@ -56,6 +56,7 @@ class Modal extends React.Component {
               outline: none;
             }
             .content {
+              position: relative;
               padding: 20px;
               border-radius: 5px;
               background-color: #fff;
