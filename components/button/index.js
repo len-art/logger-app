@@ -30,7 +30,7 @@ const Button = props => (
           cursor: pointer;
           color: ${props.unstyled ? 'rgba(17, 50, 110, 1)' : 'rgba(255, 255, 255, 1)'};
           transform: scale(1.03);
-          box-shadow: 2px 3px 7px -1px rgba(50, 50, 50, 0.6);
+          box-shadow: ${props.unstyled ? 'none' : '1px 2px 5px -1px rgba(50, 50, 50, 0.8)'};
         }
         .button:focus {
           outline: none;
