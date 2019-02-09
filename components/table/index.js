@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
-import { startOfMonth, getDaysInMonth } from 'date-fns'
 
 import Button from '../button'
 
@@ -16,14 +15,9 @@ const { listColumns } = columnData
 class IndexPage extends Component {
   @computed
   get monthList() {
-    const { selectedMonth } = this.props.store
-    // TODO: take selected month into consideration here
-    const month = startOfMonth(new Date())
-    const startDay = month.getDay()
-    return Array.from(new Array(getDaysInMonth(month)), (_, i) => {
-      const day = (startDay + i) % 7
-      return day
-    })
+    const { months, selectedMonth } = this.props.store
+    const month = months.find(({ id }) => id === selectedMonth)
+    return month ? month.days : []
   }
 
   handleToClipboard = () => console.log('handleToClipboard')
