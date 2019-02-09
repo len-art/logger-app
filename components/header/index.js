@@ -22,8 +22,8 @@ export default () => (
         .wrapper {
           display: flex;
           flex-wrap: wrap;
-          justify-content: space-between;
           padding: 10px;
+          justify-content: space-between;
           height: 100%;
         }
       `}

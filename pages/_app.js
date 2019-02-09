@@ -39,6 +39,8 @@ class Layout extends React.Component {
             body {
               font-family: sans-serif;
               font-size: 14px;
+              padding: 15px;
+              margin: 0;
               background-color: #fafafa;
             }
             #__next {

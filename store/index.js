@@ -54,7 +54,7 @@ export default class {
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       const success = await this.getUserData()
-      if (!success) this.resetCookies()
+      if (success !== true && success.message !== 'Network Error') this.resetCookies()
     } else {
       const refreshToken = localStorage.getItem('refreshToken')
       const refreshSecret = localStorage.getItem('refreshSecret')
@@ -77,7 +77,7 @@ export default class {
       return true
     } catch (error) {
       console.error(error)
-      return false
+      return error
     }
   }
 
