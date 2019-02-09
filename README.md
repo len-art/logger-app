@@ -1,4 +1,4 @@
-# boiler
+# Logger
 
 A simple app for logging your project hours.
 
