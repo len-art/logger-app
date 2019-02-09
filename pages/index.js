@@ -49,7 +49,6 @@ class IndexPage extends Component {
         <p>Log your work hours</p>
         <Projects />
         <div className="justFlex">
-          {/* buttons */}
           <Button onClick={this.handleStart} text="Start work day" />
           <Button onClick={this.handleEnd} text="End" />
         </div>
