@@ -69,10 +69,7 @@ export default class {
     try {
       const { data } = await this.client.post('users/data')
       this.projects = data.projects || []
-      this.months = data.months && data.months.map(m => agregate.toMonth(m))
-      if (this.months.length) {
-        this.selectedMonth = this.months[0].id
-      }
+      this.setMonths(data.months, true)
       this.user = data.user || {}
       return true
     } catch (error) {
@@ -153,12 +150,22 @@ export default class {
         projectId,
       })
       this.project = projectId
-      this.months = data.months && data.months.map(m => agregate.toMonth(m))
+      this.setMonths(data.months, true)
+      // this.months = data.months && data.months.map(m => agregate.toMonth(m))
       if (this.months.length) {
         this.selectedMonth = this.months[0].id
       }
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  @action
+  setMonths(months, setSelected) {
+    if (!Array.isArray(months)) this.months = []
+    this.months = months.map(m => agregate.toMonth(m))
+    if (setSelected && this.months.length) {
+      this.selectedMonth = this.months[0].id
     }
   }
 

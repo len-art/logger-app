@@ -16,6 +16,7 @@ class IndexPage extends Component {
   @computed
   get monthList() {
     const { months, selectedMonth } = this.props.store
+    if (!months) return []
     const month = months.find(({ id }) => id === selectedMonth)
     return month ? month.days : []
   }
@@ -29,23 +30,29 @@ class IndexPage extends Component {
   render() {
     return (
       <div className="list">
-        <Header columns={listColumns} />
-        {this.monthList.map((day, index) => (
-          <React.Fragment key={index.toString()}>
-            {listColumns.map((name, i) => (
-              <div
-                key={name}
-                className={`${name} ${day % 7 === 0 || day % 7 === 6 ? 'weekend' : ''}`}
-              >
-                {i === 0 && index + 1}
-                {name === 'details' && (
-                  <Button onClick={this.handleToClipboard} text="To clipboard" />
-                )}
-              </div>
+        {this.monthList.length > 0 && (
+          <React.Fragment>
+            <Header columns={listColumns} />
+            {this.monthList.map(({ dayOfWeek }, index) => (
+              <React.Fragment key={index.toString()}>
+                {listColumns.map((name, i) => (
+                  <div
+                    key={name}
+                    className={`${name} ${
+                      dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6 ? 'weekend' : ''
+                    }`}
+                  >
+                    {i === 0 && index + 1}
+                    {name === 'details' && (
+                      <Button onClick={this.handleToClipboard} text="To clipboard" />
+                    )}
+                  </div>
+                ))}
+                {dayOfWeek === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
+              </React.Fragment>
             ))}
-            {day === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
           </React.Fragment>
-        ))}
+        )}
         <style jsx global>
           {`
             .justFlex {
