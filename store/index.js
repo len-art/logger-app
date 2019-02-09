@@ -147,6 +147,21 @@ export default class {
     }
   }
 
+  async getProject({ projectId }) {
+    try {
+      const { data } = await this.client.post('projects/get', {
+        projectId,
+      })
+      this.project = projectId
+      this.months = data.months && data.months.map(m => agregate.toMonth(m))
+      if (this.months.length) {
+        this.selectedMonth = this.months[0].id
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   @action
   setSelectedMonth(nextState) {
     this.selectedMonth = nextState

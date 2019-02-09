@@ -18,7 +18,9 @@ class Projects extends React.Component {
   @observable
   modalInput = ''
 
-  selectProject = () => console.log('selectProject')
+  selectProject = (projectId) => {
+    this.props.store.getProject({ projectId })
+  }
 
   addProject = async () => {
     this.isModalOpen = true
@@ -46,7 +48,7 @@ class Projects extends React.Component {
         <div className="justFlex tabs">
           {/* TODO: if project list is too long move last ones to a dropdown menu */}
           {projects.map((p, index) => (
-            <Button onClick={this.selectProject} text={p.name} key={index.toString()} />
+            <Button onClick={() => this.selectProject(p.id)} text={p.name} key={index.toString()} />
           ))}
           <Fab onClick={this.handleModalSwitch} />
         </div>
