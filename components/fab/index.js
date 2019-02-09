@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({ onClick, text }) => (
+export default ({ onClick }) => (
   <button onClick={onClick} className="fab">
     <div className="fabBg" />
     <style jsx>

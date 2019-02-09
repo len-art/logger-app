@@ -30,7 +30,6 @@ class IndexPage extends Component {
     return (
       <div className="list">
         <Header columns={listColumns} />
-        {/* <div className="header" /> */}
         {this.monthList.map((day, index) => (
           <React.Fragment key={index.toString()}>
             {listColumns.map((name, i) => (
