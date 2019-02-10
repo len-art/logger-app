@@ -2,9 +2,9 @@ import React from 'react'
 
 export default ({ columns }) => (
   <>
-    {columns.map(name => (
-      <div key={name} className={`${name}`}>
-        {name}
+    {columns.map(({ id, display }) => (
+      <div key={id} className={id}>
+        {display}
       </div>
     ))}
   </>
