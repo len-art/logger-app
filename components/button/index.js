@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Button = props => (
+export default props => (
   <button type={props.type || 'button'} onClick={props.onClick} className="button">
     {props.text}
     {!props.unstyled && (
@@ -25,9 +25,9 @@ const Button = props => (
           transition: 0.25s;
           overflow: hidden;
           z-index: 1;
+          cursor: pointer;
         }
         .button:hover {
-          cursor: pointer;
           color: ${props.unstyled ? 'rgba(17, 50, 110, 1)' : 'rgba(255, 255, 255, 1)'};
           transform: scale(1.03);
           box-shadow: ${props.unstyled ? 'none' : '2px 3px 7px -1px rgba(50, 50, 50, 0.6)'};
@@ -67,5 +67,3 @@ const Button = props => (
     </style>
   </button>
 )
-
-export default Button
