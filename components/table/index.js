@@ -37,28 +37,14 @@ class IndexPage extends Component {
             <Header columns={listColumns} />
             {this.monthList.map(({ dayOfWeek }, index) => (
               <React.Fragment key={index.toString()}>
-                {listColumns.map((name, i) => (displays[name.id] ? (
-                  React.createElement(displays[name.id], {
-                    key: name.id,
-                    dayOfMonth: index,
-                    className: `${name.id} ${
-                      dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6 ? 'weekend' : ''
-                    }`,
-                    handleToClipboard: this.handleToClipboard,
-                  })
-                ) : (
-                  <div
-                    key={name.id}
-                    className={`${name.id} ${
-                      dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6 ? 'weekend' : ''
-                    }`}
-                  >
-                    {i === 0 && index + 1}
-                    {name.id === 'details' && (
-                    <Button onClick={this.handleToClipboard} text="To clipboard" />
-                    )}
-                  </div>
-                )))}
+                {listColumns.map(name => React.createElement(displays[name.id], {
+                  key: name.id,
+                  dayOfMonth: index,
+                  className: `${name.id} ${
+                    dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6 ? 'weekend' : ''
+                  }`,
+                  handleToClipboard: this.handleToClipboard,
+                }))}
                 {dayOfWeek === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
               </React.Fragment>
             ))}
