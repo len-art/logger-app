@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx'
 
-import { tokenHelper, agregate } from '../helpers'
+import { tokenHelper } from '../helpers'
 
 export default class {
   constructor(root) {
@@ -33,9 +33,6 @@ export default class {
     try {
       const { data } = await this.client.post('users/data')
       this.onLoginSuccess(data)
-      // this.root.projects = data.projects || []
-      // this.root.setMonths(data.months || [], true)
-      // this.user = data.user || {}
       return true
     } catch (error) {
       console.error(error)
