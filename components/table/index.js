@@ -62,10 +62,10 @@ class IndexPage extends Component {
 
             .list {
               display: grid;
-              grid-template-columns: repeat(4, 0.5fr) 3fr;
+              grid-template-columns: repeat(5, auto) 3fr;
               grid-template-areas:
-                'header header header header header'
-                'day start end hours description';
+                'header header header header header header'
+                'day add start end hours description';
               grid-column-gap: 10px;
               grid-row-gap: 10px;
             }
@@ -81,7 +81,7 @@ class IndexPage extends Component {
             }
             .weekSummary {
               grid-column-start: 1;
-              grid-column-end: 6;
+              grid-column-end: 7;
             }
           `}
         </style>
