@@ -12,6 +12,9 @@ import { columnData } from '../../constants'
 
 const { listColumns } = columnData
 
+const controlCol = listColumns.slice(0, 2)
+const displayCol = listColumns.slice(2)
+
 @inject('store')
 @observer
 class IndexPage extends Component {
@@ -37,13 +40,27 @@ class IndexPage extends Component {
             <Header columns={listColumns} />
             {this.monthList.map(({ dayOfWeek, events }, index) => (
               <React.Fragment key={index.toString()}>
-                {listColumns.map(name => React.createElement(displays[name.id], {
+                {controlCol.map(name => React.createElement(displays[name.id], {
                   key: name.id,
                   dayOfMonth: index,
                   weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
                   handleToClipboard: this.handleToClipboard,
                   events,
                 }))}
+                {events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
+                  key: d.id,
+                  dayOfMonth: index,
+                  weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
+                  handleToClipboard: this.handleToClipboard,
+                  event,
+                })))}
+                {events.length === 0
+                  && displayCol.map(d => React.createElement(displays[d.id], {
+                    key: d.id,
+                    dayOfMonth: index,
+                    weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
+                    handleToClipboard: this.handleToClipboard,
+                  }))}
                 {dayOfWeek === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
               </React.Fragment>
             ))}

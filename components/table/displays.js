@@ -2,6 +2,7 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 
+import Button from '../button'
 import IconButton from '../iconButton'
 
 import TextInput from './textInput'
@@ -21,6 +22,13 @@ const Hours = ({ weekend }) => <div className={`hours${weekend ? ' weekend' : ''
 
 @observer
 class Details extends React.Component {
+  constructor(props) {
+    super(props)
+    if (props.event && props.event.details) {
+      this.inputValue = props.event.details
+    }
+  }
+
   @observable
   showEdit = false
 
@@ -35,16 +43,37 @@ class Details extends React.Component {
     this.inputValue = e.target.value
   }
 
+  handleInputCancel = () => {
+    console.log('blur')
+    this.showEdit = false
+    const { event } = this.props
+    if (event && event.details) {
+      this.inputValue = event.details
+    }
+  }
+
+  handleInputConfirm = (e) => {
+    console.log('confirm')
+    e.preventDefault()
+    this.showEdit = false
+  }
+
   render() {
-    const { weekend, events } = this.props
+    const { weekend, event } = this.props
     return (
       <div className={`details${weekend ? ' weekend' : ''}`}>
-        {/* TODO: show detail description here,
+        {/* TODO: use form element for enter,
+        show detail description here,
         display copy button only when something to copy and not editing */}
+        {!this.showEdit && <IconButton Icon={Edit} onClick={this.handleShowEdit} />}
+        {/* {event && event.details && <div className="text">{event.details}</div>} */}
         {this.showEdit ? (
-          <TextInput onChange={this.handleInputChange} value={this.inputValue} />
+          <form onSubmit={this.handleInputConfirm}>
+            <TextInput onChange={this.handleInputChange} value={this.inputValue} />
+            <Button unstyled onClick={this.handleInputCancel} text="✗" />
+          </form>
         ) : (
-          <IconButton Icon={Edit} onClick={this.handleShowEdit} />
+          this.inputValue && <div className="text">{this.inputValue}</div>
         )}
         <div className="clipboard">cp</div>
         <style jsx>
@@ -53,6 +82,7 @@ class Details extends React.Component {
               padding-right: 20px;
               position: relative;
               overflow: hidden;
+              display: flex;
             }
             .details:hover .clipboard {
               transform: translateX(0px);
