@@ -39,13 +39,10 @@ class Details extends React.Component {
     const { weekend, events } = this.props
     return (
       <div className={`details${weekend ? ' weekend' : ''}`}>
-        {/* TODO: show detail description here */}
+        {/* TODO: show detail description here,
+        display copy button only when something to copy and not editing */}
         {this.showEdit ? (
-          <TextInput
-            ref={this.inputRef}
-            onChange={this.handleInputChange}
-            value={this.inputValue}
-          />
+          <TextInput onChange={this.handleInputChange} value={this.inputValue} />
         ) : (
           <IconButton Icon={Edit} onClick={this.handleShowEdit} />
         )}
