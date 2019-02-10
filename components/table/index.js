@@ -33,20 +33,21 @@ class IndexPage extends Component {
     return (
       <div className="list">
         {this.monthList.length > 0 && (
-          <React.Fragment>
+          <>
             <Header columns={listColumns} />
-            {this.monthList.map(({ dayOfWeek }, index) => (
+            {this.monthList.map(({ dayOfWeek, events }, index) => (
               <React.Fragment key={index.toString()}>
                 {listColumns.map(name => React.createElement(displays[name.id], {
                   key: name.id,
                   dayOfMonth: index,
                   weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
                   handleToClipboard: this.handleToClipboard,
+                  events,
                 }))}
                 {dayOfWeek === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
               </React.Fragment>
             ))}
-          </React.Fragment>
+          </>
         )}
         <style jsx global>
           {`

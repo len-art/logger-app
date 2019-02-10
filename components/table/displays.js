@@ -3,15 +3,15 @@ import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 
 import IconButton from '../iconButton'
-import TextArea from '../textArea'
 
+import TextInput from './textInput'
 import Edit from '../../static/icons/edit.svg'
 
 const Day = ({ weekend, dayOfMonth }) => (
   <div className={`day${weekend ? ' weekend' : ''}`}>{dayOfMonth}</div>
 )
 
-const Add = ({ weekend }) => <div className={`add${weekend ? ' weekend' : ''}`}>dd</div>
+const Add = ({ weekend }) => <div className={`add${weekend ? ' weekend' : ''}`}>+</div>
 
 const Start = ({ weekend }) => <div className={`start${weekend ? ' weekend' : ''}`} />
 
@@ -36,12 +36,16 @@ class Details extends React.Component {
   }
 
   render() {
-    const { weekend } = this.props
+    const { weekend, events } = this.props
     return (
       <div className={`details${weekend ? ' weekend' : ''}`}>
         {/* TODO: show detail description here */}
         {this.showEdit ? (
-          <input onChange={this.handleInputChange} value={this.inputValue} />
+          <TextInput
+            ref={this.inputRef}
+            onChange={this.handleInputChange}
+            value={this.inputValue}
+          />
         ) : (
           <IconButton Icon={Edit} onClick={this.handleShowEdit} />
         )}
@@ -55,6 +59,7 @@ class Details extends React.Component {
             }
             .details:hover .clipboard {
               transform: translateX(0px);
+              transition-delay: 0.25s;
             }
             .clipboard {
               position: absolute;
@@ -64,6 +69,7 @@ class Details extends React.Component {
               margin: auto;
               transform: translateX(20px);
               transition: 0.25s;
+              transition-delay: 0s;
             }
           `}
         </style>
