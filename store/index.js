@@ -2,17 +2,19 @@ import { action, observable } from 'mobx'
 import axios from 'axios'
 import { init } from '@sentry/browser'
 import { startOfMonth } from 'date-fns'
+
+import Auth from './auth'
 import { config } from '../api'
-import { tokenHelper, agregate } from '../helpers'
+import { agregate } from '../helpers'
 
 export default class {
   constructor() {
     this.client = axios.create(config)
-    this.init()
+    this.auth = new Auth(this)
   }
 
-  @observable
-  user = undefined
+  // @observable
+  // user = undefined
 
   @observable
   projects = []
@@ -48,90 +50,72 @@ export default class {
   @observable
   selectedMonth = undefined
 
-  async init() {
-    if (typeof window === 'undefined') return
-    const accessToken = sessionStorage.getItem('accessToken')
-    if (accessToken && tokenHelper.isValid(accessToken)) {
-      this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      const success = await this.getUserData()
-      if (success !== true && success.message !== 'Network Error') this.resetCookies()
-    } else {
-      const refreshToken = localStorage.getItem('refreshToken')
-      const refreshSecret = localStorage.getItem('refreshSecret')
-      if (refreshToken && refreshSecret) {
-        await this.getToken({ refreshToken, refreshSecret })
-        await this.getUserData()
-      }
-    }
-  }
+  // async init() {
+  //   if (typeof window === 'undefined') return
+  //   const accessToken = sessionStorage.getItem('accessToken')
+  //   if (accessToken && tokenHelper.isValid(accessToken)) {
+  //     this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+  //     const success = await this.getUserData()
+  //     if (success !== true && success.message !== 'Network Error') this.resetCookies()
+  //   } else {
+  //     const refreshToken = localStorage.getItem('refreshToken')
+  //     const refreshSecret = localStorage.getItem('refreshSecret')
+  //     if (refreshToken && refreshSecret) {
+  //       await this.getToken({ refreshToken, refreshSecret })
+  //       await this.getUserData()
+  //     }
+  //   }
+  // }
 
-  async getUserData() {
-    try {
-      const { data } = await this.client.post('users/data')
-      this.projects = data.projects || []
-      this.setMonths(data.months, true)
-      this.user = data.user || {}
-      return true
-    } catch (error) {
-      console.error(error)
-      return error
-    }
-  }
+  // async getUserData() {
+  //   try {
+  //     const { data } = await this.client.post('users/data')
+  //     this.projects = data.projects || []
+  //     this.setMonths(data.months || [], true)
+  //     this.user = data.user || {}
+  //     return true
+  //   } catch (error) {
+  //     console.error(error)
+  //     return error
+  //   }
+  // }
 
-  async getToken({ refreshToken, refreshSecret }) {
-    try {
-      const { data } = await this.client.post('users/token', { refreshToken, refreshSecret })
-      this.handleLoginSuccess(data)
-      return true
-    } catch (error) {
-      console.error(error)
-      return false
-    }
-  }
+  // async getToken({ refreshToken, refreshSecret }) {
+  //   try {
+  //     const { data } = await this.client.post('users/token', { refreshToken, refreshSecret })
+  //     this.handleLoginSuccess(data)
+  //     return true
+  //   } catch (error) {
+  //     console.error(error)
+  //     return false
+  //   }
+  // }
 
-  async handleLogin({ email, password }) {
-    const { data } = await this.client.post('users/login', {
-      email,
-      password,
-    })
-    this.handleLoginSuccess(data)
-    this.getUserData()
-  }
+  // @action
+  // handleLoginSuccess({
+  //   user, accessToken, refreshToken, refreshSecret,
+  // }) {
+  //   if (user) {
+  //     this.user = user
+  //   }
+  //   if (accessToken) {
+  //     sessionStorage.setItem('accessToken', accessToken)
+  //     this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+  //   }
+  //   if (refreshToken) {
+  //     localStorage.setItem('refreshToken', refreshToken)
+  //   }
+  //   if (refreshSecret) {
+  //     localStorage.setItem('refreshSecret', refreshSecret)
+  //   }
+  // }
 
-  @action
-  handleLoginSuccess({
-    user, accessToken, refreshToken, refreshSecret,
-  }) {
-    if (user) {
-      this.user = user
-    }
-    if (accessToken) {
-      sessionStorage.setItem('accessToken', accessToken)
-      this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-    }
-    if (refreshToken) {
-      localStorage.setItem('refreshToken', refreshToken)
-    }
-    if (refreshSecret) {
-      localStorage.setItem('refreshSecret', refreshSecret)
-    }
-  }
-
-  resetCookies() {
-    sessionStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('refreshSecret')
-    this.user = undefined
-  }
-
-  @action
-  async handleRegister({ email, name, password }) {
-    await this.client.post('users/register', {
-      email,
-      name,
-      password,
-    })
-  }
+  // resetCookies() {
+  //   sessionStorage.removeItem('accessToken')
+  //   localStorage.removeItem('refreshToken')
+  //   localStorage.removeItem('refreshSecret')
+  //   this.user = undefined
+  // }
 
   async addProject({ name }) {
     try {
@@ -161,10 +145,25 @@ export default class {
   }
 
   @action
-  setMonths(months, setSelected) {
-    if (!Array.isArray(months)) this.months = []
+  setProjects(projects) {
+    if (!Array.isArray(projects)) {
+      this.projects = []
+      return
+    }
+    this.projects = projects
+    if (this.projects.length) {
+      this.selectedProject = this.projects[0].id
+    }
+  }
+
+  @action
+  setMonths(months) {
+    if (!Array.isArray(months)) {
+      this.months = []
+      return
+    }
     this.months = months.map(m => agregate.toMonth(m))
-    if (setSelected && this.months.length) {
+    if (this.months.length) {
       this.selectedMonth = this.months[0].id
     }
   }

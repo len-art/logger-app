@@ -27,7 +27,7 @@ export default class extends React.Component {
     try {
       this.error = undefined
       this.isLoading = true
-      await this.props.store.handleLogin({ email, password, withData: true })
+      await this.props.store.auth.handleLogin({ email, password, withData: true })
       this.props.router.push('/')
     } catch (error) {
       console.error(error)
@@ -43,9 +43,8 @@ export default class extends React.Component {
     try {
       this.error = undefined
       this.isLoading = true
-      await this.props.store.handleRegister({ email, name, password })
+      await this.props.store.auth.handleRegister({ email, name, password })
       await this.handleLogin({ email, password })
-      this.props.router.push('/')
     } catch (error) {
       console.error(error)
       if (error.response.data) {
