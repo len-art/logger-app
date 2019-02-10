@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default ({ onClick, Icon }) => (
+export default ({ onClick, Icon, text }) => (
   <button onClick={onClick} className="iconButton">
-    <Icon />
+    {Icon ? <Icon /> : text}
     <style jsx>
       {`
         .iconButton {
@@ -11,6 +11,7 @@ export default ({ onClick, Icon }) => (
           border: none;
           background: none;
           cursor: pointer;
+          font-size: 25px;
         }
 
         .iconButton:focus {

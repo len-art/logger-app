@@ -62,10 +62,17 @@ class Details extends React.Component {
     const { weekend, event } = this.props
     return (
       <div className={`details${weekend ? ' weekend' : ''}`}>
-        {/* TODO: use form element for enter,
-        show detail description here,
+        {/* TODO: rewrite component to grid
+        when editing, swap edit button with confirm button
+        use form element for enter,
         display copy button only when something to copy and not editing */}
-        {!this.showEdit && <IconButton Icon={Edit} onClick={this.handleShowEdit} />}
+        <div className="edit">
+          {this.showEdit ? (
+            <IconButton onClick={this.handleInputConfirm} text="✓" />
+          ) : (
+            <IconButton Icon={Edit} onClick={this.handleShowEdit} />
+          )}
+        </div>
         {/* {event && event.details && <div className="text">{event.details}</div>} */}
         {this.showEdit ? (
           <form onSubmit={this.handleInputConfirm}>
@@ -79,7 +86,7 @@ class Details extends React.Component {
         <style jsx>
           {`
             .details {
-              padding-right: 20px;
+              padding: 10px 30px;
               position: relative;
               overflow: hidden;
               display: flex;
@@ -87,6 +94,9 @@ class Details extends React.Component {
             .details:hover .clipboard {
               transform: translateX(0px);
               transition-delay: 0.25s;
+            }
+            form {
+              display: flex;
             }
             .clipboard {
               position: absolute;
@@ -97,6 +107,13 @@ class Details extends React.Component {
               transform: translateX(20px);
               transition: 0.25s;
               transition-delay: 0s;
+            }
+            .edit {
+              position: absolute;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              margin: auto;
             }
           `}
         </style>
