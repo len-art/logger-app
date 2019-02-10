@@ -40,9 +40,7 @@ class IndexPage extends Component {
                 {listColumns.map(name => React.createElement(displays[name.id], {
                   key: name.id,
                   dayOfMonth: index,
-                  className: `${name.id} ${
-                    dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6 ? 'weekend' : ''
-                  }`,
+                  weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
                   handleToClipboard: this.handleToClipboard,
                 }))}
                 {dayOfWeek === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}

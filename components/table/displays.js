@@ -1,16 +1,28 @@
 import React from 'react'
 
-const Day = ({ className, dayOfMonth }) => <div className={className}>{dayOfMonth}</div>
+const Day = ({ weekend, dayOfMonth }) => (
+  <div className={`day${weekend ? ' weekend' : ''}`}>{dayOfMonth}</div>
+)
 
-const Add = ({ className }) => <div className={className}>dd</div>
+const Add = ({ weekend }) => <div className={`add${weekend ? ' weekend' : ''}`}>dd</div>
 
-const Start = ({ className }) => <div className={className} />
+const Start = ({ weekend }) => <div className={`start${weekend ? ' weekend' : ''}`} />
 
-const End = ({ className }) => <div className={className} />
+const End = ({ weekend }) => <div className={`end${weekend ? ' weekend' : ''}`} />
 
-const Hours = ({ className }) => <div className={className} />
+const Hours = ({ weekend }) => <div className={`hours${weekend ? ' weekend' : ''}`} />
 
-const Details = ({ className }) => <div className={className}>Blah blah</div>
+const Details = ({ weekend }) => (
+  <div className={`details${weekend ? ' weekend' : ''}`}>
+    Blah blah
+    <style jsx>
+      {`
+        .details {
+        }
+      `}
+    </style>
+  </div>
+)
 
 export default {
   day: Day,
