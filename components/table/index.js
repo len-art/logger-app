@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 
 import Button from '../button'
+import Fab from '../fab'
 
 import Header from './header'
 
