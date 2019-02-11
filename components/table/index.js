@@ -14,7 +14,6 @@ const { listColumns } = columnData
 
 const controlCol = listColumns.slice(0, 2)
 const displayCol = listColumns.slice(2)
-
 @inject('store')
 @observer
 class IndexPage extends Component {
@@ -23,7 +22,7 @@ class IndexPage extends Component {
     const { months, selectedMonth } = this.props.store
     if (!months) return []
     const month = months.find(({ id }) => id === selectedMonth)
-    return month ? month.days : []
+    return month || []
   }
 
   handleToClipboard = () => console.log('handleToClipboard')
@@ -33,37 +32,43 @@ class IndexPage extends Component {
   }
 
   render() {
+    console.log(this.monthList)
     return (
       <div className="list">
-        {this.monthList.length > 0 && (
+        {this.monthList.daysOfWeek && (
           <>
             <Header columns={listColumns} />
-            {this.monthList.map(({ dayOfWeek, events }, index) => (
-              <React.Fragment key={index.toString()}>
-                {controlCol.map(name => React.createElement(displays[name.id], {
-                  key: name.id,
-                  dayOfMonth: index,
-                  weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
-                  handleToClipboard: this.handleToClipboard,
-                  events,
-                }))}
-                {events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
-                  key: d.id,
-                  dayOfMonth: index,
-                  weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
-                  handleToClipboard: this.handleToClipboard,
-                  event,
-                })))}
-                {events.length === 0
-                  && displayCol.map(d => React.createElement(displays[d.id], {
-                    key: d.id,
+            {this.monthList.daysOfWeek.map((dayOfWeek, index) => {
+              const events = this.monthList.events.filter(({ dayInMonth }) => dayInMonth === index)
+              const weekend = dayOfWeek === 0 || dayOfWeek === 6
+              console.log(index, events)
+              return (
+                <React.Fragment key={index.toString()}>
+                  {controlCol.map(name => React.createElement(displays[name.id], {
+                    key: name.id,
                     dayOfMonth: index,
-                    weekend: dayOfWeek % 7 === 0 || dayOfWeek % 7 === 6,
+                    weekend,
                     handleToClipboard: this.handleToClipboard,
+                    events,
                   }))}
-                {dayOfWeek === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
-              </React.Fragment>
-            ))}
+                  {events.length !== 0
+                    ? events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
+                      key: d.id,
+                      dayOfMonth: index,
+                      weekend,
+                      handleToClipboard: this.handleToClipboard,
+                      event,
+                    })))
+                    : displayCol.map(d => React.createElement(displays[d.id], {
+                      key: d.id,
+                      dayOfMonth: index,
+                      weekend,
+                      handleToClipboard: this.handleToClipboard,
+                    }))}
+                  {weekend && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
+                </React.Fragment>
+              )
+            })}
           </>
         )}
         <style jsx global>
@@ -84,6 +89,31 @@ class IndexPage extends Component {
             .list > div {
               padding: 10px;
               background-color: #eee;
+            }
+
+            .day {
+              grid-column-start: 1;
+              grid-column-end: 2;
+            }
+            .add {
+              grid-column-start: 2;
+              grid-column-end: 3;
+            }
+            .start {
+              grid-column-start: 3;
+              grid-column-end: 4;
+            }
+            .end {
+              grid-column-start: 4;
+              grid-column-end: 5;
+            }
+            .hours {
+              grid-column-start: 5;
+              grid-column-end: 6;
+            }
+            .description {
+              grid-column-start: 6;
+              grid-column-end: 7;
             }
 
             .weekend {

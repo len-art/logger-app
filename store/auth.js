@@ -17,8 +17,10 @@ export default class {
     const accessToken = sessionStorage.getItem('accessToken')
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      const success = await this.getUserData()
-      if (success !== true && success.message !== 'Network Error') this.resetCookies()
+      const data = await this.getUserData()
+      if (!data.success && data.message !== 'Network Error') {
+        this.resetCookies()
+      }
     } else {
       const refreshToken = localStorage.getItem('refreshToken')
       const refreshSecret = localStorage.getItem('refreshSecret')
@@ -33,10 +35,10 @@ export default class {
     try {
       const { data } = await this.client.post('users/data')
       this.onLoginSuccess(data)
-      return true
+      return { success: true }
     } catch (error) {
       console.error(error)
-      return error
+      throw new Error(error.message)
     }
   }
 
@@ -60,7 +62,7 @@ export default class {
   }
 
   @action
-  onLoginSuccess({ projects, months, user }) {
+  async onLoginSuccess({ projects, months, user }) {
     if (user) this.user = user
     this.root.setProjects(projects)
     this.root.setMonths(months)

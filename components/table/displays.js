@@ -59,13 +59,9 @@ class Details extends React.Component {
   }
 
   render() {
-    const { weekend, event } = this.props
+    const { weekend } = this.props
     return (
       <div className={`details${weekend ? ' weekend' : ''}`}>
-        {/* TODO: rewrite component to grid
-        when editing, swap edit button with confirm button
-        use form element for enter,
-        display copy button only when something to copy and not editing */}
         <div className="edit">
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />
@@ -73,25 +69,25 @@ class Details extends React.Component {
             <IconButton Icon={Edit} onClick={this.handleShowEdit} />
           )}
         </div>
-        {/* {event && event.details && <div className="text">{event.details}</div>} */}
         {this.showEdit ? (
-          <form onSubmit={this.handleInputConfirm}>
+          <form className="input" onSubmit={this.handleInputConfirm}>
             <TextInput onChange={this.handleInputChange} value={this.inputValue} />
             <Button unstyled onClick={this.handleInputCancel} text="✗" />
           </form>
         ) : (
-          this.inputValue && <div className="text">{this.inputValue}</div>
+          <div className="input">{this.inputValue}</div>
         )}
-        <div className="clipboard">cp</div>
+        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
         <style jsx>
           {`
             .details {
-              padding: 10px 30px;
-              position: relative;
+              display: grid;
+              grid-template-columns: 0fr 3fr 0fr;
+              grid-template-areas: 'edit input clipboard';
+              align-items: center;
               overflow: hidden;
-              display: flex;
             }
-            .details:hover .clipboard {
+            .details:hover .clipboard:not(.hidden) {
               transform: translateX(0px);
               transition-delay: 0.25s;
             }
@@ -99,21 +95,11 @@ class Details extends React.Component {
               display: flex;
             }
             .clipboard {
-              position: absolute;
-              right: 0;
-              top: 0;
-              bottom: 0;
-              margin: auto;
-              transform: translateX(20px);
+              transform: translateX(30px);
               transition: 0.25s;
               transition-delay: 0s;
             }
             .edit {
-              position: absolute;
-              left: 0;
-              top: 0;
-              bottom: 0;
-              margin: auto;
             }
           `}
         </style>
