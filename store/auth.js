@@ -91,10 +91,11 @@ export default class {
     }
   }
 
-  resetCookies() {
+  resetCookies = () => {
     sessionStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('refreshSecret')
     this.user = undefined
+    this.root.resetLocalData()
   }
 }

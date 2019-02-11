@@ -42,6 +42,7 @@ class Layout extends React.Component {
               padding: 15px;
               margin: 0;
               background-color: #fafafa;
+              color: rgb(25, 25, 25);
             }
             #__next {
               height: 100%;

@@ -110,4 +110,12 @@ export default class {
   setSelectedProject(nextState) {
     this.selectedProject = nextState
   }
+
+  @action
+  resetLocalData = () => {
+    this.projects = []
+    this.months = []
+    this.selectedProject = 0
+    this.selectedMonth = undefined
+  }
 }
