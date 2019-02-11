@@ -62,10 +62,12 @@ const Footer = inject('store')(
             .button:hover:not(.selected) {
               transform: translateY(-2px);
             }
-            /* .button:not(.selected):before,
+            .button:not(.selected):before {
+              border-bottom: 10px solid #555;
+            }
             .button:not(.selected):after {
               background-color: #555;
-            }*/
+            }
             .button:focus {
               outline: none;
             }
