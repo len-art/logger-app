@@ -57,6 +57,7 @@ class IndexPage extends Component {
                   {controlCol.map(name => React.createElement(displays[name.id], {
                     key: name.id,
                     dayInMonth: index,
+                    dayOfWeek,
                     weekend,
                     handleToClipboard: this.handleToClipboard,
                     events,
@@ -67,6 +68,7 @@ class IndexPage extends Component {
                       editDetail: this.editDetail,
                       addDetail: this.addDetail,
                       dayInMonth: index,
+                      dayOfWeek,
                       monthId: this.monthList.id,
                       weekend,
                       handleToClipboard: this.handleToClipboard,
@@ -77,6 +79,7 @@ class IndexPage extends Component {
                       editDetail: this.editDetail,
                       addDetail: this.addDetail,
                       dayInMonth: index,
+                      dayOfWeek,
                       monthId: this.monthList.id,
                       weekend,
                       handleToClipboard: this.handleToClipboard,
@@ -140,7 +143,7 @@ class IndexPage extends Component {
 
             .weekend {
               padding: 0px 10px !important;
-              background-color: transparent !important;
+              background-color: rgba(200, 255, 200, 0.3);
               grid-row-gap: 5px;
             }
             .weekSummary {

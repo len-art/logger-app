@@ -24,34 +24,53 @@ const Footer = inject('store')(
               height: 45px;
               padding: 0px 20px 12px 20px;
               margin: 0;
-              background-color: #eeeeee;
               border-style: none;
               text-transform: uppercase;
               font-size: 13px;
-              clip-path: polygon(
-                0 10%,
-                15% 0,
-                85% 0,
-                100% 10%,
-                100% 100%,
-                100% 100%,
-                100% 100%,
-                0 100%
-              );
               transition: 0.25s;
               cursor: pointer;
               position: relative;
+              overflow: hidden;
+              background-color: transparent;
+              z-index: 1;
+              color: #eee;
+            }
+            .button:before,
+            .button:after {
+              position: absolute;
+              left: 0;
+              width: 100%;
+              content: '';
+              box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
+              z-index: -1;
+            }
+            .button:before {
+              top: 0;
+              background: transparent;
+              width: calc(100% - 20px);
+              border-top: 0px solid transparent;
+              border-left: 10px solid transparent;
+              border-right: 10px solid transparent;
+              border-bottom: 10px solid #333;
+            }
+            .button:after {
+              top: 10px;
+              left: 0;
+              height: 100%;
+              background-color: #333;
             }
             .button:hover:not(.selected) {
               transform: translateY(-2px);
             }
+            /* .button:not(.selected):before,
+            .button:not(.selected):after {
+              background-color: #555;
+            }*/
             .button:focus {
               outline: none;
             }
             .selected {
               transform: translateY(-4px);
-              background-color: #fff;
-              color: black;
               font-weight: bold;
             }
             footer {

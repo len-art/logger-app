@@ -8,26 +8,26 @@ import IconButton from '../iconButton'
 import TextInput from './textInput'
 import Edit from '../../static/icons/edit.svg'
 
-const Day = ({ weekend, dayInMonth }) => (
-  <div className={`day${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`}>
+const Day = ({ weekend, dayInMonth, dayOfWeek }) => (
+  <div className={`day${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
     {dayInMonth}
   </div>
 )
 
-const Add = ({ weekend, dayInMonth }) => (
-  <div className={`add${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`}>+</div>
+const Add = ({ weekend, dayOfWeek }) => (
+  <div className={`add${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>+</div>
 )
 
-const Start = ({ weekend, dayInMonth }) => (
-  <div className={`start${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`} />
+const Start = ({ weekend, dayOfWeek }) => (
+  <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`} />
 )
 
-const End = ({ weekend, dayInMonth }) => (
-  <div className={`end${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`} />
+const End = ({ weekend, dayOfWeek }) => (
+  <div className={`end${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`} />
 )
 
-const Hours = ({ weekend, dayInMonth }) => (
-  <div className={`hours${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`} />
+const Hours = ({ weekend, dayOfWeek }) => (
+  <div className={`hours${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`} />
 )
 
 @observer
@@ -74,9 +74,9 @@ class Details extends React.Component {
   }
 
   render() {
-    const { weekend, dayInMonth } = this.props
+    const { weekend, dayOfWeek } = this.props
     return (
-      <div className={`details${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`}>
+      <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />
