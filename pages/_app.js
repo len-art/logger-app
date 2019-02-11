@@ -1,4 +1,6 @@
 import React from 'react'
+import { inject, observer } from 'mobx-react'
+import { withRouter } from 'next/router'
 import App, { Container } from 'next/app'
 import Head from 'next/head'
 import * as Sentry from '@sentry/browser'
@@ -9,7 +11,25 @@ import Footer from '../components/footer'
 
 import Header from '../components/header'
 
+@withRouter
+@inject('store')
+@observer
 class Layout extends React.Component {
+  componentDidMount() {
+    this.redirectIfNotLoggedIn()
+  }
+
+  componentDidUpdate() {
+    this.redirectIfNotLoggedIn()
+  }
+
+  redirectIfNotLoggedIn() {
+    const { store, router } = this.props
+    if (!store.auth.user && router.pathname !== '/login') {
+      router.push('/login')
+    }
+  }
+
   render() {
     const { children } = this.props
 
