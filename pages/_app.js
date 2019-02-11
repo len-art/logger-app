@@ -25,7 +25,7 @@ class Layout extends React.Component {
 
   redirectIfNotLoggedIn() {
     const { store, router } = this.props
-    if (!store.auth.user && router.pathname !== '/login') {
+    if (!store.auth.user && store.auth.afterAuth && router.pathname !== '/login') {
       router.push('/login')
     }
   }

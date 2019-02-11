@@ -10,6 +10,9 @@ export default class {
   }
 
   @observable
+  afterAuth = false
+
+  @observable
   user = undefined
 
   async init() {
@@ -29,6 +32,7 @@ export default class {
         await this.getUserData()
       }
     }
+    this.afterAuth = true
   }
 
   async getUserData() {
