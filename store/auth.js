@@ -38,7 +38,7 @@ export default class {
       return { success: true }
     } catch (error) {
       console.error(error)
-      throw new Error(error.message)
+      return { success: false, message: error.message }
     }
   }
 
