@@ -17,29 +17,7 @@ export default class {
   projects = []
 
   @observable
-  months = [
-    {
-      id: 'fakeId414',
-      projectId: 'proj1',
-      startsAt: startOfMonth(new Date('2018-12-12T12:47:08.439Z')),
-      createdAt: new Date('2018-12-12T12:47:08.439Z'),
-      monthId: 11,
-    },
-    {
-      id: 'fakeId424d',
-      projectId: 'proj1',
-      startsAt: startOfMonth(new Date('2018-11-02T19:47:08.439Z')),
-      createdAt: new Date('2018-11-02T19:47:08.439Z'),
-      monthId: 10,
-    },
-    {
-      id: 'fakeIdbdx',
-      projectId: 'proj1',
-      startsAt: startOfMonth(new Date('2018-10-28T19:47:08.439Z')),
-      createdAt: new Date('2018-10-28T19:47:08.439Z'),
-      monthId: 9,
-    },
-  ]
+  months = []
 
   @observable
   selectedProject = 0
@@ -98,11 +76,18 @@ export default class {
   }
 
   async editDetail(monthId, eventId, event) {
-    return this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+    const { data } = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+    this.updateMonths(agregate.toMonth(data.month))
   }
 
   async addDetail(monthId, event) {
     return this.client.post(`/months/${monthId}/add`, { event })
+  }
+
+  @action
+  updateMonths(month) {
+    const index = this.months.findIndex(({ id }) => id === month.id)
+    if (index !== -1) this.months[index] = month
   }
 
   @action

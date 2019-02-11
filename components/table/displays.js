@@ -74,7 +74,7 @@ class Details extends React.Component {
   }
 
   render() {
-    const { weekend, dayOfWeek } = this.props
+    const { weekend, dayOfWeek, event = {} } = this.props
     return (
       <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
@@ -90,7 +90,7 @@ class Details extends React.Component {
             <Button unstyled onClick={this.handleInputCancel} text="✗" />
           </form>
         ) : (
-          <div className="input">{this.inputValue}</div>
+          <div className="input">{event.details}</div>
         )}
         <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
         <style jsx>
