@@ -38,6 +38,11 @@ class Projects extends React.Component {
     }
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.addProject()
+  }
+
   handleModalInputChange = e => (this.modalInput = e.target.value)
 
   render() {
@@ -61,13 +66,14 @@ class Projects extends React.Component {
           onCancel={this.handleModalSwitch}
           onConfirm={this.addProject}
         >
-          <Input
-            label="Project Name"
-            ref={this.inputRef}
-            focus
-            value={this.modalInput}
-            onChange={this.handleModalInputChange}
-          />
+          <form onSubmit={this.handleSubmit}>
+            <Input
+              label="Project Name"
+              ref={this.inputRef}
+              value={this.modalInput}
+              onChange={this.handleModalInputChange}
+            />
+          </form>
         </Modal>
         <style jsx>
           {`
