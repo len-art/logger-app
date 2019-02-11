@@ -27,7 +27,7 @@ export default class extends React.Component {
               position: relative;
               width: calc(100% - 50px);
               border: none;
-              padding: 10px 40px 10px 10px;
+              padding: 10px;
             }
             input:focus {
               outline: none;

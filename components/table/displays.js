@@ -8,8 +8,8 @@ import IconButton from '../iconButton'
 import TextInput from './textInput'
 import Edit from '../../static/icons/edit.svg'
 
-const Day = ({ weekend, dayOfMonth }) => (
-  <div className={`day${weekend ? ' weekend' : ''}`}>{dayOfMonth}</div>
+const Day = ({ weekend, dayInMonth }) => (
+  <div className={`day${weekend ? ' weekend' : ''}`}>{dayInMonth}</div>
 )
 
 const Add = ({ weekend }) => <div className={`add${weekend ? ' weekend' : ''}`}>+</div>
@@ -52,9 +52,14 @@ class Details extends React.Component {
     }
   }
 
-  handleInputConfirm = (e) => {
-    console.log('confirm')
+  handleInputConfirm = async (e) => {
+    const { event, dayInMonth } = this.props
     e.preventDefault()
+    if (event) {
+      await this.props.editDetail({ details: this.inputValue }, event.id)
+    } else {
+      await this.props.addDetail({ details: this.inputValue, dayInMonth })
+    }
     this.showEdit = false
   }
 

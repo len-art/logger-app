@@ -101,6 +101,14 @@ export default class {
     }
   }
 
+  async editMonth(monthId, eventId, event) {
+    return this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+  }
+
+  async addDetail(monthId, event) {
+    return this.client.post(`/months/${monthId}/add`, { event })
+  }
+
   @action
   setSelectedMonth(nextState) {
     this.selectedMonth = nextState

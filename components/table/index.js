@@ -25,14 +25,25 @@ class IndexPage extends Component {
     return month || []
   }
 
-  handleToClipboard = () => console.log('handleToClipboard')
+  handleToClipboard = () => {}
 
-  handleTestUpdateClick = () => {
-    this.props.store.handleTestChange()
+  editDetail = async (payload, eventId) => {
+    try {
+      await this.props.store.editDetail(this.monthList.id, eventId, payload)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  addDetail = async (payload) => {
+    try {
+      await this.props.store.addDetail(this.monthList.id, payload)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   render() {
-    console.log(this.monthList)
     return (
       <div className="list">
         {this.monthList.daysOfWeek && (
@@ -41,12 +52,11 @@ class IndexPage extends Component {
             {this.monthList.daysOfWeek.map((dayOfWeek, index) => {
               const events = this.monthList.events.filter(({ dayInMonth }) => dayInMonth === index)
               const weekend = dayOfWeek === 0 || dayOfWeek === 6
-              console.log(index, events)
               return (
                 <React.Fragment key={index.toString()}>
                   {controlCol.map(name => React.createElement(displays[name.id], {
                     key: name.id,
-                    dayOfMonth: index,
+                    dayInMonth: index,
                     weekend,
                     handleToClipboard: this.handleToClipboard,
                     events,
@@ -54,14 +64,20 @@ class IndexPage extends Component {
                   {events.length !== 0
                     ? events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
                       key: d.id,
-                      dayOfMonth: index,
+                      editDetail: this.editDetail,
+                      addDetail: this.addDetail,
+                      dayInMonth: index,
+                      monthId: this.monthList.id,
                       weekend,
                       handleToClipboard: this.handleToClipboard,
                       event,
                     })))
                     : displayCol.map(d => React.createElement(displays[d.id], {
                       key: d.id,
-                      dayOfMonth: index,
+                      editDetail: this.editDetail,
+                      addDetail: this.addDetail,
+                      dayInMonth: index,
+                      monthId: this.monthList.id,
                       weekend,
                       handleToClipboard: this.handleToClipboard,
                     }))}
