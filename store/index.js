@@ -13,9 +13,6 @@ export default class {
     this.auth = new Auth(this)
   }
 
-  // @observable
-  // user = undefined
-
   @observable
   projects = []
 
@@ -68,7 +65,6 @@ export default class {
       })
       this.project = projectId
       this.setMonths(data.months, true)
-      // this.months = data.months && data.months.map(m => agregate.toMonth(m))
       if (this.months.length) {
         this.selectedMonth = this.months[0].id
       }
@@ -101,7 +97,7 @@ export default class {
     }
   }
 
-  async editMonth(monthId, eventId, event) {
+  async editDetail(monthId, eventId, event) {
     return this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
   }
 

@@ -9,16 +9,26 @@ import TextInput from './textInput'
 import Edit from '../../static/icons/edit.svg'
 
 const Day = ({ weekend, dayInMonth }) => (
-  <div className={`day${weekend ? ' weekend' : ''}`}>{dayInMonth}</div>
+  <div className={`day${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`}>
+    {dayInMonth}
+  </div>
 )
 
-const Add = ({ weekend }) => <div className={`add${weekend ? ' weekend' : ''}`}>+</div>
+const Add = ({ weekend, dayInMonth }) => (
+  <div className={`add${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`}>+</div>
+)
 
-const Start = ({ weekend }) => <div className={`start${weekend ? ' weekend' : ''}`} />
+const Start = ({ weekend, dayInMonth }) => (
+  <div className={`start${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`} />
+)
 
-const End = ({ weekend }) => <div className={`end${weekend ? ' weekend' : ''}`} />
+const End = ({ weekend, dayInMonth }) => (
+  <div className={`end${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`} />
+)
 
-const Hours = ({ weekend }) => <div className={`hours${weekend ? ' weekend' : ''}`} />
+const Hours = ({ weekend, dayInMonth }) => (
+  <div className={`hours${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`} />
+)
 
 @observer
 class Details extends React.Component {
@@ -64,9 +74,9 @@ class Details extends React.Component {
   }
 
   render() {
-    const { weekend } = this.props
+    const { weekend, dayInMonth } = this.props
     return (
-      <div className={`details${weekend ? ' weekend' : ''}`}>
+      <div className={`details${weekend ? ' weekend' : ''}${dayInMonth % 2 ? ' highlight' : ''}`}>
         <div className="edit">
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />

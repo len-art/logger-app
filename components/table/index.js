@@ -81,7 +81,9 @@ class IndexPage extends Component {
                       weekend,
                       handleToClipboard: this.handleToClipboard,
                     }))}
-                  {weekend && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
+                  {dayOfWeek === 0 && (
+                    <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>
+                  )}
                 </React.Fragment>
               )
             })}
@@ -96,15 +98,19 @@ class IndexPage extends Component {
             .list {
               display: grid;
               grid-template-columns: repeat(5, auto) 3fr;
-              grid-template-areas:
-                'header header header header header header'
-                'day add start end hours description';
-              grid-column-gap: 10px;
-              grid-row-gap: 10px;
             }
             .list > div {
               padding: 10px;
-              background-color: #eee;
+              display: flex;
+              align-items: center;
+            }
+
+            .header {
+              margin-bottom: 10px;
+            }
+
+            .highlight {
+              background-color: rgba(50, 50, 50, 0.1);
             }
 
             .day {
