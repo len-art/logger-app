@@ -30,7 +30,6 @@ const Footer = inject('store')(
               transition: 0.25s;
               cursor: pointer;
               position: relative;
-              overflow: hidden;
               background-color: transparent;
               z-index: 1;
               color: #eee;
@@ -41,7 +40,6 @@ const Footer = inject('store')(
               left: 0;
               width: 100%;
               content: '';
-              box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
               z-index: -1;
             }
             .button:before {
@@ -58,6 +56,7 @@ const Footer = inject('store')(
               left: 0;
               height: 100%;
               background-color: #333;
+              box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
             }
             .button:hover:not(.selected) {
               transform: translateY(-2px);
