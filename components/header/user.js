@@ -3,21 +3,24 @@ import { inject, observer } from 'mobx-react'
 import Link from 'next/link'
 
 const LoggedIn = ({ user: { name }, resetCookies }) => (
-  <div>
+  <div className="logged">
     {`Hey, ${name}!`}
     <button onClick={resetCookies} className="logout">
-      LogOut
+      logout
       <style jsx>
         {`
+          .logged {
+            display: flex;
+          }
           .logout {
-            margin: 10px;
-            padding: 2px 9px;
+            padding: 0 0 0 5px;
             border-style: none;
             border-radius: 4px;
             background-color: transparent;
             font-size: 10px;
             font-style: italic;
             opacity: 0.5;
+            transition: 0.25s;
           }
           .logout:hover {
             opacity: 1;
