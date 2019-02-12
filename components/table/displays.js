@@ -14,8 +14,12 @@ const Day = ({ weekend, dayInMonth, dayOfWeek }) => (
   </div>
 )
 
-const Add = ({ weekend, dayOfWeek }) => (
-  <div className={`add${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>+</div>
+const Add = ({
+  weekend, dayOfWeek, dayInMonth, addLocalDetail,
+}) => (
+  <div className={`add${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
+    <button onClick={() => addLocalDetail(dayInMonth)}>+</button>
+  </div>
 )
 
 const Start = ({ weekend, dayOfWeek }) => (
@@ -63,13 +67,20 @@ class Details extends React.Component {
   }
 
   handleInputConfirm = async (e) => {
-    const { event, dayInMonth } = this.props
     e.preventDefault()
-    if (event) {
-      await this.props.editDetail({ details: this.inputValue }, event.id)
-    } else {
-      await this.props.addDetail({ details: this.inputValue, dayInMonth })
+
+    const { event, dayInMonth } = this.props
+    if (!this.inputValue.length) {
+      this.showEdit = false
+      return
     }
+
+    if (event && event.id) {
+      await this.props.editEvent({ details: this.inputValue }, event.id)
+    } else {
+      await this.props.addEvent({ details: this.inputValue, dayInMonth })
+    }
+
     this.showEdit = false
   }
 

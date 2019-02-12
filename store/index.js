@@ -75,13 +75,14 @@ export default class {
     }
   }
 
-  async editDetail(monthId, eventId, event) {
+  async editEvent(monthId, eventId, event) {
     const { data } = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
     this.updateMonths(agregate.toMonth(data.month))
   }
 
-  async addDetail(monthId, event) {
-    return this.client.post(`/months/${monthId}/add`, { event })
+  async addEvent(monthId, event) {
+    const { data } = await this.client.post(`/months/${monthId}/add`, { event })
+    this.updateMonths(agregate.toMonth(data.month))
   }
 
   @action

@@ -14,6 +14,7 @@ const { listColumns } = columnData
 
 const controlCol = listColumns.slice(0, 2)
 const displayCol = listColumns.slice(2)
+
 @inject('store')
 @observer
 class IndexPage extends Component {
@@ -27,20 +28,25 @@ class IndexPage extends Component {
 
   handleToClipboard = () => {}
 
-  editDetail = async (payload, eventId) => {
+  editEvent = async (payload, eventId) => {
     try {
-      await this.props.store.editDetail(this.monthList.id, eventId, payload)
+      await this.props.store.editEvent(this.monthList.id, eventId, payload)
     } catch (error) {
       console.log(error)
     }
   }
 
-  addDetail = async (payload) => {
+  addEvent = async (payload) => {
     try {
-      await this.props.store.addDetail(this.monthList.id, payload)
+      await this.props.store.addEvent(this.monthList.id, payload)
     } catch (error) {
       console.log(error)
     }
+  }
+
+  addLocalDetail = (dayInMonth) => {
+    const exists = this.monthList.events.find(e => e.dayInMonth === dayInMonth)
+    if (exists) this.monthList.events.push({ dayInMonth })
   }
 
   render() {
@@ -59,14 +65,16 @@ class IndexPage extends Component {
                     dayInMonth: index,
                     dayOfWeek,
                     weekend,
+                    addLocalDetail: this.addLocalDetail,
                     handleToClipboard: this.handleToClipboard,
                     events,
                   }))}
                   {events.length !== 0
                     ? events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
                       key: d.id,
-                      editDetail: this.editDetail,
-                      addDetail: this.addDetail,
+                      editEvent: this.editEvent,
+                      addEvent: this.addEvent,
+                      addLocalDetail: this.addLocalDetail,
                       dayInMonth: index,
                       dayOfWeek,
                       monthId: this.monthList.id,
@@ -76,8 +84,9 @@ class IndexPage extends Component {
                     })))
                     : displayCol.map(d => React.createElement(displays[d.id], {
                       key: d.id,
-                      editDetail: this.editDetail,
-                      addDetail: this.addDetail,
+                      editEvent: this.editEvent,
+                      addEvent: this.addEvent,
+                      addLocalDetail: this.addLocalDetail,
                       dayInMonth: index,
                       dayOfWeek,
                       monthId: this.monthList.id,
@@ -123,6 +132,13 @@ class IndexPage extends Component {
             .add {
               grid-column-start: 2;
               grid-column-end: 3;
+            }
+            .add button {
+              border: none;
+              padding: 5px;
+              margin: 0;
+              background: none;
+              cursor: pointer;
             }
             .start {
               grid-column-start: 3;
