@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx'
+import { action, observable, computed } from 'mobx'
 
 import { tokenHelper } from '../helpers'
 
@@ -101,5 +101,12 @@ export default class {
     localStorage.removeItem('refreshSecret')
     this.user = undefined
     this.root.resetLocalData()
+  }
+
+  @computed
+  get isLoggedIn() {
+    // return undefined
+    if (!this.afterAuth) return undefined
+    return this.afterAuth && this.user !== undefined
   }
 }

@@ -107,5 +107,6 @@ export default class {
     this.months = []
     this.selectedProject = 0
     this.selectedMonth = undefined
+    this.auth.user = {}
   }
 }

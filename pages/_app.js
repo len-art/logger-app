@@ -8,6 +8,7 @@ import { Provider } from 'mobx-react'
 import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
 import Footer from '../components/footer'
+import Loading from '../components/loading'
 
 import Header from '../components/header'
 
@@ -24,14 +25,24 @@ class Layout extends React.Component {
   }
 
   redirectIfNotLoggedIn() {
-    const { store, router } = this.props
-    if (!store.auth.user && store.auth.afterAuth && router.pathname !== '/login') {
+    const {
+      store: {
+        auth: { isLoggedIn },
+      },
+      router,
+    } = this.props
+    if (isLoggedIn === false && router.pathname !== '/login') {
       router.push('/login')
     }
   }
 
   render() {
-    const { children } = this.props
+    const {
+      children,
+      store: {
+        auth: { isLoggedIn },
+      },
+    } = this.props
 
     return (
       <div className="layout">
@@ -42,25 +53,40 @@ class Layout extends React.Component {
             key="viewport"
           />
         </Head>
-        <Header />
-        {children}
-        <Footer />
+        {isLoggedIn === undefined ? (
+          <Loading />
+        ) : (
+          <>
+            <Header />
+            {children}
+            <Footer />
+          </>
+        )}
         <style jsx>
           {`
             .layout {
               height: 100%;
               width: 100%;
+              padding: 20px 10px 40px 10px;
+              sizing: border-box;
+              box-sizing: border-box;
             }
           `}
         </style>
         <style jsx global>
           {`
-            document,
+            html {
+              height: 100%;
+              margin: 0;
+            }
             body {
+              min-height: 100%;
+              padding: 0;
+              background-color: #ffcc00;
+              margin: -20px 0 0 0;
+
               font-family: sans-serif;
               font-size: 14px;
-              padding: 15px;
-              margin: 0;
               background-color: #fafafa;
               color: rgb(25, 25, 25);
             }
