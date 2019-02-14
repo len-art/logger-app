@@ -15,12 +15,9 @@ export default () => (
         .f1,
         .f2,
         .f3 {
-          height: 16px;
-          width: 80px;
+          height: 8px;
+          width: 80%;
           background-color: #888;
-          position: absolute;
-          left: 0;
-          right: 0;
           margin: auto;
           transform: translate(0, 0);
         }
@@ -35,19 +32,19 @@ export default () => (
             opacity: 1;
           }
           30% {
-            transform: translate(0, 19px);
+            transform: translate(0, 24px);
             opacity: 1;
           }
           70% {
-            transform: translate(340px, 19px);
+            transform: translate(364px, 24px);
             opacity: 1;
           }
           85% {
-            transform: translate(340px, 0);
+            transform: translate(364px, 0);
             opacity: 1;
           }
           100% {
-            transform: translate(340px, 0);
+            transform: translate(364px, 0);
             opacity: 0;
           }
         }
@@ -66,15 +63,15 @@ export default () => (
             opacity: 1;
           }
           70% {
-            transform: translate(340px, 0);
+            transform: translate(364px, 0);
             opacity: 1;
           }
           85% {
-            transform: translate(340px, 0);
+            transform: translate(364px, 0);
             opacity: 1;
           }
           100% {
-            transform: translate(340px, 0);
+            transform: translate(364px, 0);
             opacity: 0;
           }
         }
@@ -89,19 +86,19 @@ export default () => (
             opacity: 1;
           }
           30% {
-            transform: translate(0, -19px);
+            transform: translate(0, -24px);
             opacity: 1;
           }
           70% {
-            transform: translate(340px, -19px);
+            transform: translate(364px, -24px);
             opacity: 1;
           }
           85% {
-            transform: translate(340px, 0);
+            transform: translate(364px, 0);
             opacity: 1;
           }
           100% {
-            transform: translate(340px, 0);
+            transform: translate(364px, 0);
             opacity: 0;
           }
         }
@@ -120,10 +117,10 @@ export default () => (
         }
         .srv,
         .clnt {
-          height: 100px;
-          width: 100px;
+          height: 80px;
+          width: 80px;
           border-radius: 10px;
-          border: 5px solid #ccc;
+          border: 3px solid #ccc;
           position: absolute;
           top: 0;
           bottom: 0;
@@ -131,6 +128,8 @@ export default () => (
         }
         .srv {
           left: 0;
+          display: flex;
+          flex-direction: column;
         }
         .clnt {
           right: 0;

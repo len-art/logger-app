@@ -105,7 +105,6 @@ export default class {
 
   @computed
   get isLoggedIn() {
-    // return undefined
     if (!this.afterAuth) return undefined
     return this.afterAuth && this.user !== undefined
   }
