@@ -77,6 +77,7 @@ export default class {
 
   async editEvent(monthId, eventId, event) {
     const { data } = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+    console.log(agregate.toMonth(data.month))
     this.updateMonths(agregate.toMonth(data.month))
   }
 

@@ -70,11 +70,6 @@ class Details extends React.Component {
     e.preventDefault()
 
     const { event, dayInMonth } = this.props
-    if (!this.inputValue.length) {
-      // TODO: if edit and string length === 0, delete event
-      this.showEdit = false
-      return
-    }
 
     if (event && event.id) {
       await this.props.editEvent({ details: this.inputValue }, event.id)
