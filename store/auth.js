@@ -17,22 +17,30 @@ export default class {
 
   async init() {
     if (typeof window === 'undefined') return
-    const accessToken = sessionStorage.getItem('accessToken')
+    // const accessToken = sessionStorage.getItem('accessToken')
+    const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       const data = await this.getUserData()
       if (!data.success && data.message !== 'Network Error') {
         this.resetCookies()
       }
-    } else {
-      const refreshToken = localStorage.getItem('refreshToken')
-      const refreshSecret = localStorage.getItem('refreshSecret')
-      if (refreshToken && refreshSecret) {
-        await this.getToken({ refreshToken, refreshSecret })
-        await this.getUserData()
-      }
+    } else if (refreshToken && refreshSecret) {
+      // const refreshToken = localStorage.getItem('refreshToken')
+      // const refreshSecret = localStorage.getItem('refreshSecret')
+      // if (refreshToken && refreshSecret) {
+      await this.getToken({ refreshToken, refreshSecret })
+      await this.getUserData()
+      // }
     }
     this.afterAuth = true
+  }
+
+  localStorageData = () => {
+    const accessToken = sessionStorage.getItem('accessToken')
+    const refreshToken = localStorage.getItem('refreshToken')
+    const refreshSecret = localStorage.getItem('refreshSecret')
+    return { accessToken, refreshSecret, refreshToken }
   }
 
   async getUserData() {

@@ -8,7 +8,6 @@ import { Provider } from 'mobx-react'
 import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
 import Footer from '../components/footer'
-import Loading from '../components/loading'
 
 import Header from '../components/header'
 
@@ -16,21 +15,8 @@ import Header from '../components/header'
 @inject('store')
 @observer
 class Layout extends React.Component {
-  redirectIfNotLoggedIn() {
-    const {
-      store: {
-        auth: { isLoggedIn },
-      },
-      router,
-    } = this.props
-    if (isLoggedIn === false && router.pathname !== '/login') {
-      router.push('/login')
-    }
-  }
-
   render() {
     const { children } = this.props
-    this.redirectIfNotLoggedIn()
     return (
       <div className="layout">
         <Head>
