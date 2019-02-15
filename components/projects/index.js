@@ -91,15 +91,18 @@ class Projects extends React.Component {
               font-size: 1.5em;
               text-transform: uppercase;
               cursor: pointer;
+              transition: 0.25s;
             }
             .tab:focus {
               outline: none;
             }
+
             .active {
               border-bottom: 2px solid #2868dd;
             }
 
             .tabs {
+              margin: 10px 0;
             }
           `}
         </style>
