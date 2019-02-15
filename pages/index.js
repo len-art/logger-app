@@ -61,8 +61,6 @@ class IndexPage extends Component {
     this.redirectIfNotLoggedIn()
     return this.props.store.auth.afterAuth ? (
       <div>
-        <h1>Work logger</h1>
-        <p>Log your work hours</p>
         <Projects />
         <div className="justFlex">
           <Button onClick={this.handleStart} text="Start work day" />

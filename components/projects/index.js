@@ -49,7 +49,6 @@ class Projects extends React.Component {
     const { projects, selectedProject, setSelectedProject } = this.props.store
     return (
       <div>
-        <h2>Projects</h2>
         <div className="justFlex tabs">
           {/* TODO: if project list is too long move last ones to a dropdown menu */}
           {projects.map((p, index) => (

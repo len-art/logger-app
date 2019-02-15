@@ -34,7 +34,7 @@ class Layout extends React.Component {
             .layout {
               height: 100%;
               width: 100%;
-              padding: 20px 10px 40px 10px;
+              padding: 100px 10px 40px 10px;
               box-sizing: border-box;
             }
           `}
@@ -56,8 +56,14 @@ class Layout extends React.Component {
               background-color: #fafafa;
               color: rgb(25, 25, 25);
             }
+            a {
+              text-decoration: none;
+              color: #222;
+              margin: 0;
+              padding: 0;
+            }
             #__next {
-              min-height: 100;
+              min-height: 100vh;
             }
             .small {
               font-size: 0.8em;
