@@ -46,13 +46,19 @@ class Projects extends React.Component {
   handleModalInputChange = e => (this.modalInput = e.target.value)
 
   render() {
-    const { projects, selectedProject, setSelectedProject } = this.props.store
+    const { projects, selectedProject } = this.props.store
     return (
       <div>
         <div className="justFlex tabs">
           {/* TODO: if project list is too long move last ones to a dropdown menu */}
           {projects.map((p, index) => (
-            <Button onClick={() => this.selectProject(p.id)} text={p.name} key={index.toString()} />
+            <button
+              className={`tab${selectedProject === p.id ? ' active' : ''}`}
+              onClick={() => this.selectProject(p.id)}
+              key={index.toString()}
+            >
+              {p.name}
+            </button>
           ))}
           <Fab onClick={this.handleModalSwitch} />
         </div>
@@ -76,6 +82,23 @@ class Projects extends React.Component {
         </Modal>
         <style jsx>
           {`
+            .tab {
+              background: transparent;
+              padding: 10px;
+              border: none;
+              margin: 0 10px;
+              border-bottom: 2px solid transparent;
+              font-size: 1.5em;
+              text-transform: uppercase;
+              cursor: pointer;
+            }
+            .tab:focus {
+              outline: none;
+            }
+            .active {
+              border-bottom: 2px solid #2868dd;
+            }
+
             .tabs {
             }
           `}

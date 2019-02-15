@@ -20,7 +20,7 @@ export default class {
   months = []
 
   @observable
-  selectedProject = 0
+  selectedProject = undefined
 
   @observable
   selectedMonth = undefined
@@ -41,7 +41,7 @@ export default class {
       const { data } = await this.client.post('projects/get', {
         projectId,
       })
-      this.project = projectId
+      this.selectedProject = projectId
       this.setMonths(data.months, true)
       if (this.months.length) {
         this.selectedMonth = this.months[0].id
