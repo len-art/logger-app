@@ -15,7 +15,7 @@ export default inject('store')(
           }
           a {
             text-decoration: none;
-            color: #222;
+            color: #fafafa;
             margin: 0;
             padding: 0;
             font-size: 1.4em;

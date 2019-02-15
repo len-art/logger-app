@@ -21,6 +21,7 @@ const LoggedIn = ({ user: { name }, resetCookies }) => (
             font-style: italic;
             opacity: 0.5;
             transition: 0.25s;
+            color: #eee;
           }
           .logout:hover {
             opacity: 1;

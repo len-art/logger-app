@@ -17,8 +17,9 @@ export default () => (
           left: 0;
           width: 100%;
           z-index: 400;
-          background-color: #fafafa;
+          background-color: #087599;
           box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
+          color: #fafafa;
         }
         .wrapper {
           display: flex;
