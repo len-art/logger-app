@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import { withRouter } from 'next/router'
 import { computed, observable } from 'mobx'
 
 import Button from '../components/button'
 import Projects from '../components/projects'
 import Table from '../components/table'
 
+@withRouter
 @inject('store')
 @observer
 class IndexPage extends Component {

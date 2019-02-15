@@ -95,6 +95,7 @@ export default class {
     }
   }
 
+  @action
   resetCookies = () => {
     sessionStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
@@ -105,7 +106,8 @@ export default class {
 
   @computed
   get isLoggedIn() {
+    console.log(this.user)
     if (!this.afterAuth) return undefined
-    return this.afterAuth && this.user !== undefined
+    return this.user !== undefined
   }
 }

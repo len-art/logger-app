@@ -41,9 +41,9 @@ const NotLoggedIn = () => (
 )
 
 export default inject('store')(
-  observer(({ store: { auth: { user, resetCookies } } }) => (
+  observer(({ store: { auth: { isLoggedIn, user, resetCookies } } }) => (
     <div className="user">
-      {user ? <LoggedIn user={user} resetCookies={resetCookies} /> : <NotLoggedIn />}
+      {isLoggedIn ? <LoggedIn user={user} resetCookies={resetCookies} /> : <NotLoggedIn />}
     </div>
   )),
 )

@@ -16,14 +16,6 @@ import Header from '../components/header'
 @inject('store')
 @observer
 class Layout extends React.Component {
-  componentDidMount() {
-    this.redirectIfNotLoggedIn()
-  }
-
-  componentDidUpdate() {
-    this.redirectIfNotLoggedIn()
-  }
-
   redirectIfNotLoggedIn() {
     const {
       store: {
@@ -37,13 +29,8 @@ class Layout extends React.Component {
   }
 
   render() {
-    const {
-      children,
-      store: {
-        auth: { isLoggedIn },
-      },
-    } = this.props
-
+    const { children } = this.props
+    this.redirectIfNotLoggedIn()
     return (
       <div className="layout">
         <Head>
@@ -53,22 +40,15 @@ class Layout extends React.Component {
             key="viewport"
           />
         </Head>
-        {isLoggedIn === undefined ? (
-          <Loading />
-        ) : (
-          <>
-            <Header />
-            {children}
-            <Footer />
-          </>
-        )}
+        <Header />
+        {children}
+        <Footer />
         <style jsx>
           {`
             .layout {
               height: 100%;
               width: 100%;
               padding: 20px 10px 40px 10px;
-              sizing: border-box;
               box-sizing: border-box;
             }
           `}
@@ -91,7 +71,7 @@ class Layout extends React.Component {
               color: rgb(25, 25, 25);
             }
             #__next {
-              height: 100%;
+              min-height: 100;
             }
             .small {
               font-size: 0.8em;

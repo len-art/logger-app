@@ -1,14 +1,14 @@
 import React from 'react'
 
 export default () => (
-  <div className="wrapper">
-    <div className="inner">
-      <div className="srv">
+  <div className="loadingWrapper">
+    <div className="loadingInner">
+      <div className="leftBox">
         <div className="f1" />
         <div className="f2" />
         <div className="f3" />
       </div>
-      <div className="clnt" />
+      <div className="rightBox" />
     </div>
     <style jsx>
       {`
@@ -115,8 +115,8 @@ export default () => (
           top: 70px;
           animation: f3Loading 4s infinite;
         }
-        .srv,
-        .clnt {
+        .leftBox,
+        .rightBox {
           height: 80px;
           width: 80px;
           border-radius: 10px;
@@ -126,12 +126,12 @@ export default () => (
           bottom: 0;
           margin: auto;
         }
-        .srv {
+        .leftBox {
           left: 0;
           display: flex;
           flex-direction: column;
         }
-        .clnt {
+        .rightBox {
           right: 0;
         }
         .inner {
@@ -142,7 +142,7 @@ export default () => (
           margin: 25px;
           position: relative;
         }
-        .wrapper {
+        .loadingWrapper {
           width: 100vw;
           height: 100vh;
           display: flex;
