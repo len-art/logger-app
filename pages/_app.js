@@ -54,7 +54,7 @@ class Layout extends React.Component {
               font-family: sans-serif;
               font-size: 14px;
               background-color: #fafafa;
-              color: rgb(25, 25, 25);
+              color: #222;
             }
             a {
               text-decoration: none;
