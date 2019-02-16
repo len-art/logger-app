@@ -126,7 +126,7 @@ class IndexPage extends Component {
               }
 
               .highlight {
-                background-color: rgba(180, 180, 180, 0.1);
+                background-color: rgba(140, 140, 170, 0.1);
               }
 
               .day {
