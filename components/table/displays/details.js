@@ -1,41 +1,13 @@
 import React from 'react'
-import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
 
-import Button from '../button'
-import IconButton from '../iconButton'
+import IconButton from '../../iconButton'
 
-import TextInput from './textInput'
-import Edit from '../../static/icons/edit.svg'
-
-const Day = ({ weekend, dayInMonth, dayOfWeek }) => (
-  <div className={`day${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
-    {dayInMonth}
-  </div>
-)
-
-const Add = ({
-  weekend, dayOfWeek, dayInMonth, addLocalDetail,
-}) => (
-  <div className={`add${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
-    <button onClick={() => addLocalDetail(dayInMonth)}>+</button>
-  </div>
-)
-
-const Start = ({ weekend, dayOfWeek }) => (
-  <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`} />
-)
-
-const End = ({ weekend, dayOfWeek }) => (
-  <div className={`end${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`} />
-)
-
-const Hours = ({ weekend, dayOfWeek }) => (
-  <div className={`hours${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`} />
-)
+import TextInput from '../textInput'
 
 @observer
-class Details extends React.Component {
+export default class extends React.Component {
   constructor(props) {
     super(props)
     if (props.event && props.event.details) {
@@ -92,7 +64,7 @@ class Details extends React.Component {
 
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
-    console.log(this.inputValue.length, event.details)
+
     return (
       <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
@@ -140,13 +112,4 @@ class Details extends React.Component {
       </div>
     )
   }
-}
-
-export default {
-  day: Day,
-  add: Add,
-  start: Start,
-  end: End,
-  hours: Hours,
-  details: Details,
 }
