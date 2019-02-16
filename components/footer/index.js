@@ -67,6 +67,7 @@ const Footer = inject('store')(
             }
             .selected {
               transform: translateY(-4px);
+              color: #fff;
             }
             footer {
               background-color: #f5f5f5;

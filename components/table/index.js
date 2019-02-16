@@ -135,8 +135,7 @@ class IndexPage extends Component {
               .start,
               .end,
               .hours,
-              .description,
-              .weekSummary {
+              .description {
                 padding: 15px;
               }
 
@@ -181,6 +180,7 @@ class IndexPage extends Component {
               .weekSummary {
                 grid-column-start: 1;
                 grid-column-end: 7;
+                padding: 10px 15px;
                 border-bottom: 2px solid #aaa;
               }
             `}
