@@ -134,7 +134,7 @@ export default () => (
         .rightBox {
           right: 0;
         }
-        .inner {
+        .loadingInner {
           width: 100%;
           height: 100%;
           max-width: 450px;
@@ -143,8 +143,8 @@ export default () => (
           position: relative;
         }
         .loadingWrapper {
-          width: 100vw;
-          height: 100vh;
+          width: 100%;
+          height: 100%;
           display: flex;
           justify-content: center;
           align-items: center;

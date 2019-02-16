@@ -16,7 +16,6 @@ export default props => (
           background-color: ${props.unstyled ? 'transparent' : '#2868dd'};
           margin: 5px;
           padding: 8px 12px;
-          border-style: none;
           border-radius: 5px;
           color: ${props.unstyled ? 'rgba(40, 104, 221, .8)' : 'rgba(255, 255, 255, .8)'};
           font-size: 14px;
@@ -25,15 +24,11 @@ export default props => (
           transition: 0.25s;
           overflow: hidden;
           z-index: 1;
-          cursor: pointer;
         }
         .button:hover {
           color: ${props.unstyled ? 'rgba(17, 50, 110, 1)' : 'rgba(255, 255, 255, 1)'};
           transform: scale(1.03);
           box-shadow: ${props.unstyled ? 'none' : '2px 3px 7px -1px rgba(50, 50, 50, 0.6)'};
-        }
-        .button:focus {
-          outline: none;
         }
         .button:hover .div1 {
           transform: translateX(-120px);

@@ -62,7 +62,7 @@ class IndexPage extends Component {
     return this.props.store.auth.afterAuth ? (
       <div>
         <Projects />
-        <div className="justFlex">
+        <div className="justFlex center">
           <Button onClick={this.handleStart} text="Start work day" />
           <Button onClick={this.handleEnd} text="End" />
         </div>
@@ -73,6 +73,9 @@ class IndexPage extends Component {
           {`
             .justFlex {
               display: flex;
+            }
+            .center {
+              justify-content: center;
             }
             .list {
               display: grid;

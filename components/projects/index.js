@@ -50,6 +50,7 @@ class Projects extends React.Component {
     return (
       <div>
         <div className="justFlex tabs">
+          <Fab onClick={this.handleModalSwitch} />
           {/* TODO: if project list is too long move last ones to a dropdown menu */}
           {projects.map((p, index) => (
             <button
@@ -60,7 +61,6 @@ class Projects extends React.Component {
               {p.name}
             </button>
           ))}
-          <Fab onClick={this.handleModalSwitch} />
         </div>
         <Modal
           dim
@@ -86,11 +86,9 @@ class Projects extends React.Component {
               background: transparent;
               padding: 10px;
               border: none;
-              margin: 0 10px;
               border-bottom: 2px solid transparent;
               font-size: 1.5em;
               text-transform: uppercase;
-              cursor: pointer;
               transition: 0.25s;
             }
             .tab:focus {
@@ -102,6 +100,7 @@ class Projects extends React.Component {
             }
 
             .tabs {
+              align-content: center;
               margin: 10px 0;
             }
           `}

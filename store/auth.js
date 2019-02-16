@@ -17,7 +17,6 @@ export default class {
 
   async init() {
     if (typeof window === 'undefined') return
-    // const accessToken = sessionStorage.getItem('accessToken')
     const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
@@ -26,12 +25,8 @@ export default class {
         this.resetCookies()
       }
     } else if (refreshToken && refreshSecret) {
-      // const refreshToken = localStorage.getItem('refreshToken')
-      // const refreshSecret = localStorage.getItem('refreshSecret')
-      // if (refreshToken && refreshSecret) {
       await this.getToken({ refreshToken, refreshSecret })
       await this.getUserData()
-      // }
     }
     this.afterAuth = true
   }
@@ -114,7 +109,6 @@ export default class {
 
   @computed
   get isLoggedIn() {
-    console.log(this.user)
     if (!this.afterAuth) return undefined
     return this.user !== undefined
   }

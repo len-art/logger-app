@@ -33,7 +33,7 @@ class Layout extends React.Component {
           {`
             .layout {
               height: 100%;
-              width: 100%;
+
               padding: 100px 10px 40px 10px;
               box-sizing: border-box;
             }
@@ -41,16 +41,16 @@ class Layout extends React.Component {
         </style>
         <style jsx global>
           {`
-            html {
+            html,
+            body {
               height: 100%;
               margin: 0;
+            }
+            html {
             }
             body {
               min-height: 100%;
               padding: 0;
-              background-color: #ffcc00;
-              margin: -20px 0 0 0;
-
               font-family: sans-serif;
               font-size: 14px;
               background-color: #fafafa;
@@ -62,8 +62,16 @@ class Layout extends React.Component {
               margin: 0;
               padding: 0;
             }
+            button {
+              border-style: none;
+              cursor: pointer;
+              background-color: transparent;
+            }
+            .button:focus {
+              outline: none;
+            }
             #__next {
-              min-height: 100vh;
+              height: 100%;
             }
             .small {
               font-size: 0.8em;

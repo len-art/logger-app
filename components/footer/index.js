@@ -24,15 +24,13 @@ const Footer = inject('store')(
               height: 45px;
               padding: 0px 20px 12px 20px;
               margin: 0;
-              border-style: none;
               text-transform: uppercase;
               font-size: 13px;
               transition: 0.25s;
-              cursor: pointer;
               position: relative;
-              background-color: transparent;
               z-index: 1;
               color: #eee;
+              font-weight: bold;
             }
             .button:before,
             .button:after {
@@ -49,30 +47,26 @@ const Footer = inject('store')(
               border-top: 0px solid transparent;
               border-left: 10px solid transparent;
               border-right: 10px solid transparent;
-              border-bottom: 10px solid #333;
+              border-bottom: 10px solid #087599;
             }
             .button:after {
               top: 10px;
               left: 0;
               height: 100%;
-              background-color: #333;
+              background-color: #087599;
               box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
             }
             .button:hover:not(.selected) {
               transform: translateY(-2px);
             }
             .button:not(.selected):before {
-              border-bottom: 10px solid #555;
+              border-bottom: 10px solid #041a44;
             }
             .button:not(.selected):after {
-              background-color: #555;
-            }
-            .button:focus {
-              outline: none;
+              background-color: #041a44;
             }
             .selected {
               transform: translateY(-4px);
-              font-weight: bold;
             }
             footer {
               background-color: rgba(250, 250, 250, 0.5);
