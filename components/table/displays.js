@@ -96,8 +96,9 @@ class Details extends React.Component {
         </div>
         <form className="input" onSubmit={this.handleInputConfirm}>
           <TextInput
-            onClick={this.handleShowEdit}
+            onFocus={this.handleShowEdit}
             onChange={this.handleInputChange}
+            onBlur={this.handleInputConfirm}
             value={this.showEdit ? this.inputValue : event.details}
           />
         </form>
