@@ -51,6 +51,10 @@ class Details extends React.Component {
 
   handleShowEdit = () => {
     this.showEdit = !this.showEdit
+    const { event } = this.props
+    if (event && event.details) {
+      this.inputValue = event.details
+    }
   }
 
   handleInputChange = (e) => {
@@ -58,7 +62,6 @@ class Details extends React.Component {
   }
 
   handleInputCancel = () => {
-    console.log('blur')
     this.showEdit = false
     const { event } = this.props
     if (event && event.details) {
@@ -88,17 +91,16 @@ class Details extends React.Component {
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />
           ) : (
-            <IconButton Icon={Edit} onClick={this.handleShowEdit} />
+            <IconButton onClick={this.handleInputCancel} text="✗" />
           )}
         </div>
-        {this.showEdit ? (
-          <form className="input" onSubmit={this.handleInputConfirm}>
-            <TextInput onChange={this.handleInputChange} value={this.inputValue} />
-            <Button unstyled onClick={this.handleInputCancel} text="✗" />
-          </form>
-        ) : (
-          <div className="input">{event.details}</div>
-        )}
+        <form className="input" onSubmit={this.handleInputConfirm}>
+          <TextInput
+            onClick={this.handleShowEdit}
+            onChange={this.handleInputChange}
+            value={this.showEdit ? this.inputValue : event.details}
+          />
+        </form>
         <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
         <style jsx>
           {`

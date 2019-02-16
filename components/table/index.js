@@ -123,10 +123,11 @@ class IndexPage extends Component {
 
               .header {
                 margin: 10px 0;
+                opacity: 0.7;
               }
 
               .highlight {
-                background-color: rgba(140, 140, 170, 0.1);
+                background-color: rgba(140, 140, 160, 0.1);
               }
 
               .day {
