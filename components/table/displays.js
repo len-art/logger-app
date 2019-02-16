@@ -83,6 +83,11 @@ class Details extends React.Component {
     this.showEdit = false
   }
 
+  handleDelete = (e) => {
+    this.inputValue = ''
+    this.handleInputConfirm(e)
+  }
+
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
     return (
@@ -91,7 +96,7 @@ class Details extends React.Component {
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />
           ) : (
-            <IconButton onClick={this.handleInputCancel} text="✗" />
+            <IconButton onClick={this.handleDelete} text="✗" />
           )}
         </div>
         <form className="input" onSubmit={this.handleInputConfirm}>
