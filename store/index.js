@@ -44,7 +44,7 @@ export default class {
       this.selectedProject = projectId
       this.setMonths(data.months, true)
       if (this.months.length) {
-        this.selectedMonth = this.months[0].id
+        this.setSelectedMonth(this.months[this.months.length - 1].id)
       }
     } catch (error) {
       console.error(error)
@@ -71,7 +71,7 @@ export default class {
     }
     this.months = months.map(m => agregate.toMonth(m))
     if (this.months.length) {
-      this.selectedMonth = this.months[0].id
+      this.setSelectedMonth(this.months[this.months.length - 1].id)
     }
   }
 
