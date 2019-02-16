@@ -99,6 +99,7 @@ export default class extends React.Component {
             }
             form {
               display: flex;
+              height: 100%;
             }
             .clipboard {
               transform: translateX(30px);

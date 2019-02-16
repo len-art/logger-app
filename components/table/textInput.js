@@ -27,15 +27,18 @@ export default class extends React.Component {
           {`
             .wrapper {
               width: 100%;
+              height: 100%;
               margin: 0;
               padding: 0;
               position: relative;
             }
             input {
               width: 100%;
+              height: 100%;
               border: none;
               padding: 10px;
               background-color: inherit;
+              box-sizing: border-box;
             }
             input:focus {
               outline: none;

@@ -34,7 +34,7 @@ class Layout extends React.Component {
             .layout {
               height: 100%;
 
-              padding: 100px 10px 40px 10px;
+              padding: 100px 10px 70px 10px;
               box-sizing: border-box;
             }
           `}
@@ -71,10 +71,12 @@ class Layout extends React.Component {
               outline: none;
             }
             #__next {
-              height: 100%;
+              min-height: 100%;
             }
             .small {
               font-size: 0.8em;
+            }
+            div {
             }
           `}
         </style>

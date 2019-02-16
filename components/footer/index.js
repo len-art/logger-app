@@ -69,7 +69,7 @@ const Footer = inject('store')(
               transform: translateY(-4px);
             }
             footer {
-              background-color: rgba(250, 250, 250, 0.5);
+              background-color: #f5f5f5;
               width: 100%;
               position: fixed;
               padding: 0;
