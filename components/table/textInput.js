@@ -40,6 +40,9 @@ export default class extends React.Component {
             input:focus {
               outline: none;
             }
+            input:hover {
+              background: rgba(34, 50, 84, 0.05);
+            }
             .border {
               position: absolute;
               content: '';

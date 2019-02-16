@@ -47,6 +47,7 @@ class IndexPage extends Component {
 
   addLocalDetail = (dayInMonth) => {
     const exists = this.monthList.events.find(e => e.dayInMonth === dayInMonth)
+    console.log(exists)
     if (exists) this.monthList.events.push({ dayInMonth })
   }
 
@@ -164,8 +165,13 @@ class IndexPage extends Component {
 
               .weekend {
                 padding: 0px 15px !important;
-                background-color: rgba(200, 255, 200, 0.3);
+                background-color: rgba(200, 200, 220, 0.3);
+                font-size: 0.9em;
                 grid-row-gap: 5px;
+              }
+
+              .weekend input {
+                padding: 0;
               }
               .weekSummary {
                 grid-column-start: 1;

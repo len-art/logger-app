@@ -75,8 +75,10 @@ class Details extends React.Component {
     const { event, dayInMonth } = this.props
 
     if (event && event.id) {
+      /* event exists, send changes */
       await this.props.editEvent({ details: this.inputValue }, event.id)
-    } else {
+    } else if (this.inputValue.length) {
+      /* event doesn't exist yet and user inputs text */
       await this.props.addEvent({ details: this.inputValue, dayInMonth })
     }
 
@@ -90,6 +92,7 @@ class Details extends React.Component {
 
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
+    console.log(this.inputValue.length, event.details)
     return (
       <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
@@ -116,6 +119,7 @@ class Details extends React.Component {
               grid-template-areas: 'edit input clipboard';
               align-items: center;
               overflow: hidden;
+              padding: 0;
             }
             .details:hover .clipboard:not(.hidden) {
               transform: translateX(0px);
