@@ -117,7 +117,6 @@ class IndexPage extends Component {
                 grid-template-columns: repeat(5, auto) 3fr;
               }
               .list > div {
-                padding: 15px;
                 display: flex;
                 align-items: center;
               }
@@ -129,6 +128,16 @@ class IndexPage extends Component {
 
               .highlight {
                 background-color: rgba(140, 140, 160, 0.1);
+              }
+
+              .day,
+              .add,
+              .start,
+              .end,
+              .hours,
+              .description,
+              .weekSummary {
+                padding: 15px;
               }
 
               .day {
@@ -164,18 +173,15 @@ class IndexPage extends Component {
               }
 
               .weekend {
-                padding: 0px 15px !important;
+                padding: 0px 15px;
                 background-color: rgba(200, 200, 220, 0.3);
                 font-size: 0.9em;
                 grid-row-gap: 5px;
               }
-
-              .weekend input {
-                padding: 0;
-              }
               .weekSummary {
                 grid-column-start: 1;
                 grid-column-end: 7;
+                border-bottom: 2px solid #aaa;
               }
             `}
           </style>
