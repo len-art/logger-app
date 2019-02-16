@@ -116,13 +116,13 @@ class IndexPage extends Component {
                 grid-template-columns: repeat(5, auto) 3fr;
               }
               .list > div {
-                padding: 10px;
+                padding: 15px;
                 display: flex;
                 align-items: center;
               }
 
               .header {
-                margin-bottom: 10px;
+                margin: 10px 0;
               }
 
               .highlight {
@@ -162,7 +162,7 @@ class IndexPage extends Component {
               }
 
               .weekend {
-                padding: 0px 10px !important;
+                padding: 0px 15px !important;
                 background-color: rgba(200, 255, 200, 0.3);
                 grid-row-gap: 5px;
               }
