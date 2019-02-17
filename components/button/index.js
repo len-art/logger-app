@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Button = props => (
+export default props => (
   <button type={props.type || 'button'} onClick={props.onClick} className="button">
     {props.text}
     {!props.unstyled && (
@@ -16,7 +16,6 @@ const Button = props => (
           background-color: ${props.unstyled ? 'transparent' : '#2868dd'};
           margin: 5px;
           padding: 8px 12px;
-          border-style: none;
           border-radius: 5px;
           color: ${props.unstyled ? 'rgba(40, 104, 221, .8)' : 'rgba(255, 255, 255, .8)'};
           font-size: 14px;
@@ -27,13 +26,9 @@ const Button = props => (
           z-index: 1;
         }
         .button:hover {
-          cursor: pointer;
           color: ${props.unstyled ? 'rgba(17, 50, 110, 1)' : 'rgba(255, 255, 255, 1)'};
           transform: scale(1.03);
-          box-shadow: ${props.unstyled ? 'none' : '1px 2px 5px -1px rgba(50, 50, 50, 0.8)'};
-        }
-        .button:focus {
-          outline: none;
+          box-shadow: ${props.unstyled ? 'none' : '2px 3px 7px -1px rgba(50, 50, 50, 0.6)'};
         }
         .button:hover .div1 {
           transform: translateX(-120px);
@@ -67,5 +62,3 @@ const Button = props => (
     </style>
   </button>
 )
-
-export default Button

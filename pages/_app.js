@@ -1,4 +1,6 @@
 import React from 'react'
+import { inject, observer } from 'mobx-react'
+import { withRouter } from 'next/router'
 import App, { Container } from 'next/app'
 import Head from 'next/head'
 import * as Sentry from '@sentry/browser'
@@ -9,10 +11,12 @@ import Footer from '../components/footer'
 
 import Header from '../components/header'
 
+@withRouter
+@inject('store')
+@observer
 class Layout extends React.Component {
   render() {
     const { children } = this.props
-
     return (
       <div className="layout">
         <Head>
@@ -29,25 +33,50 @@ class Layout extends React.Component {
           {`
             .layout {
               height: 100%;
-              width: 100%;
+
+              padding: 100px 10px 70px 10px;
+              box-sizing: border-box;
             }
           `}
         </style>
         <style jsx global>
           {`
-            document,
+            html,
             body {
+              height: 100%;
+              margin: 0;
+            }
+            html {
+            }
+            body {
+              min-height: 100%;
+              padding: 0;
               font-family: sans-serif;
               font-size: 14px;
-              padding: 15px;
+              background-color: #f5f5f5;
+              color: #222;
+            }
+            a {
+              text-decoration: none;
+              color: #222;
               margin: 0;
-              background-color: #fafafa;
+              padding: 0;
+            }
+            button {
+              border-style: none;
+              cursor: pointer;
+              background-color: transparent;
+            }
+            .button:focus {
+              outline: none;
             }
             #__next {
-              height: 100%;
+              min-height: 100%;
             }
             .small {
               font-size: 0.8em;
+            }
+            div {
             }
           `}
         </style>

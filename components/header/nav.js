@@ -6,16 +6,20 @@ export default inject('store')(
   observer(() => (
     <nav>
       <Link href="/">
-        <a>Home</a>
-      </Link>
-      <Link href="/app">
-        <a>App</a>
+        <a>LOGGER</a>
       </Link>
       <style jsx>
         {`
+          nav {
+            display: flex;
+          }
           a {
-            margin: 15px 5px;
-            padding: 5px;
+            text-decoration: none;
+            color: #fafafa;
+            margin: 0;
+            padding: 0;
+            font-size: 1.4em;
+            font-weight: bold;
           }
         `}
       </style>

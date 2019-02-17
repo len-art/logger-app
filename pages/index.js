@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import { withRouter } from 'next/router'
 import { computed, observable } from 'mobx'
-import { startOfMonth, getDaysInMonth } from 'date-fns'
 
+import Loading from '../components/loading'
 import Button from '../components/button'
 import Projects from '../components/projects'
 import Table from '../components/table'
 
-console.log(startOfMonth(new Date()))
-
+@withRouter
 @inject('store')
 @observer
 class IndexPage extends Component {
@@ -22,18 +22,6 @@ class IndexPage extends Component {
 
   @observable
   isDropdownOpen = false
-
-  @computed
-  get monthList() {
-    const { selectedMonth } = this.props.store
-    // TODO: take selected month into consideration here
-    const month = startOfMonth(new Date())
-    const startDay = month.getDay()
-    return Array.from(new Array(getDaysInMonth(month)), (_, i) => {
-      const day = (startDay + i) % 7
-      return day
-    })
-  }
 
   componentDidUpdate() {
     if (this.state.raiseError) {
@@ -57,47 +45,37 @@ class IndexPage extends Component {
     this.setState({ raiseError: true })
   }
 
+  redirectIfNotLoggedIn() {
+    const {
+      store: {
+        auth: { isLoggedIn },
+      },
+      router,
+    } = this.props
+    if (isLoggedIn === false && router.pathname !== '/login') {
+      router.push('/login')
+    }
+  }
+
   render() {
-    return (
+    this.redirectIfNotLoggedIn()
+    return this.props.store.auth.afterAuth ? (
       <div>
-        <h1>Work logger</h1>
-        <p>Log your work hours</p>
         <Projects />
-        <div className="justFlex">
-          {/* buttons */}
+        <div className="justFlex center">
           <Button onClick={this.handleStart} text="Start work day" />
           <Button onClick={this.handleEnd} text="End" />
         </div>
         <div>
           <Table />
-          {/* <div className="list">
-            {listColumns.map(name => (
-              <div key={name} className={name}>
-                {name}
-              </div>
-            ))}
-            {this.monthList.map((day, index) => (
-              <React.Fragment key={index.toString()}>
-                {listColumns.map((name, i) => (
-                  <div
-                    key={name}
-                    className={`${name} ${day % 7 === 0 || day % 7 === 6 ? 'weekend' : ''}`}
-                  >
-                    {i === 0 && index + 1}
-                    {name === 'details' && (
-                      <Button onClick={this.handleToClipboard} text="To clipboard" />
-                    )}
-                  </div>
-                ))}
-                {day === 0 && <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>}
-              </React.Fragment>
-            ))}
-          </div> */}
         </div>
         <style jsx>
           {`
             .justFlex {
               display: flex;
+            }
+            .center {
+              justify-content: center;
             }
             .list {
               display: grid;
@@ -123,6 +101,8 @@ class IndexPage extends Component {
           `}
         </style>
       </div>
+    ) : (
+      <Loading />
     )
   }
 }

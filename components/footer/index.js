@@ -24,38 +24,53 @@ const Footer = inject('store')(
               height: 45px;
               padding: 0px 20px 12px 20px;
               margin: 0;
-              background-color: #eeeeee;
-              border-style: none;
               text-transform: uppercase;
               font-size: 13px;
-              clip-path: polygon(
-                0 10%,
-                15% 0,
-                85% 0,
-                100% 10%,
-                100% 100%,
-                100% 100%,
-                100% 100%,
-                0 100%
-              );
               transition: 0.25s;
-              cursor: pointer;
               position: relative;
+              z-index: 1;
+              color: #eee;
+              font-weight: bold;
+            }
+            .button:before,
+            .button:after {
+              position: absolute;
+              left: 0;
+              width: 100%;
+              content: '';
+              z-index: -1;
+            }
+            .button:before {
+              top: 0;
+              background: transparent;
+              width: calc(100% - 20px);
+              border-top: 0px solid transparent;
+              border-left: 10px solid transparent;
+              border-right: 10px solid transparent;
+              border-bottom: 10px solid #087599;
+            }
+            .button:after {
+              top: 10px;
+              left: 0;
+              height: 100%;
+              background-color: #087599;
+              box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
             }
             .button:hover:not(.selected) {
               transform: translateY(-2px);
             }
-            .button:focus {
-              outline: none;
+            .button:not(.selected):before {
+              border-bottom: 10px solid #041a44;
+            }
+            .button:not(.selected):after {
+              background-color: #041a44;
             }
             .selected {
               transform: translateY(-4px);
-              background-color: #fff;
-              color: black;
-              font-weight: bold;
+              color: #fff;
             }
             footer {
-              background-color: rgba(250, 250, 250, 0.5);
+              background-color: #f5f5f5;
               width: 100%;
               position: fixed;
               padding: 0;

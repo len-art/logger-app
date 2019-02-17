@@ -12,7 +12,7 @@ class Modal extends React.Component {
   }
 
   esc = (target) => {
-    if (target.keyCode === 27) {
+    if (target.keyCode === 27 && this.props.open) {
       this.props.onCancel()
     }
   }

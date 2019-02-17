@@ -24,7 +24,7 @@ Core logic runs with on Nextjs https://nextjs.org/ - all of the Nextjs documenta
 
 ## Mobx
 
-Global store is managed by Mobx State Tree https://mobx.js.org/. All of the stores are contained inside the `/store` folder.
+Global store is managed by Mobx https://mobx.js.org/. All of the stores are contained inside the `/store` folder.
 
 ## Decorators
 

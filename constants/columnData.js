@@ -1,4 +1,29 @@
-const listColumns = ['day', 'start', 'end', 'hours', 'details']
+const listColumns = [
+  {
+    id: 'day',
+    display: 'Day',
+  },
+  {
+    id: 'add',
+    display: '',
+  },
+  {
+    id: 'start',
+    display: 'Start',
+  },
+  {
+    id: 'end',
+    display: 'End',
+  },
+  {
+    id: 'hours',
+    display: 'Hours',
+  },
+  {
+    id: 'details',
+    display: 'Details',
+  },
+]
 
 const registerFields = [
   {

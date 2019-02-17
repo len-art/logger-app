@@ -38,19 +38,29 @@ class Projects extends React.Component {
     }
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.addProject()
+  }
+
   handleModalInputChange = e => (this.modalInput = e.target.value)
 
   render() {
-    const { projects, selectedProject, setSelectedProject } = this.props.store
+    const { projects, selectedProject } = this.props.store
     return (
       <div>
-        <h2>Projects</h2>
         <div className="justFlex tabs">
+          <Fab onClick={this.handleModalSwitch} />
           {/* TODO: if project list is too long move last ones to a dropdown menu */}
           {projects.map((p, index) => (
-            <Button onClick={() => this.selectProject(p.id)} text={p.name} key={index.toString()} />
+            <button
+              className={`tab${selectedProject === p.id ? ' active' : ''}`}
+              onClick={() => this.selectProject(p.id)}
+              key={index.toString()}
+            >
+              {p.name}
+            </button>
           ))}
-          <Fab onClick={this.handleModalSwitch} />
         </div>
         <Modal
           dim
@@ -61,17 +71,37 @@ class Projects extends React.Component {
           onCancel={this.handleModalSwitch}
           onConfirm={this.addProject}
         >
-          <Input
-            label="Project Name"
-            ref={this.inputRef}
-            focus
-            value={this.modalInput}
-            onChange={this.handleModalInputChange}
-          />
+          <form onSubmit={this.handleSubmit}>
+            <Input
+              label="Project Name"
+              ref={this.inputRef}
+              value={this.modalInput}
+              onChange={this.handleModalInputChange}
+            />
+          </form>
         </Modal>
         <style jsx>
           {`
+            .tab {
+              background: transparent;
+              padding: 10px;
+              border: none;
+              border-bottom: 2px solid transparent;
+              font-size: 1.5em;
+              text-transform: uppercase;
+              transition: 0.25s;
+            }
+            .tab:focus {
+              outline: none;
+            }
+
+            .active {
+              border-bottom: 2px solid #2868dd;
+            }
+
             .tabs {
+              align-content: center;
+              margin: 10px 0;
             }
           `}
         </style>
