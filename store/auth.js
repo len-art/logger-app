@@ -43,13 +43,14 @@ export default class {
   }
 
   async handleLogin({ email, password }) {
-    const { data } = await this.client.post('users/login', {
+    const result = await this.client.post('users/login', {
       email,
       password,
     })
-    this.onTokenReceived(data)
-    this.onLoginSuccess(data)
+    this.onTokenReceived(result.data)
+    this.onLoginSuccess(result.data)
     this.getUserData()
+    console.log('result.data', result.data)
   }
 
   @action
