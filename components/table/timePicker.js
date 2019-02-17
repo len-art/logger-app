@@ -2,20 +2,31 @@ import React from 'react'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 
-const hours = Array.from(new Array(12), (_, i) => i)
+// TODO: make this readable
+const hours = Array.from(new Array(12), (_, i) => {
+  const deg = (360 - i * 30) % 360
+  // const h = (12 + 3 - i + 1) % 12
+  const h = i
+  return { h, deg }
+})
+console.log(hours)
 
 @observer
 export default class extends React.Component {
   @observable
   showEdit = true
 
-  ref = React.createRef()
+  clockRef = React.createRef()
 
-  angleInRadians = deg => (deg * Math.PI()) / 180
+  inRad = deg => (deg * Math.PI) / 180
 
   componentDidMount() {
-    if (this.ref.current && this.props.autofocus) this.ref.current.focus()
+    this.radius = this.clockRef.current ? this.clockRef.current.offsetWidth / 2 : 0
   }
+
+  getX = deg => Math.cos(this.inRad(deg)) * this.radius
+
+  getY = deg => Math.sin(this.inRad(deg)) * this.radius
 
   handleShowedit = () => {
     this.showEdit = !this.showEdit
@@ -26,7 +37,6 @@ export default class extends React.Component {
     return (
       <div className="wrapper">
         <input
-          ref={this.ref}
           type="text"
           onClick={onClick}
           onChange={onChange}
@@ -35,9 +45,15 @@ export default class extends React.Component {
           value={value}
         />
         <div className={this.showEdit ? 'pickerWrapper visible' : 'pickerWrapper'}>
-          <div className="clock">
+          <div ref={this.clockRef} className="clock">
             {hours.map(h => (
-              <button className={`time ${h}`}>{h}</button>
+              <button
+                className="time"
+                key={h.h}
+                style={{ transform: `translate(${this.getX(h.deg)}px, ${this.getY(h.deg)}px)` }}
+              >
+                {h.h}
+              </button>
             ))}
           </div>
         </div>
@@ -49,14 +65,16 @@ export default class extends React.Component {
               border-radius: 50%;
               background-color: #aea;
               position: relative;
+              display: flex;
+              justify-content: center;
+              align-items: center;
             }
 
             .time {
               position: absolute;
-              top: 0;
               width: 30px;
-              left: calc(50% - 15px);
               font-size: 1.2em;
+
               margin: auto;
             }
             .pickerWrapper {
