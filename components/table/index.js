@@ -132,7 +132,6 @@ class IndexPage extends Component {
 
               .day,
               .add,
-              .start,
               .end,
               .hours,
               .description {
