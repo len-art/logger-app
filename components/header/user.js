@@ -21,6 +21,7 @@ const LoggedIn = ({ user: { name }, resetCookies }) => (
             font-style: italic;
             opacity: 0.5;
             transition: 0.25s;
+            color: #eee;
           }
           .logout:hover {
             opacity: 1;
@@ -41,9 +42,9 @@ const NotLoggedIn = () => (
 )
 
 export default inject('store')(
-  observer(({ store: { auth: { user, resetCookies } } }) => (
+  observer(({ store: { auth: { isLoggedIn, user, resetCookies } } }) => (
     <div className="user">
-      {user ? <LoggedIn user={user} resetCookies={resetCookies} /> : <NotLoggedIn />}
+      {isLoggedIn ? <LoggedIn user={user} resetCookies={resetCookies} /> : <NotLoggedIn />}
     </div>
   )),
 )

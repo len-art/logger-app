@@ -4,37 +4,66 @@ export default class extends React.Component {
   ref = React.createRef()
 
   componentDidMount() {
-    if (this.ref.current) this.ref.current.focus()
+    if (this.ref.current && this.props.autofocus) this.ref.current.focus()
   }
 
   render() {
     const {
-      onChange, value, onBlur, onFocus,
+      onClick, onChange, value, onBlur, onFocus,
     } = this.props
     return (
-      <>
+      <div className="wrapper">
         <input
           ref={this.ref}
           type="text"
+          onClick={onClick}
           onChange={onChange}
           onBlur={onBlur}
           onFocus={onFocus}
           value={value}
         />
-        <style>
+        <span className="border" />
+        <style jsx>
           {`
-            input {
+            .wrapper {
+              width: 100%;
+              height: 100%;
+              margin: 0;
+              padding: 0;
               position: relative;
-              width: calc(100% - 50px);
+            }
+            input {
+              width: 100%;
+              height: 100%;
               border: none;
-              padding: 10px 40px 10px 10px;
+              padding: 10px;
+              background-color: inherit;
+              box-sizing: border-box;
             }
             input:focus {
               outline: none;
             }
+            input:hover {
+              background: rgba(34, 50, 84, 0.05);
+            }
+            .border {
+              position: absolute;
+              content: '';
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              height: 1px;
+              background-color: #aaa;
+              transition: 0.25s;
+              transform: scaleX(0);
+              transform-origin: left;
+            }
+            input:focus + .border {
+              transform: scaleX(1);
+            }
           `}
         </style>
-      </>
+      </div>
     )
   }
 }

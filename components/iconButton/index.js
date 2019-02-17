@@ -11,7 +11,7 @@ export default ({ onClick, Icon, text }) => (
           border: none;
           background: none;
           cursor: pointer;
-          font-size: 25px;
+          opacity: 0.6;
         }
 
         .iconButton:focus {

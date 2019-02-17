@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx'
+import { action, observable, computed } from 'mobx'
 
 import { tokenHelper } from '../helpers'
 
@@ -10,25 +10,32 @@ export default class {
   }
 
   @observable
+  afterAuth = false
+
+  @observable
   user = undefined
 
   async init() {
     if (typeof window === 'undefined') return
-    const accessToken = sessionStorage.getItem('accessToken')
+    const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       const data = await this.getUserData()
       if (!data.success && data.message !== 'Network Error') {
         this.resetCookies()
       }
-    } else {
-      const refreshToken = localStorage.getItem('refreshToken')
-      const refreshSecret = localStorage.getItem('refreshSecret')
-      if (refreshToken && refreshSecret) {
-        await this.getToken({ refreshToken, refreshSecret })
-        await this.getUserData()
-      }
+    } else if (refreshToken && refreshSecret) {
+      await this.getToken({ refreshToken, refreshSecret })
+      await this.getUserData()
     }
+    this.afterAuth = true
+  }
+
+  localStorageData = () => {
+    const accessToken = sessionStorage.getItem('accessToken')
+    const refreshToken = localStorage.getItem('refreshToken')
+    const refreshSecret = localStorage.getItem('refreshSecret')
+    return { accessToken, refreshSecret, refreshToken }
   }
 
   async getUserData() {
@@ -92,11 +99,18 @@ export default class {
     }
   }
 
+  @action
   resetCookies = () => {
     sessionStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('refreshSecret')
     this.user = undefined
     this.root.resetLocalData()
+  }
+
+  @computed
+  get isLoggedIn() {
+    if (!this.afterAuth) return undefined
+    return this.user !== undefined
   }
 }

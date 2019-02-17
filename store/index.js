@@ -13,9 +13,6 @@ export default class {
     this.auth = new Auth(this)
   }
 
-  // @observable
-  // user = undefined
-
   @observable
   projects = []
 
@@ -23,7 +20,7 @@ export default class {
   months = []
 
   @observable
-  selectedProject = 0
+  selectedProject = undefined
 
   @observable
   selectedMonth = undefined
@@ -44,11 +41,10 @@ export default class {
       const { data } = await this.client.post('projects/get', {
         projectId,
       })
-      this.project = projectId
+      this.selectedProject = projectId
       this.setMonths(data.months, true)
-      // this.months = data.months && data.months.map(m => agregate.toMonth(m))
       if (this.months.length) {
-        this.selectedMonth = this.months[0].id
+        this.setSelectedMonth(this.months[this.months.length - 1].id)
       }
     } catch (error) {
       console.error(error)
@@ -87,8 +83,25 @@ export default class {
     }
     this.months = months.map(m => agregate.toMonth(m))
     if (this.months.length) {
-      this.selectedMonth = this.months[0].id
+      this.setSelectedMonth(this.months[this.months.length - 1].id)
     }
+  }
+
+  async editEvent(monthId, eventId, event) {
+    const { data } = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+
+    this.updateMonths(agregate.toMonth(data.month))
+  }
+
+  async addEvent(monthId, event) {
+    const { data } = await this.client.post(`/months/${monthId}/add`, { event })
+    this.updateMonths(agregate.toMonth(data.month))
+  }
+
+  @action
+  updateMonths(month) {
+    const index = this.months.findIndex(({ id }) => id === month.id)
+    if (index !== -1) this.months[index] = month
   }
 
   @action

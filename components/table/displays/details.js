@@ -1,27 +1,13 @@
 import React from 'react'
-import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
 
-import Button from '../button'
-import IconButton from '../iconButton'
+import IconButton from '../../iconButton'
 
-import TextInput from './textInput'
-import Edit from '../../static/icons/edit.svg'
-
-const Day = ({ weekend, dayOfMonth }) => (
-  <div className={`day${weekend ? ' weekend' : ''}`}>{dayOfMonth}</div>
-)
-
-const Add = ({ weekend }) => <div className={`add${weekend ? ' weekend' : ''}`}>+</div>
-
-const Start = ({ weekend }) => <div className={`start${weekend ? ' weekend' : ''}`} />
-
-const End = ({ weekend }) => <div className={`end${weekend ? ' weekend' : ''}`} />
-
-const Hours = ({ weekend }) => <div className={`hours${weekend ? ' weekend' : ''}`} />
+import TextInput from '../textInput'
 
 @observer
-class Details extends React.Component {
+export default class extends React.Component {
   constructor(props) {
     super(props)
     if (props.event && props.event.details) {
@@ -37,6 +23,10 @@ class Details extends React.Component {
 
   handleShowEdit = () => {
     this.showEdit = !this.showEdit
+    const { event } = this.props
+    if (event && event.details) {
+      this.inputValue = event.details
+    }
   }
 
   handleInputChange = (e) => {
@@ -44,7 +34,6 @@ class Details extends React.Component {
   }
 
   handleInputCancel = () => {
-    console.log('blur')
     this.showEdit = false
     const { event } = this.props
     if (event && event.details) {
@@ -52,31 +41,47 @@ class Details extends React.Component {
     }
   }
 
-  handleInputConfirm = (e) => {
-    console.log('confirm')
+  handleInputConfirm = async (e) => {
     e.preventDefault()
+
+    const { event, dayInMonth } = this.props
+
+    if (event && event.id) {
+      /* event exists, send changes */
+      await this.props.editEvent({ details: this.inputValue }, event.id)
+    } else if (this.inputValue.length) {
+      /* event doesn't exist yet and user inputs text */
+      await this.props.addEvent({ details: this.inputValue, dayInMonth })
+    }
+
     this.showEdit = false
   }
 
+  handleDelete = (e) => {
+    this.inputValue = ''
+    this.handleInputConfirm(e)
+  }
+
   render() {
-    const { weekend } = this.props
+    const { weekend, dayOfWeek, event = {} } = this.props
+
     return (
-      <div className={`details${weekend ? ' weekend' : ''}`}>
+      <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />
           ) : (
-            <IconButton Icon={Edit} onClick={this.handleShowEdit} />
+            <IconButton onClick={this.handleDelete} text="✗" />
           )}
         </div>
-        {this.showEdit ? (
-          <form className="input" onSubmit={this.handleInputConfirm}>
-            <TextInput onChange={this.handleInputChange} value={this.inputValue} />
-            <Button unstyled onClick={this.handleInputCancel} text="✗" />
-          </form>
-        ) : (
-          <div className="input">{this.inputValue}</div>
-        )}
+        <form className="input" onSubmit={this.handleInputConfirm}>
+          <TextInput
+            onFocus={this.handleShowEdit}
+            onChange={this.handleInputChange}
+            onBlur={this.handleInputConfirm}
+            value={this.showEdit ? this.inputValue : event.details}
+          />
+        </form>
         <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
         <style jsx>
           {`
@@ -86,6 +91,7 @@ class Details extends React.Component {
               grid-template-areas: 'edit input clipboard';
               align-items: center;
               overflow: hidden;
+              padding: 0;
             }
             .details:hover .clipboard:not(.hidden) {
               transform: translateX(0px);
@@ -93,6 +99,7 @@ class Details extends React.Component {
             }
             form {
               display: flex;
+              height: 100%;
             }
             .clipboard {
               transform: translateX(30px);
@@ -106,13 +113,4 @@ class Details extends React.Component {
       </div>
     )
   }
-}
-
-export default {
-  day: Day,
-  add: Add,
-  start: Start,
-  end: End,
-  hours: Hours,
-  details: Details,
 }

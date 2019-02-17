@@ -16,13 +16,15 @@ export default () => (
           top: 0;
           left: 0;
           width: 100%;
-          height: 50px;
           z-index: 400;
+          background-color: #087599;
+          box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
+          color: #fafafa;
         }
         .wrapper {
           display: flex;
           flex-wrap: wrap;
-          padding: 10px;
+          padding: 20px;
           justify-content: space-between;
           height: 100%;
         }
