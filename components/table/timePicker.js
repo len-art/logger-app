@@ -1,39 +1,114 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { observable, computed, reaction } from 'mobx'
 
-// TODO: make this readable
 const hours = Array.from(new Array(12), (_, i) => {
-  const deg = (360 - i * 30) % 360
-  // const h = (12 + 3 - i + 1) % 12
-  const h = i
+  /* shift 90 degrees so positions start at the top */
+  const deg = (270 - i * 30) % 360
+  /* reverse hours for easier calcuation */
+  const h = 12 - i
   return { h, deg }
 })
-console.log(hours)
+
+const defaultRadius = 125
 
 @observer
 export default class extends React.Component {
   @observable
   showEdit = true
 
+  @observable
+  radius = 0
+
+  @observable
+  hoverDegrees
+
   clockRef = React.createRef()
 
-  inRad = deg => (deg * Math.PI) / 180
-
   componentDidMount() {
-    this.radius = this.clockRef.current ? this.clockRef.current.offsetWidth / 2 : 0
+    if (this.clockRef.current) {
+      this.getRadius()
+    }
   }
 
-  getX = deg => Math.cos(this.inRad(deg)) * this.radius
+  getRadius() {
+    this.radius = this.clockRef.current.offsetWidth / 2 - 20
+  }
 
-  getY = deg => Math.sin(this.inRad(deg)) * this.radius
+  toRad = deg => (deg * Math.PI) / 180
+
+  toDeg = rad => (rad * 180) / Math.PI
+
+  getX = deg => Math.cos(this.toRad(deg)) * this.radius
+
+  getY = deg => Math.sin(this.toRad(deg)) * this.radius
 
   handleShowedit = () => {
     this.showEdit = !this.showEdit
+    this.mouseListen(this.showEdit)
+  }
+
+  mouseListen = (create) => {
+    if (create) {
+      document.addEventListener('mousemove', this.handleMouseMove)
+    } else {
+      document.removeEventListener('mousemove', this.handleMouseMove)
+      this.hoverDegrees = undefined
+    }
+  }
+
+  handleMouseMove = (e) => {
+    if (!this.clockRef.current) return
+    const { clientX: mx, clientY: my } = e
+    const {
+      left,
+      right,
+      top,
+      bottom,
+      width,
+      height,
+    } = this.clockRef.current.getBoundingClientRect()
+
+    if (mx >= left && mx <= right && my >= top && my <= bottom) {
+      this.handleClockHover({
+        mx,
+        my,
+        left,
+        top,
+        width,
+        height,
+      })
+    }
+  }
+
+  handleClockHover = ({
+    mx, my, left, top, width, height,
+  }) => {
+    const cx = left + width / 2
+    const cy = top + height / 2
+    this.hoverDegrees = this.getHoverDegrees({
+      mx,
+      my,
+      cx,
+      cy,
+    })
+    // console.log(this.hoverDegrees)
+  }
+
+  getHoverDegrees = ({
+    mx, my, cx, cy,
+  }) => {
+    const [y, x] = [cy - my, mx - cx]
+    const tan = y / x
+    console.log(y, x)
+    const deg = this.toDeg(Math.atan(tan))
+    return deg
   }
 
   render() {
-    const { onClick, onChange, value } = this.props
+    const {
+      onClick, onChange, value, radius = 125,
+    } = this.props
     return (
       <div className="wrapper">
         <input
@@ -55,16 +130,26 @@ export default class extends React.Component {
                 {h.h}
               </button>
             ))}
+            {this.hoverDegrees !== undefined && (
+              <div style={{ transform: `rotate(${this.hoverDegrees}deg)` }} className="hover" />
+            )}
           </div>
         </div>
         <style jsx>
           {`
+            .hover {
+              position: absolute;
+              left: 50%;
+              width: 50%;
+              height: 2px;
+              background-color: #f00;
+              transform-origin: left;
+            }
             .clock {
               width: 100%;
               height: 100%;
               border-radius: 50%;
               background-color: #aea;
-              position: relative;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -74,7 +159,6 @@ export default class extends React.Component {
               position: absolute;
               width: 30px;
               font-size: 1.2em;
-
               margin: auto;
             }
             .pickerWrapper {
@@ -83,8 +167,8 @@ export default class extends React.Component {
               padding: 10px;
               bottom: -250px;
               left: 0;
-              width: 250px;
-              height: 250px;
+              width: ${radius * 2}px;
+              height: ${radius * 2}px;
               background: #fff;
               z-index: 10;
               box-shadow: 2px 3px 7px -1px rgba(50, 50, 50, 0.6);
