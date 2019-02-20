@@ -10,8 +10,6 @@ const hours = Array.from(new Array(12), (_, i) => {
   return { h, deg }
 })
 
-const defaultRadius = 125
-
 @observer
 export default class extends React.Component {
   @observable
@@ -92,16 +90,13 @@ export default class extends React.Component {
       cx,
       cy,
     })
-    // console.log(this.hoverDegrees)
   }
 
   getHoverDegrees = ({
     mx, my, cx, cy,
   }) => {
     const [y, x] = [cy - my, mx - cx]
-    const tan = y / x
-    console.log(y, x)
-    const deg = this.toDeg(Math.atan(tan))
+    const deg = this.toDeg(Math.atan2(y, x))
     return deg
   }
 
@@ -131,7 +126,7 @@ export default class extends React.Component {
               </button>
             ))}
             {this.hoverDegrees !== undefined && (
-              <div style={{ transform: `rotate(${this.hoverDegrees}deg)` }} className="hover" />
+              <div style={{ transform: `rotate(${-this.hoverDegrees}deg)` }} className="hover" />
             )}
           </div>
         </div>
