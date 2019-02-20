@@ -27,6 +27,8 @@ export default class extends React.Component {
     if (this.clockRef.current) {
       this.getRadius()
     }
+    // TODO: remove after developing
+    document.addEventListener('mousemove', this.handleMouseMove)
   }
 
   getRadius() {
@@ -135,16 +137,24 @@ export default class extends React.Component {
             .hover {
               position: absolute;
               left: 50%;
-              width: 50%;
+              width: calc(50% - 30px);
               height: 2px;
-              background-color: #f00;
+              background: linear-gradient(
+                to right,
+                rgba(100, 100, 100, 0),
+                rgba(100, 100, 100, 0) 30%,
+                rgba(100, 100, 100, 0.5) 40%,
+                rgba(100, 100, 100, 0.5) 70%,
+                rgba(100, 100, 100, 0) 80%
+              );
+              opacity: 0.4;
               transform-origin: left;
             }
             .clock {
               width: 100%;
               height: 100%;
               border-radius: 50%;
-              background-color: #aea;
+              background-color: rgba(170, 238, 170, 0.3);
               display: flex;
               justify-content: center;
               align-items: center;
@@ -152,9 +162,18 @@ export default class extends React.Component {
 
             .time {
               position: absolute;
+              border-radius: 50%;
               width: 30px;
-              font-size: 1.2em;
+              height: 30px;
+              font-size: 0.9em;
+              text-align: center;
+              color: #888;
               margin: auto;
+              padding: 0;
+            }
+
+            .selected {
+              background-color: #083b99;
             }
             .pickerWrapper {
               position: absolute;
