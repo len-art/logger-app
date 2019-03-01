@@ -48,6 +48,7 @@ export default class extends React.Component {
           onSelect={this.handleChange}
           onCommit={this.handleCommit}
           value={this.inputValue}
+          isVisible={this.isVisible}
         />
         {/* )} */}
       </div>

@@ -333,7 +333,7 @@ export default class extends React.Component {
             .pickerWrapper {
               position: absolute;
               padding: 10px;
-              bottom: -250px;
+              bottom: -270px;
               left: 0;
               width: ${radius * 2}px;
               height: ${radius * 2}px;
