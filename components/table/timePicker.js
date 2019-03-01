@@ -120,7 +120,7 @@ export default class extends React.Component {
           <div ref={this.clockRef} className="clock">
             {hours.map(h => (
               <button
-                className="time"
+                className="hours"
                 key={h.h}
                 style={{ transform: `translate(${this.getX(h.deg)}px, ${this.getY(h.deg)}px)` }}
               >
@@ -137,18 +137,21 @@ export default class extends React.Component {
             .hover {
               position: absolute;
               left: 50%;
-              width: calc(50% - 30px);
-              height: 2px;
-              background: linear-gradient(
-                to right,
-                rgba(100, 100, 100, 0),
-                rgba(100, 100, 100, 0) 30%,
-                rgba(100, 100, 100, 0.5) 40%,
-                rgba(100, 100, 100, 0.5) 70%,
-                rgba(100, 100, 100, 0) 80%
-              );
-              opacity: 0.4;
+              width: calc(50% - 43px);
+              height: 1px;
+              background-color: var(--buttonBlue);
+              opacity: 0.1;
               transform-origin: left;
+            }
+            .hover:after {
+              content: '';
+              position: absolute;
+              right: -26px;
+              top: -13px;
+              width: 26px;
+              height: 26px;
+              border-radius: 50%;
+              background-color: var(--buttonBlue);
             }
             .clock {
               width: 100%;
@@ -160,7 +163,7 @@ export default class extends React.Component {
               align-items: center;
             }
 
-            .time {
+            .hours {
               position: absolute;
               border-radius: 50%;
               width: 30px;
@@ -170,6 +173,7 @@ export default class extends React.Component {
               color: #888;
               margin: auto;
               padding: 0;
+              z-index: 1;
             }
 
             .selected {
