@@ -44,14 +44,16 @@ export default class extends React.Component {
   handleInputConfirm = async (e) => {
     e.preventDefault()
 
-    const { event, dayInMonth } = this.props
+    const {
+      event, editEvent, addEvent, dayInMonth,
+    } = this.props
 
     if (event && event.id) {
       /* event exists, send changes */
-      await this.props.editEvent({ details: this.inputValue }, event.id)
+      await editEvent({ details: this.inputValue }, event.id)
     } else if (this.inputValue.length) {
       /* event doesn't exist yet and user inputs text */
-      await this.props.addEvent({ details: this.inputValue, dayInMonth })
+      await addEvent({ details: this.inputValue, dayInMonth })
     }
 
     this.showEdit = false

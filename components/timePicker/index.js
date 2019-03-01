@@ -88,6 +88,7 @@ export default class extends React.Component {
   handleShowedit = () => {
     this.showEdit = !this.showEdit
     this.mouseListen(this.showEdit)
+    if (!this.showEdit) this.props.onCommit()
   }
 
   mouseListen = (create) => {
@@ -150,7 +151,8 @@ export default class extends React.Component {
   }
 
   showHours = () => {
-    // TODO: add a button for this (back from minutes )
+    // TODO: add a button for this (back from minutes)
+    // and allow to click in the inner ring
     this.showHours = false
   }
 

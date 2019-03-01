@@ -21,17 +21,35 @@ export default class extends React.Component {
   }
 
   handleChange = ({ minute, hour }) => {
-    // TODO: create a date object
     const { startsAt, dayInMonth } = this.props
     const date = setMinutes(setHours(setDate(startsAt, dayInMonth + 1), hour), minute)
     this.inputValue = date
+  }
+
+  handleCommit = async () => {
+    const {
+      editEvent, addEvent, event, dayInMonth,
+    } = this.props
+    if (!this.inputValue) return
+
+    if (!event || event.start === undefined) {
+      await addEvent({ start: this.inputValue, dayInMonth })
+    } else {
+      await editEvent({ start: this.inputValue }, event.id)
+    }
   }
 
   render() {
     const { weekend, dayOfWeek } = this.props
     return (
       <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
-        {dayOfWeek === 5 && <TimePicker onSelect={this.handleChange} value={this.inputValue} />}
+        {dayOfWeek === 5 && (
+          <TimePicker
+            onSelect={this.handleChange}
+            onCommit={this.handleCommit}
+            value={this.inputValue}
+          />
+        )}
       </div>
     )
   }

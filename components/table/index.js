@@ -62,6 +62,7 @@ class IndexPage extends Component {
                 const events = this.monthList.events.filter(
                   ({ dayInMonth }) => dayInMonth === index,
                 )
+                console.log(events)
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
                 return (
                   <React.Fragment key={index.toString()}>
