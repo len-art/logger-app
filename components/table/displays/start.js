@@ -9,9 +9,9 @@ export default class extends React.Component {
   @observable
   inputTime
 
-  handleChange = ({ target: { value } }) => {
+  handleChange = ({ minute, hour }) => {
     // TODO: format to time (maybe two inputs?)
-    this.inputTime = value
+    console.log(minute, hour)
   }
 
   render() {
@@ -20,7 +20,7 @@ export default class extends React.Component {
       <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         {dayOfWeek === 5 && (
           <TimePicker
-            onChange={this.handleChange}
+            onSelect={this.handleChange}
             value={this.showEdit ? this.inputTime : event.detals}
           />
         )}

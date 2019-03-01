@@ -2,6 +2,7 @@ import React from 'react'
 import { observer } from 'mobx-react'
 import { observable, computed, reaction } from 'mobx'
 
+import { th } from 'date-fns/esm/locale'
 import { clockHelper } from '../../helpers'
 
 @observer
@@ -63,6 +64,8 @@ export default class extends React.Component {
     return Object.values(this.selection).every(v => v !== undefined)
   }
 
+  normalizeDegrees = deg => (450 - deg) % 360
+
   getRadius() {
     this.radius = this.clockRef.current.offsetWidth / 2 - 20
   }
@@ -118,6 +121,8 @@ export default class extends React.Component {
         width,
         height,
       })
+    } else {
+      this.hoverDegrees = undefined
     }
   }
 
@@ -156,7 +161,12 @@ export default class extends React.Component {
       this.showMinutes()
     } else {
       this.selection.minute = this.hoverDegrees
-      // this should call onClick prop when hour selection is done
+    }
+    const { onSelect } = this.props
+    if (this.isSelectionDone && typeof onSelect === 'function') {
+      const hour = clockHelper.getHourFromDegrees(this.normalizeDegrees(this.selection.hour))
+      const minute = clockHelper.getMinuteFromDegrees(this.normalizeDegrees(this.selection.minute))
+      onSelect({ hour, minute })
     }
   }
 
@@ -164,6 +174,7 @@ export default class extends React.Component {
     const {
       onClick, onChange, value, radius = 125,
     } = this.props
+
     return (
       <div className="wrapper">
         <input
@@ -201,9 +212,7 @@ export default class extends React.Component {
             {this.hoverDegrees !== undefined && (
               <div
                 style={{ transform: `rotate(${-this.hoverDegrees}deg)` }}
-                className={`hover${this.showHours ? '' : 'Minute'}${
-                  this.isSelectionDone ? ' onlyDot' : ''
-                }`}
+                className={`hover${this.showHours ? '' : 'Minute'}`}
               />
             )}
             {this.selectedHourDeg !== undefined && (
@@ -249,13 +258,14 @@ export default class extends React.Component {
             }
             .hover {
               width: calc(50% - 43px);
-            }
-            .hoverMinute.onlyDot {
               height: 0px;
             }
-            .hoverMinute,
-            .selectedMinute {
+            .selectedMinute,
+            .hoverMinute {
               width: calc(50% - 39px);
+            }
+            .hoverMinute {
+              height: 0px;
             }
             .selectedMinute {
               transition: 0.1s;

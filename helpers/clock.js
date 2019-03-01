@@ -15,6 +15,16 @@ const createMinutes = () => Array.from(new Array(12), (_, i) => {
 })
 
 // TODO: this is bad and i should feel bad fix it to be more elegant
-const getHourDegrees = hour => (15 - ((hour * 30) / 360) * 12) % 12
+const getHourFromDegrees = (deg) => {
+  const value = Math.round((deg / 360) * 12)
+  return value === 0 ? 12 : value
+}
 
-export default { createHours, createMinutes, getHourDegrees }
+const getMinuteFromDegrees = deg => Math.round((deg / 360) * 60) % 60
+
+export default {
+  createHours,
+  createMinutes,
+  getHourFromDegrees,
+  getMinuteFromDegrees,
+}
