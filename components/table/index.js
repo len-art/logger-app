@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 
-import Button from '../button'
-import Fab from '../fab'
-
 import Paper from '../paper'
 import Header from './header'
 import displays from './displays'
@@ -62,7 +59,6 @@ class IndexPage extends Component {
                 const events = this.monthList.events.filter(
                   ({ dayInMonth }) => dayInMonth === index,
                 )
-                console.log(events)
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
                 return (
                   <React.Fragment key={index.toString()}>

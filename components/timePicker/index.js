@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { observable, computed, reaction } from 'mobx'
+import { observable, computed, autorun } from 'mobx'
 import format from 'date-fns/format'
 
 import { clockHelper } from '../../helpers'
@@ -8,7 +8,7 @@ import { clockHelper } from '../../helpers'
 @observer
 export default class extends React.Component {
   @observable
-  showEdit = true
+  showEdit = false
 
   @observable
   showHours = true
@@ -38,7 +38,7 @@ export default class extends React.Component {
       this.getRadius()
     }
     // TODO: remove after developing
-    document.addEventListener('mousemove', this.handleMouseMove)
+    // document.addEventListener('mousemove', this.handleMouseMove)
   }
 
   @computed
@@ -65,7 +65,7 @@ export default class extends React.Component {
 
   normalizeDegrees = deg => (450 - deg) % 360
 
-  getRadius() {
+  getRadius = () => {
     this.radius = this.clockRef.current.offsetWidth / 2 - 20
   }
 
@@ -176,13 +176,14 @@ export default class extends React.Component {
       onClick, onChange, value, radius = 125,
     } = this.props
     const inputValue = value ? format(value, 'HH:mm') : ''
+    // console.log(this.clockRef.current && this.clockRef.current.offsetWidth / 2 - 20)
     return (
       <div className="wrapper">
         <input
           type="text"
           onClick={onClick}
           onChange={onChange}
-          onBlur={this.handleShowedit}
+          // onBlur={this.handleShowedit}
           onFocus={this.handleShowedit}
           value={inputValue}
         />
@@ -302,7 +303,7 @@ export default class extends React.Component {
               width: 100%;
               height: 100%;
               border-radius: 50%;
-              background-color: rgba(170, 238, 170, 0.3);
+              background-color: rgba(40, 104, 221, 0.05);
               display: flex;
               justify-content: center;
               align-items: center;
@@ -331,7 +332,6 @@ export default class extends React.Component {
             }
             .pickerWrapper {
               position: absolute;
-              display: none;
               padding: 10px;
               bottom: -250px;
               left: 0;
@@ -340,9 +340,12 @@ export default class extends React.Component {
               background: #fff;
               z-index: 10;
               box-shadow: 2px 3px 7px -1px rgba(50, 50, 50, 0.6);
+              opacity: 0;
+              z-index: -1000;
             }
             .visible {
-              display: block;
+              opacity: 1;
+              z-index: 10;
             }
             .wrapper {
               width: 100%;
