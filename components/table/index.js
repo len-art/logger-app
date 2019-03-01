@@ -73,6 +73,7 @@ class IndexPage extends Component {
                       addLocalDetail: this.addLocalDetail,
                       handleToClipboard: this.handleToClipboard,
                       events,
+                      startsAt: this.monthList.startsAt,
                     }))}
                     {events.length !== 0
                       ? events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
@@ -86,6 +87,7 @@ class IndexPage extends Component {
                         weekend,
                         handleToClipboard: this.handleToClipboard,
                         event,
+                        startsAt: this.monthList.startsAt,
                       })))
                       : displayCol.map(d => React.createElement(displays[d.id], {
                         key: d.id,
@@ -97,6 +99,7 @@ class IndexPage extends Component {
                         monthId: this.monthList.id,
                         weekend,
                         handleToClipboard: this.handleToClipboard,
+                        startsAt: this.monthList.startsAt,
                       }))}
                     {dayOfWeek === 0 && (
                       <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>

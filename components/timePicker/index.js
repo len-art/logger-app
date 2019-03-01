@@ -1,8 +1,8 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { observable, computed, reaction } from 'mobx'
+import format from 'date-fns/format'
 
-import { th } from 'date-fns/esm/locale'
 import { clockHelper } from '../../helpers'
 
 @observer
@@ -43,11 +43,10 @@ export default class extends React.Component {
 
   @computed
   get selectedHourDeg() {
-    if (this.selection.hour === undefined || this.hoverDegrees === undefined) return undefined
+    if (this.selection.hour === undefined) return undefined
     /* round to nearest 30 */
     const round = Math.round(this.selection.hour / 30) * 30
-    if (this.hoverDegrees === undefined) return round
-    const minute = this.isSelectionDone ? this.selection.minute : this.hoverDegrees
+    const minute = this.selection.minute === undefined ? this.hoverDegrees : this.selection.minute
     const minuteDegrees = (360 - minute + 90) % 360
     const addPercent = minuteDegrees / 360
     return round - 30 * addPercent
@@ -55,7 +54,7 @@ export default class extends React.Component {
 
   @computed
   get selectedMinuteDeg() {
-    if (this.selection.minute === undefined || this.hoverDegrees === undefined) return undefined
+    if (this.selection.minute === undefined) return undefined
     return this.selection.minute
   }
 
@@ -174,7 +173,7 @@ export default class extends React.Component {
     const {
       onClick, onChange, value, radius = 125,
     } = this.props
-
+    const inputValue = value ? format(value, 'HH:mm') : ''
     return (
       <div className="wrapper">
         <input
@@ -183,7 +182,7 @@ export default class extends React.Component {
           onChange={onChange}
           onBlur={this.handleShowedit}
           onFocus={this.handleShowedit}
-          value={value}
+          value={inputValue}
         />
         <div className={this.showEdit ? 'pickerWrapper visible' : 'pickerWrapper'}>
           {/* eslint-disable-next-line */}
