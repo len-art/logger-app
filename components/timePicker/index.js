@@ -152,10 +152,10 @@ export default class extends React.Component {
     this.showHours = false
   }
 
-  showHours = () => {
+  toggleShowHours = () => {
     // TODO: add a button for this (back from minutes)
     // and allow to click in the inner ring
-    this.showHours = false
+    this.showHours = true
   }
 
   handleClockClick = () => {
@@ -190,7 +190,13 @@ export default class extends React.Component {
           value={inputValue}
         />
         <div className={this.showEdit ? 'pickerWrapper visible' : 'pickerWrapper'}>
-          <IconButton Icon={Back} buttonStyles="position: absolute; left: 0; top: 0;" />
+          {!this.showHours && (
+            <IconButton
+              Icon={Back}
+              onClick={this.toggleShowHours}
+              buttonStyles="position: absolute; left: 0; top: 0;"
+            />
+          )}
           {/* eslint-disable-next-line */}
           <div onClick={this.handleClockClick} role="button" ref={this.clockRef} className="clock">
             {this.hours.map(h => (
