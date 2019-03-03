@@ -1,9 +1,11 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { observable, computed, autorun } from 'mobx'
+import { observable, computed } from 'mobx'
 import format from 'date-fns/format'
 
 import { clockHelper } from '../../helpers'
+import IconButton from '../iconButton'
+import Back from '../../static/icons/back.svg'
 
 @observer
 export default class extends React.Component {
@@ -188,6 +190,7 @@ export default class extends React.Component {
           value={inputValue}
         />
         <div className={this.showEdit ? 'pickerWrapper visible' : 'pickerWrapper'}>
+          <IconButton Icon={Back} buttonStyles="position: absolute; left: 0; top: 0;" />
           {/* eslint-disable-next-line */}
           <div onClick={this.handleClockClick} role="button" ref={this.clockRef} className="clock">
             {this.hours.map(h => (
