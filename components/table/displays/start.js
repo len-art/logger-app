@@ -43,14 +43,12 @@ export default class extends React.Component {
     const { weekend, dayOfWeek } = this.props
     return (
       <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
-        {/* {dayOfWeek === 5 && ( */}
         <TimePicker
           onSelect={this.handleSelect}
           onCommit={this.handleCommit}
           value={this.inputValue}
           isVisible={this.isVisible}
         />
-        {/* )} */}
       </div>
     )
   }

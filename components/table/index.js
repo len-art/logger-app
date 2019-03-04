@@ -133,8 +133,7 @@ class IndexPage extends Component {
               .day,
               .add,
               .end,
-              .hours,
-              .description {
+              .hours {
                 padding: 15px;
               }
 
@@ -165,7 +164,7 @@ class IndexPage extends Component {
                 grid-column-start: 5;
                 grid-column-end: 6;
               }
-              .description {
+              .details {
                 grid-column-start: 6;
                 grid-column-end: 7;
               }
