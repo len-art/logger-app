@@ -155,7 +155,11 @@ export default class extends React.Component {
   toggleShowHours = () => {
     // TODO: add a button for this (back from minutes)
     // and allow to click in the inner ring
-    this.showHours = true
+    this.showHours = !this.showHours
+    if (this.showHours) {
+      this.selection.hour = undefined
+      this.selection.minute = undefined
+    }
   }
 
   handleClockClick = () => {
