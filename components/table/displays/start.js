@@ -20,7 +20,7 @@ export default class extends React.Component {
     }
   }
 
-  handleChange = ({ minute, hour }) => {
+  handleSelect = ({ minute, hour }) => {
     const { startsAt, dayInMonth } = this.props
     const date = setMinutes(setHours(setDate(startsAt, dayInMonth + 1), hour), minute)
     this.inputValue = date
@@ -45,7 +45,7 @@ export default class extends React.Component {
       <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         {/* {dayOfWeek === 5 && ( */}
         <TimePicker
-          onSelect={this.handleChange}
+          onSelect={this.handleSelect}
           onCommit={this.handleCommit}
           value={this.inputValue}
           isVisible={this.isVisible}

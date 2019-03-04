@@ -39,8 +39,6 @@ export default class extends React.Component {
     if (this.clockRef.current) {
       this.getRadius()
     }
-    // TODO: remove after developing
-    // document.addEventListener('mousemove', this.handleMouseMove)
   }
 
   @computed
@@ -57,7 +55,7 @@ export default class extends React.Component {
   @computed
   get selectedMinuteDeg() {
     if (this.selection.minute === undefined) return undefined
-    return this.selection.minute
+    return Math.round(this.selection.minute / 6) * 6
   }
 
   @computed
@@ -153,7 +151,6 @@ export default class extends React.Component {
   }
 
   toggleShowHours = () => {
-    // TODO: add a button for this (back from minutes)
     // and allow to click in the inner ring
     this.showHours = !this.showHours
     if (this.showHours) {
@@ -182,14 +179,14 @@ export default class extends React.Component {
       onClick, onChange, value, radius = 125,
     } = this.props
     const inputValue = value ? format(value, 'HH:mm') : ''
-    // console.log(this.clockRef.current && this.clockRef.current.offsetWidth / 2 - 20)
     return (
       <div className="wrapper">
         <input
           type="text"
           onClick={onClick}
           onChange={onChange}
-          // onBlur={this.handleShowedit}
+          readOnly
+          onBlur={this.handleShowedit}
           onFocus={this.handleShowedit}
           value={inputValue}
         />
@@ -201,6 +198,7 @@ export default class extends React.Component {
               buttonStyles="position: absolute; left: 0; top: 0;"
             />
           )}
+          {/* hours ring */}
           {/* eslint-disable-next-line */}
           <div onClick={this.handleClockClick} role="button" ref={this.clockRef} className="clock">
             {this.hours.map(h => (
@@ -214,6 +212,7 @@ export default class extends React.Component {
                 {h.h}
               </button>
             ))}
+            {/* minutes ring */}
             {!this.showHours
               && this.minutes.map(m => (
                 <button
@@ -224,12 +223,14 @@ export default class extends React.Component {
                   {m.m}
                 </button>
               ))}
+            {/* hover display */}
             {this.hoverDegrees !== undefined && (
               <div
                 style={{ transform: `rotate(${-this.hoverDegrees}deg)` }}
                 className={`hover${this.showHours ? '' : 'Minute'}`}
               />
             )}
+            {/* selected hour display */}
             {this.selectedHourDeg !== undefined && (
               <div
                 style={{
@@ -238,6 +239,7 @@ export default class extends React.Component {
                 className="selectedHour"
               />
             )}
+            {/* selected minute display */}
             {this.selectedMinuteDeg !== undefined && (
               <div
                 style={{
@@ -375,6 +377,7 @@ export default class extends React.Component {
               padding: 10px;
               background-color: inherit;
               box-sizing: border-box;
+              cursor: pointer;
             }
             input:focus {
               outline: none;
