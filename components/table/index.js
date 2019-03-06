@@ -18,7 +18,7 @@ const displayCol = listColumns.slice(2)
 
 @inject('store')
 @observer
-class IndexPage extends Component {
+class Table extends Component {
   @computed
   get monthList() {
     const { months, selectedMonth } = this.props.store
@@ -191,4 +191,4 @@ class IndexPage extends Component {
   }
 }
 
-export default IndexPage
+export default Table
