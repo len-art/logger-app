@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 
 import IconButton from '../../iconButton'
+import CopyIcon from '../../../static/icons/copyIcon.svg'
 
 import TextInput from '../textInput'
 
@@ -74,7 +75,6 @@ export default class extends React.Component {
 
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
-
     return (
       <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
@@ -92,12 +92,9 @@ export default class extends React.Component {
             value={this.showEdit ? this.inputValue : event.details}
           />
         </form>
-        <button
-          onClick={this.copyToClipboard}
-          className={`clipboard${this.showEdit ? ' hidden' : ''}`}
-        >
-          cp
-        </button>
+        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>
+          <IconButton onClick={this.copyToClipboard} Icon={CopyIcon} />
+        </div>
         <style jsx>
           {`
             .details {
