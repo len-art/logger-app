@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 
 import IconButton from '../../iconButton'
-import CopyIcon from '../../static/icons/copyIcon.svg'
+import CopyIcon from '../../../static/icons/copyIcon.svg'
 
 import TextInput from '../textInput'
 
@@ -11,6 +11,7 @@ import TextInput from '../textInput'
 export default class extends React.Component {
   constructor(props) {
     super(props)
+    this.inputRef = React.createRef()
     if (props.event && props.event.details) {
       this.inputValue = props.event.details
     }
@@ -63,9 +64,14 @@ export default class extends React.Component {
     this.handleInputConfirm(e)
   }
 
+  copyToClipboard = () => {
+    this.inputRef.current.select()
+    document.execCommand('copy')
+    this.inputRef.current.blur()
+  }
+
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
-
     return (
       <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
@@ -76,7 +82,9 @@ export default class extends React.Component {
           )}
         </div>
         <form className="input" onSubmit={this.handleInputConfirm}>
-          <TextInput
+          {/* <TextInput */}
+          <input
+            ref={this.inputRef}
             onFocus={this.handleShowEdit}
             onChange={this.handleInputChange}
             onBlur={this.handleInputConfirm}
@@ -84,7 +92,7 @@ export default class extends React.Component {
           />
         </form>
         <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>
-          <IconButton Icon={CopyIcon} />
+          <IconButton onClick={this.copyToClipboard} Icon={CopyIcon} />
         </div>
         <style jsx>
           {`
