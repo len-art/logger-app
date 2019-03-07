@@ -58,7 +58,7 @@ export default class {
     } else this.projects = []
 
     if (this.projects.length) {
-      this.selectedProject = this.projects[this.projects.length - 1].id
+      this.selectedProject = this.projects[0].id
     }
   }
 
@@ -68,7 +68,7 @@ export default class {
       this.months = months.map(m => agregate.toMonth(m))
     } else this.months = []
     if (this.months.length) {
-      this.setSelectedMonth(this.months[this.months.length - 1].id)
+      this.setSelectedMonth(this.months[0].id)
     }
   }
 
