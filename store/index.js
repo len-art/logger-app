@@ -53,23 +53,20 @@ export default class {
 
   @action
   setProjects(projects) {
-    if (!Array.isArray(projects)) {
-      this.projects = []
-      return
-    }
-    this.projects = projects
+    if (Array.isArray(projects)) {
+      this.projects = projects
+    } else this.projects = []
+
     if (this.projects.length) {
-      this.selectedProject = this.projects[0].id
+      this.selectedProject = this.projects[this.projects.length - 1].id
     }
   }
 
   @action
   setMonths(months) {
-    if (!Array.isArray(months)) {
-      this.months = []
-      return
-    }
-    this.months = months.map(m => agregate.toMonth(m))
+    if (Array.isArray(months)) {
+      this.months = months.map(m => agregate.toMonth(m))
+    } else this.months = []
     if (this.months.length) {
       this.setSelectedMonth(this.months[this.months.length - 1].id)
     }
