@@ -1,3 +1,9 @@
+const toEvent = event => ({
+  ...event,
+  start: new Date(event.start),
+  end: new Date(event.end),
+  createdAt: new Date(event.createdAt),
+})
 const toMonth = month => ({
   id: month.id,
   userId: month.userId,
@@ -6,7 +12,7 @@ const toMonth = month => ({
   createdAt: new Date(month.createdAt),
   modifiedAt: new Date(month.modifiedAt),
   daysOfWeek: month.daysOfWeek,
-  events: month.events,
+  events: month.events && month.events.map(e => toEvent(e)),
 })
 
 export default {

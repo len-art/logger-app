@@ -54,6 +54,7 @@ class Layout extends React.Component {
               font-size: 14px;
               background-color: #f5f5f5;
               color: #222;
+              --buttonBlue: rgb(8, 59, 153);
             }
             a {
               text-decoration: none;

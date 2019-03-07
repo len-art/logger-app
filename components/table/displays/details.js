@@ -11,7 +11,6 @@ import TextInput from '../textInput'
 export default class extends React.Component {
   constructor(props) {
     super(props)
-    this.inputRef = React.createRef()
     if (props.event && props.event.details) {
       this.inputValue = props.event.details
     }
@@ -46,14 +45,16 @@ export default class extends React.Component {
   handleInputConfirm = async (e) => {
     e.preventDefault()
 
-    const { event, dayInMonth } = this.props
+    const {
+      event, editEvent, addEvent, dayInMonth,
+    } = this.props
 
     if (event && event.id) {
       /* event exists, send changes */
-      await this.props.editEvent({ details: this.inputValue }, event.id)
+      await editEvent({ details: this.inputValue }, event.id)
     } else if (this.inputValue.length) {
       /* event doesn't exist yet and user inputs text */
-      await this.props.addEvent({ details: this.inputValue, dayInMonth })
+      await addEvent({ details: this.inputValue, dayInMonth })
     }
 
     this.showEdit = false
@@ -64,10 +65,12 @@ export default class extends React.Component {
     this.handleInputConfirm(e)
   }
 
-  copyToClipboard = () => {
-    this.inputRef.current.select()
-    document.execCommand('copy')
-    this.inputRef.current.blur()
+  copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(this.inputValue)
+    } catch (error) {
+      console.error(`Failed to copy to clipboard: ${error}`)
+    }
   }
 
   render() {
@@ -82,9 +85,7 @@ export default class extends React.Component {
           )}
         </div>
         <form className="input" onSubmit={this.handleInputConfirm}>
-          {/* <TextInput */}
-          <input
-            ref={this.inputRef}
+          <TextInput
             onFocus={this.handleShowEdit}
             onChange={this.handleInputChange}
             onBlur={this.handleInputConfirm}
