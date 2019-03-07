@@ -21,6 +21,8 @@ export default class extends React.Component {
   @observable
   hoverDegrees
 
+  mouseIsInsideClock
+
   @observable
   selection = {
     hour: undefined,
@@ -103,10 +105,16 @@ export default class extends React.Component {
   mouseListen = (create) => {
     if (create) {
       document.addEventListener('mousemove', this.handleMouseMove)
+      document.addEventListener('mousedown', this.handleMouseDown)
     } else {
       document.removeEventListener('mousemove', this.handleMouseMove)
+      document.removeEventListener('mousedown', this.handleMouseDown)
       this.hoverDegrees = undefined
     }
+  }
+
+  handleMouseDown = () => {
+    if (!this.mouseIsInsideClock) this.props.onBlur()
   }
 
   handleMouseMove = (e) => {
@@ -122,6 +130,7 @@ export default class extends React.Component {
     } = this.clockRef.current.getBoundingClientRect()
 
     if (mx >= left && mx <= right && my >= top && my <= bottom) {
+      this.mouseIsInsideClock = true
       this.handleClockHover({
         mx,
         my,
@@ -132,6 +141,7 @@ export default class extends React.Component {
       })
     } else {
       this.hoverDegrees = undefined
+      this.mouseIsInsideClock = false
     }
   }
 
@@ -185,7 +195,7 @@ export default class extends React.Component {
 
   render() {
     const {
-      onClick, onChange, value, radius = 125, handleFocus, id, selected,
+      onClick, onChange, value, radius = 125, onFocus, id, selected,
     } = this.props
     const inputValue = value ? format(value, 'HH:mm') : ''
     return (
@@ -195,9 +205,7 @@ export default class extends React.Component {
           onClick={onClick}
           onChange={onChange}
           readOnly
-          // onBlur={this.handleShowedit}
-          // onFocus={this.handleShowedit}
-          onFocus={() => handleFocus(id)}
+          onFocus={() => onFocus(id)}
           value={inputValue}
         />
         <div className={selected ? 'pickerWrapper visible' : 'pickerWrapper'}>

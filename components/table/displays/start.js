@@ -41,14 +41,20 @@ export default class extends React.Component {
 
   render() {
     const {
-      weekend, dayOfWeek, selectedStart, handleSelectStart, dayInMonth,
+      weekend,
+      dayOfWeek,
+      selectedStart,
+      handleSelectStart,
+      handleUnselectStart,
+      dayInMonth,
     } = this.props
     return (
       <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <TimePicker
           onSelect={this.handleSelect}
           selected={selectedStart === dayInMonth}
-          handleFocus={handleSelectStart}
+          onFocus={handleSelectStart}
+          onBlur={handleUnselectStart}
           onCommit={this.handleCommit}
           value={this.inputValue}
           isVisible={this.isVisible}

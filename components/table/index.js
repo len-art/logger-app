@@ -55,8 +55,11 @@ class Table extends Component {
     this.selectedStart = dayInMonth
   }
 
+  handleUnselectStart = () => {
+    this.selectedStart = undefined
+  }
+
   render() {
-    console.log(this.selectedStart)
     return (
       <Paper>
         <div className="list">
@@ -95,6 +98,7 @@ class Table extends Component {
                         startsAt: this.monthList.startsAt,
                         handleSelectStart: this.handleSelectStart,
                         selectedStart: this.selectedStart,
+                        handleUnselectStart: this.handleUnselectStart,
                       })))
                       : displayCol.map(d => React.createElement(displays[d.id], {
                         key: d.id,
@@ -108,6 +112,8 @@ class Table extends Component {
                         handleToClipboard: this.handleToClipboard,
                         startsAt: this.monthList.startsAt,
                         handleSelectStart: this.handleSelectStart,
+                        selectedStart: this.selectedStart,
+                        handleUnselectStart: this.handleUnselectStart,
                       }))}
                     {dayOfWeek === 0 && (
                       <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>
