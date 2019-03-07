@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 
 import IconButton from '../../iconButton'
+import CopyIcon from '../../static/icons/copyIcon.svg'
 
 import TextInput from '../textInput'
 
@@ -82,7 +83,9 @@ export default class extends React.Component {
             value={this.showEdit ? this.inputValue : event.details}
           />
         </form>
-        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
+        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>
+          <IconButton Icon={CopyIcon} />
+        </div>
         <style jsx>
           {`
             .details {
