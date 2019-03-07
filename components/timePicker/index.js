@@ -170,7 +170,7 @@ export default class extends React.Component {
   }
 
   toggleShowHours = () => {
-    // and allow to click in the inner ring
+    // TODO: allow to click in the inner ring
     this.showHours = !this.showHours
     if (this.showHours) {
       this.selection.hour = undefined

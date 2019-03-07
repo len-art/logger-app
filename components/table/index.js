@@ -47,7 +47,6 @@ class Table extends Component {
 
   addLocalDetail = (dayInMonth) => {
     const exists = this.monthList.events.find(e => e.dayInMonth === dayInMonth)
-    console.log(exists)
     if (exists) this.monthList.events.push({ dayInMonth })
   }
 
