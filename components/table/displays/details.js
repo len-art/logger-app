@@ -64,6 +64,14 @@ export default class extends React.Component {
     this.handleInputConfirm(e)
   }
 
+  copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(this.inputValue)
+    } catch (error) {
+      console.error(`Failed to copy to clipboard: ${error}`)
+    }
+  }
+
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
 
@@ -84,7 +92,12 @@ export default class extends React.Component {
             value={this.showEdit ? this.inputValue : event.details}
           />
         </form>
-        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
+        <button
+          onClick={this.copyToClipboard}
+          className={`clipboard${this.showEdit ? ' hidden' : ''}`}
+        >
+          cp
+        </button>
         <style jsx>
           {`
             .details {
