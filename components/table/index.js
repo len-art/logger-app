@@ -16,6 +16,9 @@ const displayCol = listColumns.slice(2)
 @inject('store')
 @observer
 class Table extends Component {
+  @observable
+  selectedStart
+
   @computed
   get monthList() {
     const { months, selectedMonth } = this.props.store
@@ -48,7 +51,12 @@ class Table extends Component {
     if (exists) this.monthList.events.push({ dayInMonth })
   }
 
+  handleSelectStart = (dayInMonth) => {
+    this.selectedStart = dayInMonth
+  }
+
   render() {
+    console.log(this.selectedStart)
     return (
       <Paper>
         <div className="list">
@@ -85,6 +93,8 @@ class Table extends Component {
                         handleToClipboard: this.handleToClipboard,
                         event,
                         startsAt: this.monthList.startsAt,
+                        handleSelectStart: this.handleSelectStart,
+                        selectedStart: this.selectedStart,
                       })))
                       : displayCol.map(d => React.createElement(displays[d.id], {
                         key: d.id,
@@ -97,6 +107,7 @@ class Table extends Component {
                         weekend,
                         handleToClipboard: this.handleToClipboard,
                         startsAt: this.monthList.startsAt,
+                        handleSelectStart: this.handleSelectStart,
                       }))}
                     {dayOfWeek === 0 && (
                       <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>

@@ -41,6 +41,15 @@ export default class extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.selected && !this.props.selected) {
+      this.mouseListen(false)
+      this.props.onCommit()
+    } else if (!prevProps.selected && this.props.selected) {
+      this.mouseListen(true)
+    }
+  }
+
   @computed
   get selectedHourDeg() {
     if (this.selection.hour === undefined) return undefined
@@ -176,7 +185,7 @@ export default class extends React.Component {
 
   render() {
     const {
-      onClick, onChange, value, radius = 125,
+      onClick, onChange, value, radius = 125, handleFocus, id, selected,
     } = this.props
     const inputValue = value ? format(value, 'HH:mm') : ''
     return (
@@ -186,11 +195,12 @@ export default class extends React.Component {
           onClick={onClick}
           onChange={onChange}
           readOnly
-          onBlur={this.handleShowedit}
-          onFocus={this.handleShowedit}
+          // onBlur={this.handleShowedit}
+          // onFocus={this.handleShowedit}
+          onFocus={() => handleFocus(id)}
           value={inputValue}
         />
-        <div className={this.showEdit ? 'pickerWrapper visible' : 'pickerWrapper'}>
+        <div className={selected ? 'pickerWrapper visible' : 'pickerWrapper'}>
           {!this.showHours && (
             <IconButton
               Icon={Back}
