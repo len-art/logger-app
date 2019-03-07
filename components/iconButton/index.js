@@ -1,8 +1,10 @@
 import React from 'react'
 
-export default ({ onClick, Icon, text }) => (
+export default ({
+  onClick, Icon, text, buttonStyles,
+}) => (
   <button onClick={onClick} className="iconButton">
-    {Icon ? <Icon /> : text}
+    {Icon ? <Icon className="icon" /> : text}
     <style jsx>
       {`
         .iconButton {
@@ -12,10 +14,15 @@ export default ({ onClick, Icon, text }) => (
           background: none;
           cursor: pointer;
           opacity: 0.6;
+          ${buttonStyles || ''}
         }
-
         .iconButton:focus {
           outline: none;
+        }
+
+        .icon {
+          width: 100%;
+          height: 100%;
         }
       `}
     </style>

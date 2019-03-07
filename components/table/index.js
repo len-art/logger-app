@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
 
-import Button from '../button'
-import Fab from '../fab'
-
 import Paper from '../paper'
 import Header from './header'
 import displays from './displays'
@@ -19,6 +16,9 @@ const displayCol = listColumns.slice(2)
 @inject('store')
 @observer
 class Table extends Component {
+  @observable
+  selectedStart
+
   @computed
   get monthList() {
     const { months, selectedMonth } = this.props.store
@@ -47,8 +47,15 @@ class Table extends Component {
 
   addLocalDetail = (dayInMonth) => {
     const exists = this.monthList.events.find(e => e.dayInMonth === dayInMonth)
-    console.log(exists)
     if (exists) this.monthList.events.push({ dayInMonth })
+  }
+
+  handleSelectStart = (dayInMonth) => {
+    this.selectedStart = dayInMonth
+  }
+
+  handleUnselectStart = () => {
+    this.selectedStart = undefined
   }
 
   render() {
@@ -73,6 +80,7 @@ class Table extends Component {
                       addLocalDetail: this.addLocalDetail,
                       handleToClipboard: this.handleToClipboard,
                       events,
+                      startsAt: this.monthList.startsAt,
                     }))}
                     {events.length !== 0
                       ? events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
@@ -86,6 +94,10 @@ class Table extends Component {
                         weekend,
                         handleToClipboard: this.handleToClipboard,
                         event,
+                        startsAt: this.monthList.startsAt,
+                        handleSelectStart: this.handleSelectStart,
+                        selectedStart: this.selectedStart,
+                        handleUnselectStart: this.handleUnselectStart,
                       })))
                       : displayCol.map(d => React.createElement(displays[d.id], {
                         key: d.id,
@@ -97,6 +109,10 @@ class Table extends Component {
                         monthId: this.monthList.id,
                         weekend,
                         handleToClipboard: this.handleToClipboard,
+                        startsAt: this.monthList.startsAt,
+                        handleSelectStart: this.handleSelectStart,
+                        selectedStart: this.selectedStart,
+                        handleUnselectStart: this.handleUnselectStart,
                       }))}
                     {dayOfWeek === 0 && (
                       <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>
@@ -132,10 +148,8 @@ class Table extends Component {
 
               .day,
               .add,
-              .start,
               .end,
-              .hours,
-              .description {
+              .hours {
                 padding: 15px;
               }
 
@@ -166,7 +180,7 @@ class Table extends Component {
                 grid-column-start: 5;
                 grid-column-end: 6;
               }
-              .description {
+              .details {
                 grid-column-start: 6;
                 grid-column-end: 7;
               }

@@ -44,14 +44,16 @@ export default class extends React.Component {
   handleInputConfirm = async (e) => {
     e.preventDefault()
 
-    const { event, dayInMonth } = this.props
+    const {
+      event, editEvent, addEvent, dayInMonth,
+    } = this.props
 
     if (event && event.id) {
       /* event exists, send changes */
-      await this.props.editEvent({ details: this.inputValue }, event.id)
+      await editEvent({ details: this.inputValue }, event.id)
     } else if (this.inputValue.length) {
       /* event doesn't exist yet and user inputs text */
-      await this.props.addEvent({ details: this.inputValue, dayInMonth })
+      await addEvent({ details: this.inputValue, dayInMonth })
     }
 
     this.showEdit = false
@@ -60,6 +62,14 @@ export default class extends React.Component {
   handleDelete = (e) => {
     this.inputValue = ''
     this.handleInputConfirm(e)
+  }
+
+  copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(this.inputValue)
+    } catch (error) {
+      console.error(`Failed to copy to clipboard: ${error}`)
+    }
   }
 
   render() {
@@ -82,7 +92,12 @@ export default class extends React.Component {
             value={this.showEdit ? this.inputValue : event.details}
           />
         </form>
-        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
+        <button
+          onClick={this.copyToClipboard}
+          className={`clipboard${this.showEdit ? ' hidden' : ''}`}
+        >
+          cp
+        </button>
         <style jsx>
           {`
             .details {
