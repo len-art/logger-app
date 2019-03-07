@@ -1,7 +1,7 @@
 const toEvent = event => ({
   ...event,
-  start: new Date(event.start),
-  end: new Date(event.end),
+  start: event.start && new Date(event.start),
+  end: event.end && new Date(event.end),
   createdAt: new Date(event.createdAt),
 })
 const toMonth = month => ({

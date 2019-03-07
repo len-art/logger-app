@@ -49,6 +49,10 @@ export default class extends React.Component {
       this.props.onCommit()
     } else if (!prevProps.selected && this.props.selected) {
       this.mouseListen(true)
+      const { event } = this.props
+      if (event && event.start) {
+        this.inputValue = event.start
+      }
     }
   }
 
