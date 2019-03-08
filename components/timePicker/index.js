@@ -47,6 +47,7 @@ export default class extends React.Component {
     if (prevProps.selected && !this.props.selected) {
       this.mouseListen(false)
       this.props.onCommit()
+      this.reset()
     } else if (!prevProps.selected && this.props.selected) {
       this.mouseListen(true)
       const { event } = this.props
@@ -76,6 +77,16 @@ export default class extends React.Component {
   @computed
   get isSelectionDone() {
     return Object.values(this.selection).every(v => v !== undefined)
+  }
+
+  reset() {
+    this.showEdit = false
+    this.showHours = true
+    this.hoverDegrees = undefined
+    this.selection = {
+      hour: undefined,
+      minute: undefined,
+    }
   }
 
   normalizeDegrees = deg => (450 - deg) % 360
