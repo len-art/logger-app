@@ -33,7 +33,8 @@ export default class {
       const { data } = await this.client.post('projects/create', {
         name,
       })
-      this.projects.unshift(data.project)
+      this.addNewProject(data.project)
+      this.addNewMonth(data.month)
     } catch (error) {
       console.error(error)
     }
@@ -45,7 +46,7 @@ export default class {
         projectId,
       })
       this.selectedProject = projectId
-      this.setMonths(data.months, true)
+      this.setMonths(data.months)
       if (this.months.length) {
         this.setSelectedMonth(this.months[this.months.length - 1].id)
       }
@@ -57,7 +58,7 @@ export default class {
   @action
   setProjects(projects) {
     if (Array.isArray(projects)) {
-      this.projects = projects
+      this.projects = projects.map(p => agregate.toProject(p))
     } else {
       this.projects = []
       this.setIsNewProjectModalOpen()
@@ -69,13 +70,25 @@ export default class {
   }
 
   @action
+  addNewProject(project) {
+    this.projects.unshift(agregate.toProject(project))
+  }
+
+  @action
   setMonths(months) {
     if (Array.isArray(months)) {
       this.months = months.map(m => agregate.toMonth(m))
-    } else this.months = []
+    } else {
+      this.months = []
+    }
     if (this.months.length) {
       this.setSelectedMonth(this.months[0].id)
     }
+  }
+
+  @action
+  addNewMonth(month) {
+    this.months.unshift(agregate.toMonth(month))
   }
 
   async editEvent(monthId, eventId, event) {
