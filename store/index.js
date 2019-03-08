@@ -72,6 +72,7 @@ export default class {
   @action
   addNewProject(project) {
     this.projects.unshift(agregate.toProject(project))
+    this.selectedProject = project.id
   }
 
   @action
@@ -89,6 +90,7 @@ export default class {
   @action
   addNewMonth(month) {
     this.months.unshift(agregate.toMonth(month))
+    this.selectedMonth = month.id
   }
 
   async editEvent(monthId, eventId, event) {
