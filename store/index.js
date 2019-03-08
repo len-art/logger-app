@@ -115,7 +115,6 @@ export default class {
 
   @action
   setIsNewProjectModalOpen = (isOpen = !this.isNewProjectModalOpen) => {
-    console.log('setIsNewProjectModalOpen')
     this.isNewProjectModalOpen = isOpen
   }
 }
