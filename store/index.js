@@ -34,7 +34,7 @@ export default class {
         name,
       })
       this.addNewProject(data.project)
-      this.addNewMonth(data.month)
+      this.setMonths([data.month])
     } catch (error) {
       console.error(error)
     }
