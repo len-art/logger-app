@@ -9,8 +9,6 @@ import Modal from '../modal'
 @inject('store')
 @observer
 class Projects extends React.Component {
-  inputRef = React.createRef()
-
   @observable
   modalInput = ''
 
@@ -27,12 +25,9 @@ class Projects extends React.Component {
   }
 
   handleModalSwitch = () => {
-    const { isNewProjectModalOpen, setIsNewProjectModalOpen } = this.props.store
+    const { setIsNewProjectModalOpen } = this.props.store
     setIsNewProjectModalOpen()
     this.modalInput = ''
-    if (isNewProjectModalOpen && this.inputRef.current) {
-      this.inputRef.current.focus()
-    }
   }
 
   handleSubmit = (e) => {
@@ -71,7 +66,7 @@ class Projects extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <Input
               label="Project Name"
-              ref={this.inputRef}
+              autoFocus
               value={this.modalInput}
               onChange={this.handleModalInputChange}
             />
