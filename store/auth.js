@@ -20,11 +20,10 @@ export default class {
     const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      await this.getUserData()
     } else if (refreshToken && refreshSecret) {
       await this.getToken({ refreshToken, refreshSecret })
-      await this.getUserData()
     }
+    await this.getUserData()
     this.afterAuth = true
   }
 
