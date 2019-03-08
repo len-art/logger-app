@@ -1,8 +1,7 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
+import { observable } from 'mobx'
 
-import Button from '../button'
 import Fab from '../fab'
 import Input from '../input'
 import Modal from '../modal'
@@ -13,9 +12,6 @@ class Projects extends React.Component {
   inputRef = React.createRef()
 
   @observable
-  isModalOpen = false
-
-  @observable
   modalInput = ''
 
   selectProject = (projectId) => {
@@ -23,17 +19,18 @@ class Projects extends React.Component {
   }
 
   addProject = async () => {
-    this.isModalOpen = true
+    const { setIsNewProjectModalOpen } = this.props.store
     await this.props.store.addProject({
       name: this.modalInput,
     })
-    this.isModalOpen = false
+    setIsNewProjectModalOpen()
   }
 
   handleModalSwitch = () => {
-    this.isModalOpen = !this.isModalOpen
+    const { isNewProjectModalOpen, setIsNewProjectModalOpen } = this.props.store
+    setIsNewProjectModalOpen()
     this.modalInput = ''
-    if (this.isModalOpen && this.inputRef.current) {
+    if (isNewProjectModalOpen && this.inputRef.current) {
       this.inputRef.current.focus()
     }
   }
@@ -46,7 +43,7 @@ class Projects extends React.Component {
   handleModalInputChange = e => (this.modalInput = e.target.value)
 
   render() {
-    const { projects, selectedProject } = this.props.store
+    const { projects, selectedProject, isNewProjectModalOpen } = this.props.store
     return (
       <div>
         <div className="justFlex tabs">
@@ -66,7 +63,7 @@ class Projects extends React.Component {
           dim
           footer
           title="Create a new project"
-          open={this.isModalOpen}
+          open={isNewProjectModalOpen}
           onClose={this.handleModalSwitch}
           onCancel={this.handleModalSwitch}
           onConfirm={this.addProject}

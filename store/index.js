@@ -25,6 +25,9 @@ export default class {
   @observable
   selectedMonth = undefined
 
+  @observable
+  isNewProjectModalOpen = false
+
   async addProject({ name }) {
     try {
       const { data } = await this.client.post('projects/create', {
@@ -55,7 +58,10 @@ export default class {
   setProjects(projects) {
     if (Array.isArray(projects)) {
       this.projects = projects
-    } else this.projects = []
+    } else {
+      this.projects = []
+      this.setIsNewProjectModalOpen()
+    }
 
     if (this.projects.length) {
       this.selectedProject = this.projects[0].id
@@ -105,5 +111,11 @@ export default class {
     this.months = []
     this.selectedProject = 0
     this.selectedMonth = undefined
+  }
+
+  @action
+  setIsNewProjectModalOpen = (isOpen = !this.isNewProjectModalOpen) => {
+    console.log('setIsNewProjectModalOpen')
+    this.isNewProjectModalOpen = isOpen
   }
 }

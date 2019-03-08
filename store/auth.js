@@ -20,10 +20,7 @@ export default class {
     const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      const data = await this.getUserData()
-      if (!data.success && data.message !== 'Network Error') {
-        this.resetCookies()
-      }
+      await this.getUserData()
     } else if (refreshToken && refreshSecret) {
       await this.getToken({ refreshToken, refreshSecret })
       await this.getUserData()
@@ -42,10 +39,11 @@ export default class {
     try {
       const { data } = await this.client.post('users/data')
       this.onLoginSuccess(data)
-      return { success: true }
     } catch (error) {
       console.error(error)
-      return { success: false, message: error.message }
+      if (error.message !== 'Network Error') {
+        this.resetCookies()
+      }
     }
   }
 
