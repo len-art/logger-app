@@ -71,7 +71,12 @@ export default class {
 
   @action
   addNewProject(project) {
-    this.projects.unshift(agregate.toProject(project))
+    const index = this.projects.findIndex(({ id }) => id === project.id)
+    if (index === -1) {
+      this.projects.unshift(agregate.toProject(project))
+    } else {
+      this.projects[index] = project
+    }
     this.selectedProject = project.id
   }
 
