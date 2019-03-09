@@ -183,6 +183,7 @@ class Table extends Component {
               .details {
                 grid-column-start: 6;
                 grid-column-end: 7;
+                position: relative;
               }
 
               .weekend {

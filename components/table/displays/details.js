@@ -92,7 +92,7 @@ export default class extends React.Component {
             value={this.showEdit ? this.inputValue : event.details}
           />
         </form>
-        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>
+        <div className={`clipboard${this.showEdit || !event.details ? ' hidden' : ''}`}>
           <IconButton onClick={this.copyToClipboard} Icon={CopyIcon} />
         </div>
         <style jsx>
@@ -117,6 +117,8 @@ export default class extends React.Component {
               transform: translateX(30px);
               transition: 0.25s;
               transition-delay: 0s;
+              position: absolute;
+              right: 0;
             }
             .edit {
             }
