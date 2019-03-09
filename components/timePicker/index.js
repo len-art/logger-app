@@ -33,8 +33,10 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props)
+    console.log('start')
     this.hours = clockHelper.createHours()
     this.minutes = clockHelper.createMinutes()
+    console.log(clockHelper.createMinutes())
   }
 
   componentDidMount() {
@@ -50,9 +52,8 @@ export default class extends React.Component {
       this.reset()
     } else if (!prevProps.selected && this.props.selected) {
       this.mouseListen(true)
-      const { event } = this.props
-      if (event && event.start) {
-        this.inputValue = event.start
+      if (this.props.value) {
+        this.onOpenWithValue()
       }
     }
   }
@@ -89,6 +90,19 @@ export default class extends React.Component {
     }
   }
 
+  onOpenWithValue = () => {
+    /* convert from hours/minutes back to degrees */
+    const { value } = this.props
+
+    const hours = value.getHours()
+    const minutesToHours = (value.getMinutes() / 60) * 12
+
+    this.selection = {
+      hour: undefined,
+      minute: undefined,
+    }
+  }
+
   normalizeDegrees = deg => (450 - deg) % 360
 
   getRadius = () => {
@@ -102,13 +116,13 @@ export default class extends React.Component {
   getX = (deg, isHours) => {
     let adjustedRadius = this.radius
     if (isHours && !this.showHours) adjustedRadius -= 30
-    return Math.cos(this.toRad(deg)) * adjustedRadius
+    return -Math.sin(this.toRad(deg)) * adjustedRadius
   }
 
   getY = (deg, isHours) => {
     let adjustedRadius = this.radius
     if (isHours && !this.showHours) adjustedRadius -= 30
-    return Math.sin(this.toRad(deg)) * adjustedRadius
+    return -Math.cos(this.toRad(deg)) * adjustedRadius
   }
 
   handleShowedit = () => {
@@ -209,6 +223,7 @@ export default class extends React.Component {
   }
 
   render() {
+    console.log(this.hoverDegrees)
     const {
       onClick, onChange, value, radius = 125, onFocus, id, selected,
     } = this.props
