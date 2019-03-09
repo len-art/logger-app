@@ -36,7 +36,7 @@ export default class extends React.Component {
     console.log('start')
     this.hours = clockHelper.createHours()
     this.minutes = clockHelper.createMinutes()
-    console.log(clockHelper.createMinutes())
+    console.log(clockHelper.createHours())
   }
 
   componentDidMount() {
@@ -103,12 +103,13 @@ export default class extends React.Component {
     }
   }
 
-  normalizeDegrees = deg => (450 - deg) % 360
+  // normalizeDegrees = deg => (450 - deg) % 360
 
   getRadius = () => {
     this.radius = this.clockRef.current.offsetWidth / 2 - 20
   }
 
+  // TODO: use the ones from clockHelper
   toRad = deg => (deg * Math.PI) / 180
 
   toDeg = rad => (rad * 180) / Math.PI
@@ -169,8 +170,9 @@ export default class extends React.Component {
         height,
       })
     } else {
-      this.hoverDegrees = undefined
-      this.mouseIsInsideClock = false
+      // TODO: put back
+      // this.hoverDegrees = undefined
+      // this.mouseIsInsideClock = false
     }
   }
 
@@ -190,8 +192,10 @@ export default class extends React.Component {
   getTanDegrees = ({
     mx, my, cx, cy,
   }) => {
-    const [y, x] = [cy - my, mx - cx]
-    return this.toDeg(Math.atan2(y, x))
+    /* reverse degrees because circle is 90deg anti-clockwise) */
+    const [x, y] = [cy - my, mx - cx]
+    const tan = -this.toDeg(Math.atan2(y, x))
+    return tan > 0 ? tan : 360 + tan
   }
 
   showMinutes = () => {
@@ -216,8 +220,9 @@ export default class extends React.Component {
     }
     const { onSelect } = this.props
     if (this.isSelectionDone && typeof onSelect === 'function') {
-      const hour = clockHelper.getHourFromDegrees(this.normalizeDegrees(this.selection.hour))
-      const minute = clockHelper.getMinuteFromDegrees(this.normalizeDegrees(this.selection.minute))
+      const hour = Math.round(clockHelper.getHourFromDegrees(this.selection.hour))
+      const minute = Math.round(clockHelper.getMinuteFromDegrees(this.selection.minute))
+      console.log(hour, this.selection.hour)
       onSelect({ hour, minute })
     }
   }
@@ -303,8 +308,8 @@ export default class extends React.Component {
             .selectedHour:after {
               content: '';
               position: absolute;
-              right: -26px;
-              top: -13px;
+              right: -13px;
+              top: -26px;
               width: 26px;
               height: 26px;
               border-radius: 50%;
@@ -315,28 +320,28 @@ export default class extends React.Component {
             .selectedHour,
             .selectedMinute {
               position: absolute;
-              left: 50%;
-              height: 1px;
+              bottom: 50%;
+              width: 1px;
               opacity: 0.1;
-              transform-origin: left;
+              transform-origin: bottom;
               background-color: var(--buttonBlue);
             }
             .hover {
-              width: calc(50% - 43px);
-              height: 0px;
+              height: calc(50% - 43px);
+              width: 0px;
             }
             .selectedMinute,
             .hoverMinute {
-              width: calc(50% - 39px);
+              height: calc(50% - 39px);
             }
             .hoverMinute {
-              height: 0px;
+              width: 0px;
             }
             .selectedMinute {
               transition: 0.1s;
             }
             .selectedHour {
-              width: calc(50% - 73px);
+              height: calc(50% - 73px);
               transition: 0.1s;
             }
 
@@ -348,16 +353,16 @@ export default class extends React.Component {
               border-radius: 50%;
             }
             .hover:after {
-              right: -26px;
-              top: -13px;
+              right: -13px;
+              top: -26px;
               width: 26px;
               height: 26px;
               background-color: var(--buttonBlue);
             }
             .hoverMinute:after,
             .selectedMinute:after {
-              right: -18px;
-              top: -9px;
+              right: -9px;
+              top: -18px;
               width: 18px;
               height: 18px;
               background-color: red;
