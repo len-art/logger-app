@@ -103,8 +103,6 @@ export default class extends React.Component {
     }
   }
 
-  // normalizeDegrees = deg => (450 - deg) % 360
-
   getRadius = () => {
     this.radius = this.clockRef.current.offsetWidth / 2 - 20
   }
@@ -124,12 +122,6 @@ export default class extends React.Component {
     let adjustedRadius = this.radius
     if (isHours && !this.showHours) adjustedRadius -= 30
     return -Math.cos(this.toRad(deg)) * adjustedRadius
-  }
-
-  handleShowedit = () => {
-    this.showEdit = !this.showEdit
-    this.mouseListen(this.showEdit)
-    if (!this.showEdit) this.props.onCommit()
   }
 
   mouseListen = (create) => {
