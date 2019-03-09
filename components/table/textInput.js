@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default ({
-  onClick, onChange, value, onBlur, onFocus, autoFocus,
+  onClick, onChange, value = '', onBlur, onFocus, autoFocus,
 }) => (
   <div className="wrapper">
     <input
