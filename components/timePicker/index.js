@@ -33,10 +33,8 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props)
-    console.log('start')
     this.hours = clockHelper.createHours()
     this.minutes = clockHelper.createMinutes()
-    console.log(clockHelper.createHours())
   }
 
   componentDidMount() {
@@ -63,10 +61,9 @@ export default class extends React.Component {
     if (this.selection.hour === undefined) return undefined
     /* round to nearest 30 */
     const round = Math.round(this.selection.hour / 30) * 30
-    const minute = this.selection.minute === undefined ? this.hoverDegrees : this.selection.minute
-    const minuteDegrees = (360 - minute + 90) % 360
-    const addPercent = minuteDegrees / 360
-    return round - 30 * addPercent
+    const minuteDegrees = this.selection.minute === undefined ? this.hoverDegrees : this.selection.minute
+    const minuteFraction = (360 - minuteDegrees) / 360
+    return round - 30 * minuteFraction
   }
 
   @computed
@@ -93,13 +90,16 @@ export default class extends React.Component {
   onOpenWithValue = () => {
     /* convert from hours/minutes back to degrees */
     const { value } = this.props
+    const { hToI, degFromI } = clockHelper
 
     const hours = value.getHours()
-    const minutesToHours = (value.getMinutes() / 60) * 12
+    const minutesInHours = (value.getMinutes() / 60) * 12
+
+    degFromI(hToI(hours))
 
     this.selection = {
-      hour: undefined,
-      minute: undefined,
+      hour: degFromI(hToI(hours)),
+      minute: degFromI(hToI(minutesInHours)),
     }
   }
 
@@ -170,9 +170,8 @@ export default class extends React.Component {
         height,
       })
     } else {
-      // TODO: put back
-      // this.hoverDegrees = undefined
-      // this.mouseIsInsideClock = false
+      this.hoverDegrees = undefined
+      this.mouseIsInsideClock = false
     }
   }
 
@@ -222,13 +221,11 @@ export default class extends React.Component {
     if (this.isSelectionDone && typeof onSelect === 'function') {
       const hour = Math.round(clockHelper.getHourFromDegrees(this.selection.hour))
       const minute = Math.round(clockHelper.getMinuteFromDegrees(this.selection.minute))
-      console.log(hour, this.selection.hour)
       onSelect({ hour, minute })
     }
   }
 
   render() {
-    console.log(this.hoverDegrees)
     const {
       onClick, onChange, value, radius = 125, onFocus, id, selected,
     } = this.props
