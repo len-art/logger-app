@@ -1,22 +1,26 @@
 import React from 'react'
 
-export default React.forwardRef(
-  ({
-    type = 'text', placeholder = '\u00A0', label = '', value, onChange,
-  }, ref) => (
-    <label htmlFor="input" className="wrapper">
-      <input
-        className="input"
-        ref={ref}
-        value={value}
-        onChange={onChange}
-        type={type}
-        placeholder={placeholder}
-      />
-      <span className="label">{label}</span>
-      <span className="border" />
-      <style jsx>
-        {`
+export default ({
+  type = 'text',
+  placeholder = '\u00A0',
+  label = '',
+  value,
+  onChange,
+  autoFocus,
+}) => (
+  <label htmlFor="input" className="wrapper">
+    <input
+      className="input"
+      autoFocus={autoFocus}
+      value={value}
+      onChange={onChange}
+      type={type}
+      placeholder={placeholder}
+    />
+    <span className="label">{label}</span>
+    <span className="border" />
+    <style jsx>
+      {`
         .wrapper {
           position: relative;
           width: 100%;
@@ -84,7 +88,6 @@ export default React.forwardRef(
           transform: scaleX(1)
         }
       `}
-      </style>
-    </label>
-  ),
+    </style>
+  </label>
 )

@@ -20,10 +20,7 @@ export default class {
     const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
       this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      const data = await this.getUserData()
-      if (!data.success && data.message !== 'Network Error') {
-        this.resetCookies()
-      }
+      await this.getUserData()
     } else if (refreshToken && refreshSecret) {
       await this.getToken({ refreshToken, refreshSecret })
       await this.getUserData()
@@ -41,12 +38,22 @@ export default class {
   async getUserData() {
     try {
       const { data } = await this.client.post('users/data')
-      this.onLoginSuccess(data)
-      return { success: true }
+      if (!this.user) {
+        this.onLoginSuccess(data)
+      }
+      this.onDataReceived(data)
     } catch (error) {
       console.error(error)
-      return { success: false, message: error.message }
+      if (error.message !== 'Network Error') {
+        this.resetCookies()
+      }
     }
+  }
+
+  @action
+  onDataReceived({ projects, months }) {
+    this.root.setProjects(projects)
+    this.root.setMonths(months)
   }
 
   async handleLogin({ email, password }) {
@@ -69,10 +76,8 @@ export default class {
   }
 
   @action
-  async onLoginSuccess({ projects, months, user }) {
+  async onLoginSuccess({ user }) {
     if (user) this.user = user
-    this.root.setProjects(projects)
-    this.root.setMonths(months)
   }
 
   async getToken({ refreshToken, refreshSecret }) {

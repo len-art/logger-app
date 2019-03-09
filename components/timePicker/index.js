@@ -47,8 +47,12 @@ export default class extends React.Component {
     if (prevProps.selected && !this.props.selected) {
       this.mouseListen(false)
       this.props.onCommit()
+      this.reset()
     } else if (!prevProps.selected && this.props.selected) {
       this.mouseListen(true)
+      if (this.props.value) {
+        this.onOpenWithValue()
+      }
     }
   }
 
@@ -57,10 +61,9 @@ export default class extends React.Component {
     if (this.selection.hour === undefined) return undefined
     /* round to nearest 30 */
     const round = Math.round(this.selection.hour / 30) * 30
-    const minute = this.selection.minute === undefined ? this.hoverDegrees : this.selection.minute
-    const minuteDegrees = (360 - minute + 90) % 360
-    const addPercent = minuteDegrees / 360
-    return round - 30 * addPercent
+    const minuteDegrees = this.selection.minute === undefined ? this.hoverDegrees : this.selection.minute
+    const minuteFraction = (360 - minuteDegrees) / 360
+    return round - 30 * minuteFraction
   }
 
   @computed
@@ -74,12 +77,37 @@ export default class extends React.Component {
     return Object.values(this.selection).every(v => v !== undefined)
   }
 
-  normalizeDegrees = deg => (450 - deg) % 360
+  reset() {
+    this.showEdit = false
+    this.showHours = true
+    this.hoverDegrees = undefined
+    this.selection = {
+      hour: undefined,
+      minute: undefined,
+    }
+  }
+
+  onOpenWithValue = () => {
+    /* convert from hours/minutes back to degrees */
+    const { value } = this.props
+    const { hToI, degFromI } = clockHelper
+
+    const hours = value.getHours()
+    const minutesInHours = (value.getMinutes() / 60) * 12
+
+    degFromI(hToI(hours))
+
+    this.selection = {
+      hour: degFromI(hToI(hours)),
+      minute: degFromI(hToI(minutesInHours)),
+    }
+  }
 
   getRadius = () => {
     this.radius = this.clockRef.current.offsetWidth / 2 - 20
   }
 
+  // TODO: use the ones from clockHelper
   toRad = deg => (deg * Math.PI) / 180
 
   toDeg = rad => (rad * 180) / Math.PI
@@ -87,19 +115,13 @@ export default class extends React.Component {
   getX = (deg, isHours) => {
     let adjustedRadius = this.radius
     if (isHours && !this.showHours) adjustedRadius -= 30
-    return Math.cos(this.toRad(deg)) * adjustedRadius
+    return -Math.sin(this.toRad(deg)) * adjustedRadius
   }
 
   getY = (deg, isHours) => {
     let adjustedRadius = this.radius
     if (isHours && !this.showHours) adjustedRadius -= 30
-    return Math.sin(this.toRad(deg)) * adjustedRadius
-  }
-
-  handleShowedit = () => {
-    this.showEdit = !this.showEdit
-    this.mouseListen(this.showEdit)
-    if (!this.showEdit) this.props.onCommit()
+    return -Math.cos(this.toRad(deg)) * adjustedRadius
   }
 
   mouseListen = (create) => {
@@ -161,8 +183,10 @@ export default class extends React.Component {
   getTanDegrees = ({
     mx, my, cx, cy,
   }) => {
-    const [y, x] = [cy - my, mx - cx]
-    return this.toDeg(Math.atan2(y, x))
+    /* reverse degrees because circle is 90deg anti-clockwise) */
+    const [x, y] = [cy - my, mx - cx]
+    const tan = -this.toDeg(Math.atan2(y, x))
+    return tan > 0 ? tan : 360 + tan
   }
 
   showMinutes = () => {
@@ -187,8 +211,8 @@ export default class extends React.Component {
     }
     const { onSelect } = this.props
     if (this.isSelectionDone && typeof onSelect === 'function') {
-      const hour = clockHelper.getHourFromDegrees(this.normalizeDegrees(this.selection.hour))
-      const minute = clockHelper.getMinuteFromDegrees(this.normalizeDegrees(this.selection.minute))
+      const hour = Math.round(clockHelper.getHourFromDegrees(this.selection.hour))
+      const minute = Math.round(clockHelper.getMinuteFromDegrees(this.selection.minute))
       onSelect({ hour, minute })
     }
   }
@@ -273,8 +297,8 @@ export default class extends React.Component {
             .selectedHour:after {
               content: '';
               position: absolute;
-              right: -26px;
-              top: -13px;
+              right: -13px;
+              top: -26px;
               width: 26px;
               height: 26px;
               border-radius: 50%;
@@ -285,28 +309,28 @@ export default class extends React.Component {
             .selectedHour,
             .selectedMinute {
               position: absolute;
-              left: 50%;
-              height: 1px;
+              bottom: 50%;
+              width: 1px;
               opacity: 0.1;
-              transform-origin: left;
+              transform-origin: bottom;
               background-color: var(--buttonBlue);
             }
             .hover {
-              width: calc(50% - 43px);
-              height: 0px;
+              height: calc(50% - 43px);
+              width: 0px;
             }
             .selectedMinute,
             .hoverMinute {
-              width: calc(50% - 39px);
+              height: calc(50% - 39px);
             }
             .hoverMinute {
-              height: 0px;
+              width: 0px;
             }
             .selectedMinute {
               transition: 0.1s;
             }
             .selectedHour {
-              width: calc(50% - 73px);
+              height: calc(50% - 73px);
               transition: 0.1s;
             }
 
@@ -318,16 +342,16 @@ export default class extends React.Component {
               border-radius: 50%;
             }
             .hover:after {
-              right: -26px;
-              top: -13px;
+              right: -13px;
+              top: -26px;
               width: 26px;
               height: 26px;
               background-color: var(--buttonBlue);
             }
             .hoverMinute:after,
             .selectedMinute:after {
-              right: -18px;
-              top: -9px;
+              right: -9px;
+              top: -18px;
               width: 18px;
               height: 18px;
               background-color: red;

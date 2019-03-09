@@ -1,29 +1,38 @@
+const hToI = h => 12 - h
+const mToI = m => 60 - m * 5
+const degFromI = i => i * 30
+
 const createHours = () => Array.from(new Array(12), (_, i) => {
-  /* shift 90 degrees so positions start at the top */
-  const deg = (270 - i * 30) % 360
-  /* reverse hours for easier calcuation and display */
-  const h = 12 - i
+  const h = hToI(i)
+  const deg = degFromI(i)
   return { h, deg }
 })
 
 const createMinutes = () => Array.from(new Array(12), (_, i) => {
-  /* shift 90 degrees so positions start at the top */
-  const deg = (270 - i * 30) % 360
-  /* reverse minutes for easier calcuation and display */
-  const m = (60 - i * 5) % 60
+  const m = mToI(i)
+  const deg = degFromI(i)
   return { m, deg }
 })
 
-// TODO: this is bad and i should feel bad fix it to be more elegant
 const getHourFromDegrees = (deg) => {
-  const value = Math.round((deg / 360) * 12)
-  return value === 0 ? 12 : value
+  const val = 12 - (deg / 360) * 12
+  return val === 0 ? 12 : val
 }
-const getMinuteFromDegrees = deg => Math.round((deg / 360) * 60) % 60
+
+const getMinuteFromDegrees = deg => 60 - (deg / 360) * 60
+
+const toRad = deg => (deg * Math.PI) / 180
+
+const toDeg = rad => (rad * 180) / Math.PI
 
 export default {
+  hToI,
+  mToI,
+  degFromI,
   createHours,
   createMinutes,
   getHourFromDegrees,
   getMinuteFromDegrees,
+  toRad,
+  toDeg,
 }

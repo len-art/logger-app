@@ -32,15 +32,16 @@ export default class extends React.Component {
     } = this.props
     if (!this.inputValue) return
 
-    if (!event || event.start === undefined) {
-      await addEvent({ start: this.inputValue, dayInMonth })
-    } else {
+    if (event && event.id) {
       await editEvent({ start: this.inputValue }, event.id)
+    } else {
+      await addEvent({ start: this.inputValue, dayInMonth })
     }
   }
 
   render() {
     const {
+      event = {},
       weekend,
       dayOfWeek,
       selectedStart,
@@ -48,15 +49,16 @@ export default class extends React.Component {
       handleUnselectStart,
       dayInMonth,
     } = this.props
+    const isSelected = selectedStart === dayInMonth
     return (
       <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <TimePicker
           onSelect={this.handleSelect}
-          selected={selectedStart === dayInMonth}
+          selected={isSelected}
           onFocus={handleSelectStart}
           onBlur={handleUnselectStart}
           onCommit={this.handleCommit}
-          value={this.inputValue}
+          value={isSelected ? this.inputValue : event.start}
           isVisible={this.isVisible}
           id={dayInMonth}
         />
