@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx'
 import axios from 'axios'
 import { init } from '@sentry/browser'
-import { startOfMonth } from 'date-fns'
+import { startOfMonth, getDaysInMonth } from 'date-fns'
 
 import Auth from './auth'
 import { config } from '../api'
@@ -91,6 +91,8 @@ export default class {
       this.setSelectedMonth(this.months[0].id)
     }
   }
+
+  createMonth(projectId, dayInMonth) {}
 
   @action
   addNewMonth(month) {
