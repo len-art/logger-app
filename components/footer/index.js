@@ -18,7 +18,7 @@ const Footer = inject('store')(
               {format(month.startsAt, 'MMM')}
             </button>
           ))}
-          <AddMonth />
+          {props.store.months.length > 0 && <AddMonth />}
         </div>
         <style jsx>
           {`
