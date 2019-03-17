@@ -58,28 +58,20 @@ export default class {
   }
 
   handleLogin = async ({ email, password }) => {
-    // TODO: use fetch api
     const data = await client('users/login', { email, password })
     this.onTokenReceived(data)
     this.onLoginSuccess(data)
     this.getUserData(data)
-
-    // const { data } = await this.client.post('users/login', {
-    //   email,
-    //   password,
-    // })
-    // this.onTokenReceived(data)
-    // this.onLoginSuccess(data)
-    // this.getUserData()
   }
 
   @action
   async handleRegister({ email, name, password }) {
-    await this.client.post('users/register', {
-      email,
-      name,
-      password,
-    })
+    await client('users/register', { email, name, password })
+    // await this.client.post('users/register', {
+    //   email,
+    //   name,
+    //   password,
+    // })
   }
 
   @action

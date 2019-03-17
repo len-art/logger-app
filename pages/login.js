@@ -32,8 +32,8 @@ export default class extends React.Component {
     } catch (error) {
       console.error(error)
       console.error(error.message)
-      if (error.response && error.response.data) {
-        this.error = error.response.data
+      if (error.message) {
+        this.error = error.message
       }
     } finally {
       this.isLoading = false
@@ -49,8 +49,8 @@ export default class extends React.Component {
     } catch (error) {
       console.error(error)
       console.error(error.message)
-      if (error.response.data) {
-        this.error = error.response.data
+      if (error.message) {
+        this.error = error.message
       }
     } finally {
       this.isLoading = false
