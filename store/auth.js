@@ -1,6 +1,7 @@
 import { action, observable, computed } from 'mobx'
 
 import { tokenHelper } from '../helpers'
+import { client } from '../api'
 
 export default class {
   constructor(root) {
@@ -59,15 +60,22 @@ export default class {
   handleLogin = async ({ email, password }) => {
     // TODO: use fetch api
     try {
-      const data = await fetch('http://localhost:8080/users/login', {
-        method: 'POST',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
+      const data = await client('users/login', { email, password })
       console.log(data)
-      console.log(data.body)
+      // const response = await fetch('http://localhost:8080/users/login', {
+      //   method: 'POST',
+      //   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ email, password }),
+      // })
+      // console.log(response)
+      // if (response.ok) {
+      //   console.log('ok', response.json())
+      // } else {
+      //   const { message } = await response.json()
+      //   throw new Error(message)
+      // }
     } catch (error) {
-      console.log('in handlelogin', error)
+      console.error('in handlelogin', error.message)
     }
     // const { data } = await this.client.post('users/login', {
     //   email,
