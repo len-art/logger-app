@@ -4,12 +4,15 @@ import { init } from '@sentry/browser'
 import { startOfMonth } from 'date-fns'
 
 import Auth from './auth'
-import { config } from '../api'
+import { config, Client } from '../api'
 import { agregate } from '../helpers'
 
 export default class {
   constructor() {
-    this.client = axios.create(config)
+    // this.client = axios.create(config)
+    this.client = new Client({
+      prefix: config.urlPrefix,
+    })
     this.auth = new Auth(this)
   }
 

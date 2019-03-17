@@ -1,7 +1,7 @@
 import { action, observable, computed } from 'mobx'
 
 import { tokenHelper } from '../helpers'
-import { client } from '../api'
+// import { client } from '../api'
 
 export default class {
   constructor(root) {
@@ -20,7 +20,7 @@ export default class {
     if (typeof window === 'undefined') return
     const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
-      this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+      this.onTokenReceived(accessToken)
       await this.getUserData()
     } else if (refreshToken && refreshSecret) {
       await this.getToken({ refreshToken, refreshSecret })
@@ -38,7 +38,7 @@ export default class {
 
   async getUserData() {
     try {
-      const { data } = await this.client.post('users/data')
+      const data = await this.client.post('users/data')
       if (!this.user) {
         this.onLoginSuccess(data)
       }
@@ -58,14 +58,14 @@ export default class {
   }
 
   handleLogin = async ({ email, password }) => {
-    const data = await client('users/login', { email, password })
+    const data = await this.client.post('users/login', { email, password })
     this.onTokenReceived(data)
     this.onLoginSuccess(data)
     this.getUserData(data)
   }
 
   handleRegister = ({ email, name, password }) => {
-    client('users/register', { email, name, password })
+    this.client.post('users/register', { email, name, password })
   }
 
   @action
@@ -86,7 +86,8 @@ export default class {
   onTokenReceived({ accessToken, refreshToken, refreshSecret }) {
     if (accessToken) {
       sessionStorage.setItem('accessToken', accessToken)
-      this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+      this.client.setHeader('Authorization', `Bearer ${accessToken}`)
+      // this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     }
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken)
