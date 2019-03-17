@@ -56,14 +56,26 @@ export default class {
     this.root.setMonths(months)
   }
 
-  async handleLogin({ email, password }) {
-    const { data } = await this.client.post('users/login', {
-      email,
-      password,
-    })
-    this.onTokenReceived(data)
-    this.onLoginSuccess(data)
-    this.getUserData()
+  handleLogin = async ({ email, password }) => {
+    // TODO: use fetch api
+    try {
+      const data = await fetch('http://localhost:8080/users/login', {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      console.log(data)
+      console.log(data.body)
+    } catch (error) {
+      console.log('in handlelogin', error)
+    }
+    // const { data } = await this.client.post('users/login', {
+    //   email,
+    //   password,
+    // })
+    // this.onTokenReceived(data)
+    // this.onLoginSuccess(data)
+    // this.getUserData()
   }
 
   @action
