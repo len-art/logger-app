@@ -67,11 +67,6 @@ export default class {
   @action
   async handleRegister({ email, name, password }) {
     await client('users/register', { email, name, password })
-    // await this.client.post('users/register', {
-    //   email,
-    //   name,
-    //   password,
-    // })
   }
 
   @action
