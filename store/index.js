@@ -33,7 +33,7 @@ export default class {
 
   async addProject({ name }) {
     try {
-      const { data } = await this.client.post('projects/create', {
+      const data = await this.client.post('projects/create', {
         name,
       })
       this.addNewProject(data.project)
@@ -45,7 +45,7 @@ export default class {
 
   async getProject({ projectId }) {
     try {
-      const { data } = await this.client.post('projects/get', {
+      const data = await this.client.post('projects/get', {
         projectId,
       })
       this.selectedProject = projectId
@@ -102,7 +102,7 @@ export default class {
   }
 
   async editEvent(monthId, eventId, event) {
-    const { data } = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+    const data = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
 
     this.updateMonths(agregate.toMonth(data.month))
   }

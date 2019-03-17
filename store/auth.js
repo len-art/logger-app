@@ -20,7 +20,7 @@ export default class {
     if (typeof window === 'undefined') return
     const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
-      this.onTokenReceived(accessToken)
+      this.onTokenReceived({ accessToken })
       await this.getUserData()
     } else if (refreshToken && refreshSecret) {
       await this.getToken({ refreshToken, refreshSecret })
@@ -39,6 +39,7 @@ export default class {
   async getUserData() {
     try {
       const data = await this.client.post('users/data')
+      console.log(data)
       if (!this.user) {
         this.onLoginSuccess(data)
       }
@@ -75,7 +76,7 @@ export default class {
 
   async getToken({ refreshToken, refreshSecret }) {
     try {
-      const { data } = await this.client.post('users/token', { refreshToken, refreshSecret })
+      const data = await this.client.post('users/token', { refreshToken, refreshSecret })
       this.onTokenReceived(data)
     } catch (error) {
       console.error(error)
