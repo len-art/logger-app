@@ -64,9 +64,8 @@ export default class {
     this.getUserData(data)
   }
 
-  @action
-  async handleRegister({ email, name, password }) {
-    await client('users/register', { email, name, password })
+  handleRegister = ({ email, name, password }) => {
+    client('users/register', { email, name, password })
   }
 
   @action
