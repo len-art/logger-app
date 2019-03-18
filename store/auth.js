@@ -39,15 +39,16 @@ export default class {
   async getUserData() {
     try {
       const data = await this.client.post('users/data')
-      console.log(data)
       if (!this.user) {
         this.onLoginSuccess(data)
       }
       this.onDataReceived(data)
     } catch (error) {
-      console.error(error)
-      if (error.message !== 'Network Error') {
+      if (error.message !== 'Failed to fetch') {
         this.resetCookies()
+      } else {
+        // TODO: inform user backend is currently down
+        // maybe directly from client callback?
       }
     }
   }
