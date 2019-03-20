@@ -1,7 +1,5 @@
 import { action, observable } from 'mobx'
-import axios from 'axios'
-import { init } from '@sentry/browser'
-import { startOfMonth } from 'date-fns'
+// import { init } from '@sentry/browser'
 
 import Auth from './auth'
 import { config, Client } from '../api'
@@ -95,6 +93,15 @@ export default class {
     }
   }
 
+  async createMonth(projectId, dayInMonth) {
+    try {
+      const data = await this.client.post('months/create', { projectId, dayInMonth })
+      this.updateMonths(agregate.toMonth(data.month))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   @action
   addNewMonth(month) {
     this.months.unshift(agregate.toMonth(month))
@@ -115,7 +122,11 @@ export default class {
   @action
   updateMonths(month) {
     const index = this.months.findIndex(({ id }) => id === month.id)
-    if (index !== -1) this.months[index] = month
+    if (index !== -1) {
+      this.months[index] = month
+    } else {
+      this.months.push(month)
+    }
   }
 
   @action
