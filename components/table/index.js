@@ -72,21 +72,21 @@ class Table extends Component {
 
                 return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
                   key: col.id,
-                  editEvent: this.editEvent,
+                  dayOfWeek,
+                  event,
+                  eventIndex,
+                  events,
+                  monthIndex,
+                  weekend,
                   addEvent: this.addEvent,
                   addLocalDetail: this.addLocalDetail,
-                  monthIndex,
-                  dayOfWeek,
-                  monthId: this.monthList.id,
-                  weekend,
-                  handleToClipboard: this.handleToClipboard,
-                  event,
-                  events,
-                  eventIndex,
-                  startsAt: this.monthList.startsAt,
+                  editEvent: this.editEvent,
                   handleSelectStart: this.handleSelectStart,
-                  selectedStart: this.selectedStart,
+                  handleToClipboard: this.handleToClipboard,
                   handleUnselectStart: this.handleUnselectStart,
+                  monthId: this.monthList.id,
+                  selectedStart: this.selectedStart,
+                  startsAt: this.monthList.startsAt,
                 })))
               })}
             </>
