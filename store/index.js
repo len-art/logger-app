@@ -94,8 +94,12 @@ export default class {
   }
 
   async createMonth(projectId, dayInMonth) {
-    const data = await this.client.post('months/create', { projectId, dayInMonth })
-    this.updateMonths(agregate.toMonth(data.month))
+    try {
+      const data = await this.client.post('months/create', { projectId, dayInMonth })
+      this.updateMonths(agregate.toMonth(data.month))
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   @action
