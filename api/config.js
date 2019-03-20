@@ -1,6 +1,7 @@
-const backendUrl = process.env.BACKEND_URL || 'http://localhost:8080/'
+const backendUrl = process.env.BACKEND_URL || 'http://localhost:8080'
 
 const config = {
+  urlPrefix: backendUrl,
   baseURL: backendUrl,
   timeout: 5000,
   headers: {

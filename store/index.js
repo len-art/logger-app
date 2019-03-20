@@ -4,12 +4,15 @@ import { init } from '@sentry/browser'
 import { startOfMonth, getDaysInMonth } from 'date-fns'
 
 import Auth from './auth'
-import { config } from '../api'
+import { config, Client } from '../api'
 import { agregate } from '../helpers'
 
 export default class {
   constructor() {
-    this.client = axios.create(config)
+    // this.client = axios.create(config)
+    this.client = new Client({
+      prefix: config.urlPrefix,
+    })
     this.auth = new Auth(this)
   }
 
@@ -30,7 +33,7 @@ export default class {
 
   async addProject({ name }) {
     try {
-      const { data } = await this.client.post('projects/create', {
+      const data = await this.client.post('projects/create', {
         name,
       })
       this.addNewProject(data.project)
@@ -42,7 +45,7 @@ export default class {
 
   async getProject({ projectId }) {
     try {
-      const { data } = await this.client.post('projects/get', {
+      const data = await this.client.post('projects/get', {
         projectId,
       })
       this.selectedProject = projectId
@@ -104,13 +107,13 @@ export default class {
   }
 
   async editEvent(monthId, eventId, event) {
-    const { data } = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+    const data = await this.client.post(`months/${monthId}/edit/${eventId}`, { event })
 
     this.updateMonths(agregate.toMonth(data.month))
   }
 
   async addEvent(monthId, event) {
-    const { data } = await this.client.post(`/months/${monthId}/add`, { event })
+    const data = await this.client.post(`months/${monthId}/add`, { event })
     this.updateMonths(agregate.toMonth(data.month))
   }
 

@@ -31,8 +31,8 @@ export default class extends React.Component {
       this.props.router.push('/')
     } catch (error) {
       console.error(error)
-      if (error.response.data) {
-        this.error = error.response.data
+      if (error.message) {
+        this.error = error.message
       }
     } finally {
       this.isLoading = false
@@ -47,8 +47,8 @@ export default class extends React.Component {
       await this.handleLogin({ email, password })
     } catch (error) {
       console.error(error)
-      if (error.response.data) {
-        this.error = error.response.data
+      if (error.message) {
+        this.error = error.message
       }
     } finally {
       this.isLoading = false
