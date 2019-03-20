@@ -1,7 +1,5 @@
 import { action, observable } from 'mobx'
-import axios from 'axios'
-import { init } from '@sentry/browser'
-import { startOfMonth, getDaysInMonth } from 'date-fns'
+// import { init } from '@sentry/browser'
 
 import Auth from './auth'
 import { config, Client } from '../api'

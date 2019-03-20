@@ -7,9 +7,9 @@ import Fab from '../fab'
 @observer
 class AddMonth extends React.Component {
   createMonth = () => {
-    const projectId = this.props.store.selectedProject
+    const { selectedProject } = this.props.store
     const dayInMonth = new Date()
-    return this.props.store.createMonth(projectId, dayInMonth)
+    return this.props.store.createMonth(selectedProject, dayInMonth)
   }
 
   checkIsSameMonth = () => this.props.store.months.some(month => isSameMonth(new Date(), month.startsAt))
