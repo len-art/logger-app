@@ -92,7 +92,10 @@ export default class {
     }
   }
 
-  createMonth(projectId, dayInMonth) {}
+  async createMonth(projectId, dayInMonth) {
+    const { data } = await this.client.post('/months/create', { projectId, dayInMonth })
+    this.updateMonths(agregate.toMonth(data.month))
+  }
 
   @action
   addNewMonth(month) {
@@ -114,7 +117,11 @@ export default class {
   @action
   updateMonths(month) {
     const index = this.months.findIndex(({ id }) => id === month.id)
-    if (index !== -1) this.months[index] = month
+    if (index !== -1) {
+      this.months[index] = month
+    } else {
+      this.months.push(month)
+    }
   }
 
   @action
