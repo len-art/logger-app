@@ -1,9 +1,11 @@
 import React from 'react'
 
 export default ({
-  weekend, dayOfWeek, dayInMonth, addLocalDetail,
+  weekend, dayOfWeek, monthIndex, eventIndex, addLocalDetail, events,
 }) => (
   <div className={`add${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
-    <button onClick={() => addLocalDetail(dayInMonth)}>+</button>
+    <button onClick={() => addLocalDetail(monthIndex)}>
+      {events.length - 1 === eventIndex ? '+' : ''}
+    </button>
   </div>
 )

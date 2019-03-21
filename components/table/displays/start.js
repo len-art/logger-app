@@ -21,21 +21,21 @@ export default class extends React.Component {
   }
 
   handleSelect = ({ minute, hour }) => {
-    const { startsAt, dayInMonth } = this.props
-    const date = setMinutes(setHours(setDate(startsAt, dayInMonth + 1), hour), minute)
+    const { startsAt, monthIndex } = this.props
+    const date = setMinutes(setHours(setDate(startsAt, monthIndex + 1), hour), minute)
     this.inputValue = date
   }
 
   handleCommit = async () => {
     const {
-      editEvent, addEvent, event, dayInMonth,
+      editEvent, addEvent, event, monthIndex,
     } = this.props
     if (!this.inputValue) return
 
     if (event && event.id) {
       await editEvent({ start: this.inputValue }, event.id)
     } else {
-      await addEvent({ start: this.inputValue, dayInMonth })
+      await addEvent({ start: this.inputValue, dayInMonth: monthIndex })
     }
   }
 
@@ -47,9 +47,9 @@ export default class extends React.Component {
       selectedStart,
       handleSelectStart,
       handleUnselectStart,
-      dayInMonth,
+      monthIndex,
     } = this.props
-    const isSelected = selectedStart === dayInMonth
+    const isSelected = selectedStart === monthIndex
     return (
       <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <TimePicker
@@ -60,7 +60,7 @@ export default class extends React.Component {
           onCommit={this.handleCommit}
           value={isSelected ? this.inputValue : event.start}
           isVisible={this.isVisible}
-          id={dayInMonth}
+          id={monthIndex}
         />
       </div>
     )
