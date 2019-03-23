@@ -14,7 +14,10 @@ const { listColumns } = columnData
 @observer
 class Table extends Component {
   @observable
-  selectedStart
+  selectedTimePicker = {
+    start: undefined,
+    end: undefined,
+  }
 
   @computed
   get monthList() {
@@ -27,6 +30,7 @@ class Table extends Component {
   handleToClipboard = () => {}
 
   editEvent = async (payload, eventId) => {
+    console.log(payload, eventId)
     try {
       await this.props.store.editEvent(this.monthList.id, eventId, payload)
     } catch (error) {
@@ -47,12 +51,12 @@ class Table extends Component {
     if (exists) this.monthList.events.push({ dayInMonth })
   }
 
-  handleSelectStart = (dayInMonth) => {
-    this.selectedStart = dayInMonth
+  handleSelectStart = (field, eventId) => {
+    this.selectedTimePicker[field] = eventId
   }
 
-  handleUnselectStart = () => {
-    this.selectedStart = undefined
+  handleUnselectStart = (field) => {
+    this.selectedTimePicker[field] = undefined
   }
 
   render() {
@@ -67,11 +71,12 @@ class Table extends Component {
                   ({ dayInMonth }) => dayInMonth === monthIndex,
                 )
 
-                const events = filteredEvents.length ? filteredEvents : [{}]
+                const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
 
                 return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
                   key: col.id,
+                  id: col.id,
                   dayOfWeek,
                   event,
                   eventIndex,
@@ -85,7 +90,7 @@ class Table extends Component {
                   handleToClipboard: this.handleToClipboard,
                   handleUnselectStart: this.handleUnselectStart,
                   monthId: this.monthList.id,
-                  selectedStart: this.selectedStart,
+                  selectedTimePicker: this.selectedTimePicker,
                   startsAt: this.monthList.startsAt,
                 })))
               })}
@@ -117,7 +122,6 @@ class Table extends Component {
 
               .day,
               .add,
-              .end,
               .hours {
                 padding: 15px;
               }

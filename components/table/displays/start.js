@@ -15,8 +15,9 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props)
-    if (props.event && props.event.start) {
-      this.inputValue = props.event.start
+    const { id } = props
+    if (props.event && props.event[id]) {
+      this.inputValue = props.event[id]
     }
   }
 
@@ -28,37 +29,42 @@ export default class extends React.Component {
 
   handleCommit = async () => {
     const {
-      editEvent, addEvent, event, monthIndex,
+      editEvent, addEvent, event, id, monthIndex,
     } = this.props
     if (!this.inputValue) return
 
-    if (event && event.id) {
-      await editEvent({ start: this.inputValue }, event.id)
+    if (event && event[id]) {
+      await editEvent({ [id]: this.inputValue }, event.id)
     } else {
-      await addEvent({ start: this.inputValue, dayInMonth: monthIndex })
+      await addEvent({ [id]: this.inputValue, dayInMonth: monthIndex })
     }
+  }
+
+  handleFocus = () => {
+    const { handleSelectStart, event, id } = this.props
+    handleSelectStart(id, event.id)
+  }
+
+  handleBlur = () => {
+    const { handleUnselectStart, id } = this.props
+    handleUnselectStart(id)
   }
 
   render() {
     const {
-      event = {},
-      weekend,
-      dayOfWeek,
-      selectedStart,
-      handleSelectStart,
-      handleUnselectStart,
-      monthIndex,
+      id, event = {}, weekend, dayOfWeek, selectedTimePicker, monthIndex,
     } = this.props
-    const isSelected = selectedStart === monthIndex
+    const isSelected = event.id !== undefined && selectedTimePicker[id] === event.id
+
     return (
-      <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
+      <div className={`${id}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <TimePicker
           onSelect={this.handleSelect}
           selected={isSelected}
-          onFocus={handleSelectStart}
-          onBlur={handleUnselectStart}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
           onCommit={this.handleCommit}
-          value={isSelected ? this.inputValue : event.start}
+          value={isSelected ? this.inputValue : event[id]}
           isVisible={this.isVisible}
           id={monthIndex}
         />
