@@ -7,7 +7,6 @@ import { agregate } from '../helpers'
 
 export default class {
   constructor() {
-    // this.client = axios.create(config)
     this.client = new Client({
       prefix: config.urlPrefix,
     })

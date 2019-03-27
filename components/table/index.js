@@ -10,14 +10,14 @@ import { columnData } from '../../constants'
 
 const { listColumns } = columnData
 
-const controlCol = listColumns.slice(0, 2)
-const displayCol = listColumns.slice(2)
-
 @inject('store')
 @observer
 class Table extends Component {
   @observable
-  selectedStart
+  selectedTimePicker = {
+    start: undefined,
+    end: undefined,
+  }
 
   @computed
   get monthList() {
@@ -30,6 +30,7 @@ class Table extends Component {
   handleToClipboard = () => {}
 
   editEvent = async (payload, eventId) => {
+    console.log(payload, eventId)
     try {
       await this.props.store.editEvent(this.monthList.id, eventId, payload)
     } catch (error) {
@@ -50,12 +51,12 @@ class Table extends Component {
     if (exists) this.monthList.events.push({ dayInMonth })
   }
 
-  handleSelectStart = (dayInMonth) => {
-    this.selectedStart = dayInMonth
+  handleSelectStart = (field, eventId) => {
+    this.selectedTimePicker[field] = eventId
   }
 
-  handleUnselectStart = () => {
-    this.selectedStart = undefined
+  handleUnselectStart = (field) => {
+    this.selectedTimePicker[field] = undefined
   }
 
   render() {
@@ -65,60 +66,33 @@ class Table extends Component {
           {this.monthList.daysOfWeek && (
             <>
               <Header columns={listColumns} />
-              {this.monthList.daysOfWeek.map((dayOfWeek, index) => {
-                const events = this.monthList.events.filter(
-                  ({ dayInMonth }) => dayInMonth === index,
+              {this.monthList.daysOfWeek.map((dayOfWeek, monthIndex) => {
+                const filteredEvents = this.monthList.events.filter(
+                  ({ dayInMonth }) => dayInMonth === monthIndex,
                 )
+
+                const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
-                return (
-                  <React.Fragment key={index.toString()}>
-                    {controlCol.map(name => React.createElement(displays[name.id], {
-                      key: name.id,
-                      dayInMonth: index,
-                      dayOfWeek,
-                      weekend,
-                      addLocalDetail: this.addLocalDetail,
-                      handleToClipboard: this.handleToClipboard,
-                      events,
-                      startsAt: this.monthList.startsAt,
-                    }))}
-                    {events.length !== 0
-                      ? events.map(event => displayCol.map(d => React.createElement(displays[d.id], {
-                        key: d.id,
-                        editEvent: this.editEvent,
-                        addEvent: this.addEvent,
-                        addLocalDetail: this.addLocalDetail,
-                        dayInMonth: index,
-                        dayOfWeek,
-                        monthId: this.monthList.id,
-                        weekend,
-                        handleToClipboard: this.handleToClipboard,
-                        event,
-                        startsAt: this.monthList.startsAt,
-                        handleSelectStart: this.handleSelectStart,
-                        selectedStart: this.selectedStart,
-                        handleUnselectStart: this.handleUnselectStart,
-                      })))
-                      : displayCol.map(d => React.createElement(displays[d.id], {
-                        key: d.id,
-                        editEvent: this.editEvent,
-                        addEvent: this.addEvent,
-                        addLocalDetail: this.addLocalDetail,
-                        dayInMonth: index,
-                        dayOfWeek,
-                        monthId: this.monthList.id,
-                        weekend,
-                        handleToClipboard: this.handleToClipboard,
-                        startsAt: this.monthList.startsAt,
-                        handleSelectStart: this.handleSelectStart,
-                        selectedStart: this.selectedStart,
-                        handleUnselectStart: this.handleUnselectStart,
-                      }))}
-                    {dayOfWeek === 0 && (
-                      <div className="weekSummary">WEEK SUMMARY GOES HERE MOIT</div>
-                    )}
-                  </React.Fragment>
-                )
+
+                return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
+                  key: col.id,
+                  id: col.id,
+                  dayOfWeek,
+                  event,
+                  eventIndex,
+                  events,
+                  monthIndex,
+                  weekend,
+                  addEvent: this.addEvent,
+                  addLocalDetail: this.addLocalDetail,
+                  editEvent: this.editEvent,
+                  handleSelectStart: this.handleSelectStart,
+                  handleToClipboard: this.handleToClipboard,
+                  handleUnselectStart: this.handleUnselectStart,
+                  monthId: this.monthList.id,
+                  selectedTimePicker: this.selectedTimePicker,
+                  startsAt: this.monthList.startsAt,
+                })))
               })}
             </>
           )}
@@ -148,7 +122,6 @@ class Table extends Component {
 
               .day,
               .add,
-              .end,
               .hours {
                 padding: 15px;
               }

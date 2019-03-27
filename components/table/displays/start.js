@@ -15,52 +15,58 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props)
-    if (props.event && props.event.start) {
-      this.inputValue = props.event.start
+    const { id } = props
+    if (props.event && props.event[id]) {
+      this.inputValue = props.event[id]
     }
   }
 
   handleSelect = ({ minute, hour }) => {
-    const { startsAt, dayInMonth } = this.props
-    const date = setMinutes(setHours(setDate(startsAt, dayInMonth + 1), hour), minute)
+    const { startsAt, monthIndex } = this.props
+    const date = setMinutes(setHours(setDate(startsAt, monthIndex + 1), hour), minute)
     this.inputValue = date
   }
 
   handleCommit = async () => {
     const {
-      editEvent, addEvent, event, dayInMonth,
+      editEvent, addEvent, event, id, monthIndex,
     } = this.props
     if (!this.inputValue) return
 
-    if (event && event.id) {
-      await editEvent({ start: this.inputValue }, event.id)
+    if (event && event[id]) {
+      await editEvent({ [id]: this.inputValue }, event.id)
     } else {
-      await addEvent({ start: this.inputValue, dayInMonth })
+      await addEvent({ [id]: this.inputValue, dayInMonth: monthIndex })
     }
+  }
+
+  handleFocus = () => {
+    const { handleSelectStart, event, id } = this.props
+    handleSelectStart(id, event.id)
+  }
+
+  handleBlur = () => {
+    const { handleUnselectStart, id } = this.props
+    handleUnselectStart(id)
   }
 
   render() {
     const {
-      event = {},
-      weekend,
-      dayOfWeek,
-      selectedStart,
-      handleSelectStart,
-      handleUnselectStart,
-      dayInMonth,
+      id, event = {}, weekend, dayOfWeek, selectedTimePicker, monthIndex,
     } = this.props
-    const isSelected = selectedStart === dayInMonth
+    const isSelected = event.id !== undefined && selectedTimePicker[id] === event.id
+
     return (
-      <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
+      <div className={`${id}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <TimePicker
           onSelect={this.handleSelect}
           selected={isSelected}
-          onFocus={handleSelectStart}
-          onBlur={handleUnselectStart}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
           onCommit={this.handleCommit}
-          value={isSelected ? this.inputValue : event.start}
+          value={isSelected ? this.inputValue : event[id]}
           isVisible={this.isVisible}
-          id={dayInMonth}
+          id={monthIndex}
         />
       </div>
     )
