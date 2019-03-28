@@ -46,15 +46,15 @@ export default class extends React.Component {
     e.preventDefault()
 
     const {
-      event, editEvent, addEvent, dayInMonth,
+      event, editEvent, addEvent, monthIndex,
     } = this.props
 
-    if (event && event.id) {
+    if (event && event.createdAt) {
       /* event exists, send changes */
       await editEvent({ details: this.inputValue }, event.id)
     } else if (this.inputValue.length) {
       /* event doesn't exist yet and user inputs text */
-      await addEvent({ details: this.inputValue, dayInMonth })
+      await addEvent({ details: this.inputValue, dayInMonth: monthIndex })
     }
 
     this.showEdit = false
