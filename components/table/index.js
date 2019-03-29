@@ -30,7 +30,6 @@ class Table extends Component {
   handleToClipboard = () => {}
 
   editEvent = async (payload, eventId) => {
-    console.log(payload, eventId)
     try {
       await this.props.store.editEvent(this.monthList.id, eventId, payload)
     } catch (error) {

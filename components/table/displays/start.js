@@ -43,6 +43,7 @@ export default class extends React.Component {
 
   handleFocus = () => {
     const { handleSelectStart, event, id } = this.props
+
     handleSelectStart(id, event.id)
   }
 
