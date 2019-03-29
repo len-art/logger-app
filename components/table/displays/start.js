@@ -31,9 +31,10 @@ export default class extends React.Component {
     const {
       editEvent, addEvent, event, id, monthIndex,
     } = this.props
+
     if (!this.inputValue) return
 
-    if (event && event[id]) {
+    if (event && event.createdAt) {
       await editEvent({ [id]: this.inputValue }, event.id)
     } else {
       await addEvent({ [id]: this.inputValue, dayInMonth: monthIndex })
