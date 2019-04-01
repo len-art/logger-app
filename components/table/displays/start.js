@@ -41,9 +41,8 @@ export default class extends React.Component {
     }
   }
 
-  handleFocus = () => {
+  handleClick = () => {
     const { handleSelectStart, event, id } = this.props
-
     handleSelectStart(id, event.id)
   }
 
@@ -63,7 +62,7 @@ export default class extends React.Component {
         <TimePicker
           onSelect={this.handleSelect}
           selected={isSelected}
-          onFocus={this.handleFocus}
+          onClick={this.handleClick}
           onBlur={this.handleBlur}
           onCommit={this.handleCommit}
           value={isSelected ? this.inputValue : event[id]}

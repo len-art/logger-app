@@ -219,19 +219,21 @@ export default class extends React.Component {
 
   render() {
     const {
-      onClick, onChange, value, radius = 125, onFocus, id, selected,
+      onChange, value, radius = 125, onClick, id, selected,
     } = this.props
     const inputValue = value ? format(value, 'HH:mm') : ''
     return (
       <div className="wrapper">
-        <input
+        <button
           type="text"
-          onClick={onClick}
+          className="displayer"
           onChange={onChange}
           readOnly
-          onFocus={() => onFocus(id)}
+          onClick={() => onClick(id)}
           value={inputValue}
-        />
+        >
+          {inputValue}
+        </button>
         <div className={selected ? 'pickerWrapper visible' : 'pickerWrapper'}>
           {!this.showHours && (
             <IconButton
@@ -412,7 +414,7 @@ export default class extends React.Component {
               padding: 0;
               position: relative;
             }
-            input {
+            .displayer {
               width: 100%;
               height: 100%;
               border: none;
@@ -421,10 +423,10 @@ export default class extends React.Component {
               box-sizing: border-box;
               cursor: pointer;
             }
-            input:focus {
+            .displayer:focus {
               outline: none;
             }
-            input:hover {
+            .displayer:hover {
               background: rgba(34, 50, 84, 0.05);
             }
 
