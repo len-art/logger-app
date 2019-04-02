@@ -19,6 +19,12 @@ class Table extends Component {
     end: undefined,
   }
 
+  @observable
+  selectedEmptyField = {
+    start: undefined,
+    end: undefined,
+  }
+
   @computed
   get monthList() {
     const { months, selectedMonth } = this.props.store
@@ -26,6 +32,10 @@ class Table extends Component {
     const month = months.find(({ id }) => id === selectedMonth)
     return month || []
   }
+
+  selectEmptyField = (field, monthId) => (this.selectedEmptyField[field] = monthId)
+
+  unselectEmptyField = field => (this.selectedEmptyField[field] = undefined)
 
   handleToClipboard = () => {}
 
@@ -50,11 +60,11 @@ class Table extends Component {
     if (exists) this.monthList.events.push({ dayInMonth })
   }
 
-  handleSelectStart = (field, eventId) => {
+  handleSelect = (field, eventId) => {
     this.selectedTimePicker[field] = eventId
   }
 
-  handleUnselectStart = (field) => {
+  handleUnselect = (field) => {
     this.selectedTimePicker[field] = undefined
   }
 
@@ -70,27 +80,46 @@ class Table extends Component {
                   ({ dayInMonth }) => dayInMonth === monthIndex,
                 )
 
-                const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
+                const events = filteredEvents
+                // const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
+                // TODO: move this to helpers
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
-                return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
-                  key: col.id,
-                  id: col.id,
-                  dayOfWeek,
-                  event,
-                  eventIndex,
-                  events,
-                  monthIndex,
-                  weekend,
-                  addEvent: this.addEvent,
-                  editEvent: this.editEvent,
-                  addLocalDetail: this.addLocalDetail,
-                  handleSelectStart: this.handleSelectStart,
-                  handleToClipboard: this.handleToClipboard,
-                  handleUnselectStart: this.handleUnselectStart,
-                  monthId: this.monthList.id,
-                  selectedTimePicker: this.selectedTimePicker,
-                  startsAt: this.monthList.startsAt,
-                })))
+                if (events.length) {
+                  return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
+                    key: col.id,
+                    id: col.id,
+                    dayOfWeek,
+                    event,
+                    eventIndex,
+                    events,
+                    monthIndex,
+                    weekend,
+                    addEvent: this.addEvent,
+                    editEvent: this.editEvent,
+                    addLocalDetail: this.addLocalDetail,
+                    handleSelect: this.handleSelect,
+                    handleToClipboard: this.handleToClipboard,
+                    handleUnselect: this.handleUnselect,
+                    monthId: this.monthList.id,
+                    selectedTimePicker: this.selectedTimePicker,
+                    monthList: this.monthList,
+                  })))
+                }
+                if (
+                  !events.length
+                  || Object.values(this.selectedEmptyField).some(f => f !== undefined)
+                ) {
+                  return listColumns.map(col => React.createElement(displays[col.id], {
+                    key: col.id,
+                    id: col.id,
+                    dayOfWeek,
+                    monthIndex,
+                    weekend,
+                    monthList: this.monthList,
+                    empty: true,
+                    ...this,
+                  }))
+                }
               })}
             </>
           )}

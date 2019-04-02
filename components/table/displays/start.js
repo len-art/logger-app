@@ -22,8 +22,9 @@ export default class extends React.Component {
   }
 
   handleSelect = ({ minute, hour }) => {
-    const { startsAt, monthIndex } = this.props
-    const date = setMinutes(setHours(setDate(startsAt, monthIndex + 1), hour), minute)
+    const { monthList, monthIndex } = this.props
+    const date = setMinutes(setHours(setDate(monthList.startsAt, monthIndex + 1), hour), minute)
+    console.log(minute, hour)
     this.inputValue = date
   }
 
@@ -42,30 +43,48 @@ export default class extends React.Component {
   }
 
   handleClick = () => {
-    const { handleSelectStart, event, id } = this.props
-    handleSelectStart(id, event.id)
+    const {
+      handleSelect, monthIndex, event, id, empty, selectEmptyField,
+    } = this.props
+    if (empty) {
+      selectEmptyField(id, monthIndex)
+    } else handleSelect(id, event.id)
   }
 
   handleBlur = () => {
-    const { handleUnselectStart, id } = this.props
-    handleUnselectStart(id)
+    const {
+      empty, id, handleUnselect, unselectEmptyField,
+    } = this.props
+    if (empty) {
+      unselectEmptyField(id)
+    } else handleUnselect(id)
+  }
+
+  get isSelected() {
+    const {
+      id, event = {}, selectedTimePicker, monthIndex, selectedEmptyField, empty,
+    } = this.props
+    if (empty) {
+      return selectedEmptyField[id] === monthIndex
+    }
+    return event.id !== undefined && selectedTimePicker[id] === event.id
   }
 
   render() {
     const {
       id, event = {}, weekend, dayOfWeek, selectedTimePicker, monthIndex,
     } = this.props
-    const isSelected = event.id !== undefined && selectedTimePicker[id] === event.id
+    // const isSelected = event.id !== undefined && selectedTimePicker[id] === event.id
 
     return (
       <div className={`${id}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <TimePicker
           onSelect={this.handleSelect}
-          selected={isSelected}
+          selected={this.isSelected}
           onClick={this.handleClick}
           onBlur={this.handleBlur}
           onCommit={this.handleCommit}
-          value={isSelected ? this.inputValue : event[id]}
+          value={this.isSelected ? this.inputValue : event[id]}
           isVisible={this.isVisible}
           id={monthIndex}
         />
