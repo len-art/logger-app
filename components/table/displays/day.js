@@ -7,6 +7,7 @@ export default ({
   <div className={`day${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
     {eventIndex === 0 && monthIndex + 1}
     {eventIndex === 0 && <span className="weekNames">{daysOfWeek.names[dayOfWeek]}</span>}
+    {console.log(monthIndex + 1, dayOfWeek)}
     <style jsx>
       {`
         .weekNames {
