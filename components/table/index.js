@@ -24,6 +24,7 @@ class Table extends Component {
     const { months, selectedMonth } = this.props.store
     if (!months) return []
     const month = months.find(({ id }) => id === selectedMonth)
+    console.log(selectedMonth)
     return month || []
   }
 
