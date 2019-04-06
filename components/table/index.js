@@ -71,7 +71,7 @@ class Table extends Component {
                 )
 
                 const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
-                // const weekend = dayOfWeek === 0 || dayOfWeek === 6
+                const weekend = dayOfWeek === 0 || dayOfWeek === 6
                 return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
                   key: col.id,
                   id: col.id,
@@ -80,7 +80,7 @@ class Table extends Component {
                   eventIndex,
                   events,
                   monthIndex,
-                  // weekend,
+                  weekend,
                   addEvent: this.addEvent,
                   editEvent: this.editEvent,
                   addLocalDetail: this.addLocalDetail,
