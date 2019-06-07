@@ -1,10 +1,9 @@
 import React from 'react'
-import { inject, observer } from 'mobx-react'
+import { inject, observer, Provider } from 'mobx-react'
 import { withRouter } from 'next/router'
 import App, { Container } from 'next/app'
 import Head from 'next/head'
 import * as Sentry from '@sentry/browser'
-import { Provider } from 'mobx-react'
 import Store from '../store'
 // import { SENTRY_PUBLIC_DSN } from 'env';
 import Footer from '../components/footer'
@@ -55,6 +54,7 @@ class Layout extends React.Component {
               font-size: 14px;
               background-color: #f5f5f5;
               color: #222;
+              --buttonBlue: rgb(8, 59, 153);
             }
             a {
               text-decoration: none;

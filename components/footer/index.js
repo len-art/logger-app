@@ -1,6 +1,7 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
 import format from 'date-fns/format'
+import AddMonth from './addMonth'
 
 const Footer = inject('store')(
   observer((props) => {
@@ -17,6 +18,7 @@ const Footer = inject('store')(
               {format(month.startsAt, 'MMM')}
             </button>
           ))}
+          {months.length > 0 && <AddMonth />}
         </div>
         <style jsx>
           {`
@@ -38,7 +40,6 @@ const Footer = inject('store')(
               left: 0;
               width: 100%;
               content: '';
-              z-index: -1;
             }
             .button:before {
               top: 0;
@@ -55,6 +56,7 @@ const Footer = inject('store')(
               height: 100%;
               background-color: #087599;
               box-shadow: 1px 2px 5px -1px rgba(50, 50, 50, 0.8);
+              z-index: -1;
             }
             .button:hover:not(.selected) {
               transform: translateY(-2px);

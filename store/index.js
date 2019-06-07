@@ -1,15 +1,15 @@
 import { action, observable } from 'mobx'
-import axios from 'axios'
-import { init } from '@sentry/browser'
-import { startOfMonth } from 'date-fns'
+// import { init } from '@sentry/browser'
 
 import Auth from './auth'
-import { config } from '../api'
+import { config, Client } from '../api'
 import { agregate } from '../helpers'
 
 export default class {
   constructor() {
-    this.client = axios.create(config)
+    this.client = new Client({
+      prefix: config.urlPrefix,
+    })
     this.auth = new Auth(this)
   }
 
@@ -25,12 +25,16 @@ export default class {
   @observable
   selectedMonth = undefined
 
+  @observable
+  isNewProjectModalOpen = false
+
   async addProject({ name }) {
     try {
-      const { data } = await this.client.post('projects/create', {
+      const data = await this.client.post('projects/create', {
         name,
       })
-      this.projects.unshift(data.project)
+      this.addNewProject(data.project)
+      this.setMonths([data.month])
     } catch (error) {
       console.error(error)
     }
@@ -38,11 +42,11 @@ export default class {
 
   async getProject({ projectId }) {
     try {
-      const { data } = await this.client.post('projects/get', {
+      const data = await this.client.post('projects/get', {
         projectId,
       })
       this.selectedProject = projectId
-      this.setMonths(data.months, true)
+      this.setMonths(data.months)
       if (this.months.length) {
         this.setSelectedMonth(this.months[this.months.length - 1].id)
       }
@@ -53,43 +57,75 @@ export default class {
 
   @action
   setProjects(projects) {
-    if (!Array.isArray(projects)) {
+    if (Array.isArray(projects)) {
+      this.projects = projects.map(p => agregate.toProject(p))
+    } else {
       this.projects = []
-      return
+      this.setIsNewProjectModalOpen()
     }
-    this.projects = projects
+
     if (this.projects.length) {
       this.selectedProject = this.projects[0].id
     }
   }
 
   @action
-  setMonths(months) {
-    if (!Array.isArray(months)) {
-      this.months = []
-      return
+  addNewProject(project) {
+    const index = this.projects.findIndex(({ id }) => id === project.id)
+    if (index === -1) {
+      this.projects.unshift(agregate.toProject(project))
+    } else {
+      this.projects[index] = project
     }
-    this.months = months.map(m => agregate.toMonth(m))
+    this.selectedProject = project.id
+  }
+
+  @action
+  setMonths(months) {
+    if (Array.isArray(months)) {
+      this.months = months.map(m => agregate.toMonth(m))
+    } else {
+      this.months = []
+    }
     if (this.months.length) {
-      this.setSelectedMonth(this.months[this.months.length - 1].id)
+      this.setSelectedMonth(this.months[0].id)
     }
   }
 
+  async createMonth(projectId, dayInMonth) {
+    try {
+      const data = await this.client.post('months/create', { projectId, dayInMonth })
+      this.updateMonths(agregate.toMonth(data.month))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  @action
+  addNewMonth(month) {
+    this.months.unshift(agregate.toMonth(month))
+    this.selectedMonth = month.id
+  }
+
   async editEvent(monthId, eventId, event) {
-    const { data } = await this.client.post(`/months/${monthId}/edit/${eventId}`, { event })
+    const data = await this.client.post(`months/${monthId}/edit/${eventId}`, { event })
 
     this.updateMonths(agregate.toMonth(data.month))
   }
 
   async addEvent(monthId, event) {
-    const { data } = await this.client.post(`/months/${monthId}/add`, { event })
+    const data = await this.client.post(`months/${monthId}/add`, { event })
     this.updateMonths(agregate.toMonth(data.month))
   }
 
   @action
   updateMonths(month) {
     const index = this.months.findIndex(({ id }) => id === month.id)
-    if (index !== -1) this.months[index] = month
+    if (index !== -1) {
+      this.months[index] = month
+    } else {
+      this.months.push(month)
+    }
   }
 
   @action
@@ -108,5 +144,10 @@ export default class {
     this.months = []
     this.selectedProject = 0
     this.selectedMonth = undefined
+  }
+
+  @action
+  setIsNewProjectModalOpen = (isOpen = !this.isNewProjectModalOpen) => {
+    this.isNewProjectModalOpen = isOpen
   }
 }

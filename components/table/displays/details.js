@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 
 import IconButton from '../../iconButton'
+import CopyIcon from '../../../static/icons/copyIcon.svg'
 
 import TextInput from '../textInput'
 
@@ -44,14 +45,16 @@ export default class extends React.Component {
   handleInputConfirm = async (e) => {
     e.preventDefault()
 
-    const { event, dayInMonth } = this.props
+    const {
+      event, editEvent, addEvent, monthIndex,
+    } = this.props
 
-    if (event && event.id) {
+    if (event && event.createdAt) {
       /* event exists, send changes */
-      await this.props.editEvent({ details: this.inputValue }, event.id)
+      await editEvent({ details: this.inputValue }, event.id)
     } else if (this.inputValue.length) {
       /* event doesn't exist yet and user inputs text */
-      await this.props.addEvent({ details: this.inputValue, dayInMonth })
+      await addEvent({ details: this.inputValue, dayInMonth: monthIndex })
     }
 
     this.showEdit = false
@@ -62,9 +65,16 @@ export default class extends React.Component {
     this.handleInputConfirm(e)
   }
 
+  copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(this.inputValue)
+    } catch (error) {
+      console.error(`Failed to copy to clipboard: ${error}`)
+    }
+  }
+
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
-
     return (
       <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
@@ -82,7 +92,9 @@ export default class extends React.Component {
             value={this.showEdit ? this.inputValue : event.details}
           />
         </form>
-        <div className={`clipboard${this.showEdit ? ' hidden' : ''}`}>cp</div>
+        <div className={`clipboard${this.showEdit || !event.details ? ' hidden' : ''}`}>
+          <IconButton onClick={this.copyToClipboard} Icon={CopyIcon} />
+        </div>
         <style jsx>
           {`
             .details {
@@ -105,6 +117,8 @@ export default class extends React.Component {
               transform: translateX(30px);
               transition: 0.25s;
               transition-delay: 0s;
+              position: absolute;
+              right: 0;
             }
             .edit {
             }

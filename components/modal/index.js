@@ -29,7 +29,7 @@ class Modal extends React.Component {
             X
           </button>
           <div className="title">{title}</div>
-          {children}
+          {open && children}
           {footer && onCancel && onConfirm && (
             <div className="footer">
               <Button unstyled text="Cancel" onClick={onCancel} />

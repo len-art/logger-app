@@ -1,6 +1,7 @@
 import { action, observable, computed } from 'mobx'
 
 import { tokenHelper } from '../helpers'
+// import { client } from '../api'
 
 export default class {
   constructor(root) {
@@ -19,11 +20,8 @@ export default class {
     if (typeof window === 'undefined') return
     const { accessToken, refreshSecret, refreshToken } = this.localStorageData()
     if (accessToken && tokenHelper.isValid(accessToken)) {
-      this.root.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-      const data = await this.getUserData()
-      if (!data.success && data.message !== 'Network Error') {
-        this.resetCookies()
-      }
+      this.onTokenReceived({ accessToken })
+      await this.getUserData()
     } else if (refreshToken && refreshSecret) {
       await this.getToken({ refreshToken, refreshSecret })
       await this.getUserData()
@@ -40,44 +38,46 @@ export default class {
 
   async getUserData() {
     try {
-      const { data } = await this.client.post('users/data')
-      this.onLoginSuccess(data)
-      return { success: true }
+      const data = await this.client.post('users/data')
+      if (!this.user) {
+        this.onLoginSuccess(data)
+      }
+      this.onDataReceived(data)
     } catch (error) {
-      console.error(error)
-      return { success: false, message: error.message }
+      if (error.message !== 'Failed to fetch') {
+        this.resetCookies()
+      } else {
+        // TODO: inform user backend is currently down
+        // maybe directly from client callback?
+      }
     }
   }
 
-  async handleLogin({ email, password }) {
-    const { data } = await this.client.post('users/login', {
-      email,
-      password,
-    })
-    this.onTokenReceived(data)
-    this.onLoginSuccess(data)
-    this.getUserData()
-  }
-
   @action
-  async handleRegister({ email, name, password }) {
-    await this.client.post('users/register', {
-      email,
-      name,
-      password,
-    })
-  }
-
-  @action
-  async onLoginSuccess({ projects, months, user }) {
-    if (user) this.user = user
+  onDataReceived({ projects, months }) {
     this.root.setProjects(projects)
     this.root.setMonths(months)
   }
 
+  handleLogin = async ({ email, password }) => {
+    const data = await this.client.post('users/login', { email, password })
+    this.onTokenReceived(data)
+    this.onLoginSuccess(data)
+    this.getUserData(data)
+  }
+
+  handleRegister = ({ email, name, password }) => {
+    this.client.post('users/register', { email, name, password })
+  }
+
+  @action
+  async onLoginSuccess({ user }) {
+    if (user) this.user = user
+  }
+
   async getToken({ refreshToken, refreshSecret }) {
     try {
-      const { data } = await this.client.post('users/token', { refreshToken, refreshSecret })
+      const data = await this.client.post('users/token', { refreshToken, refreshSecret })
       this.onTokenReceived(data)
     } catch (error) {
       console.error(error)
@@ -88,7 +88,8 @@ export default class {
   onTokenReceived({ accessToken, refreshToken, refreshSecret }) {
     if (accessToken) {
       sessionStorage.setItem('accessToken', accessToken)
-      this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+      this.client.setHeader('Authorization', `Bearer ${accessToken}`)
+      // this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     }
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken)
