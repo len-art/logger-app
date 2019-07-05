@@ -69,31 +69,36 @@ class Table extends Component {
             <>
               <Header columns={listColumns} />
               {this.monthList.daysOfWeek.map((dayOfWeek, monthIndex) => {
-                const filteredEvents = this.monthList.events.filter(
-                  ({ dayInMonth }) => dayInMonth === monthIndex,
-                )
-
-                const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
-                return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
-                  key: col.id,
-                  id: col.id,
-                  dayOfWeek,
-                  event,
-                  eventIndex,
-                  events,
-                  monthIndex,
-                  weekend,
-                  addEvent: this.addEvent,
-                  editEvent: this.editEvent,
-                  addLocalDetail: this.addLocalDetail,
-                  handleSelectStart: this.handleSelectStart,
-                  handleToClipboard: this.handleToClipboard,
-                  handleUnselectStart: this.handleUnselectStart,
-                  monthId: this.monthList.id,
-                  selectedTimePicker: this.selectedTimePicker,
-                  startsAt: this.monthList.startsAt,
-                })))
+                return (
+                  <React.Fragment>
+                    <displays.day weekend={weekend} monthIndex={monthIndex} dayOfWeek={dayOfWeek} />
+                  </React.Fragment>
+                )
+                // const filteredEvents = this.monthList.events.filter(
+                //   ({ dayInMonth }) => dayInMonth === monthIndex,
+                // )
+                // const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
+                // const weekend = dayOfWeek === 0 || dayOfWeek === 6
+                // return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
+                //   key: col.id,
+                //   id: col.id,
+                //   dayOfWeek,
+                //   event,
+                //   eventIndex,
+                //   events,
+                //   monthIndex,
+                //   weekend,
+                //   addEvent: this.addEvent,
+                //   editEvent: this.editEvent,
+                //   addLocalDetail: this.addLocalDetail,
+                //   handleSelectStart: this.handleSelectStart,
+                //   handleToClipboard: this.handleToClipboard,
+                //   handleUnselectStart: this.handleUnselectStart,
+                //   monthId: this.monthList.id,
+                //   selectedTimePicker: this.selectedTimePicker,
+                //   startsAt: this.monthList.startsAt,
+                // })))
               })}
             </>
           )}
