@@ -17,19 +17,21 @@ export default class extends React.Component {
     return selected.eventId === event.id && selected.column === componentId
   }
 
-  getDateFromTime = ({ minute, hour }) => setMinutes(setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), hour), minute)
+  getDateFromTime = ({ hour, minute }) => setMinutes(setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), hour), minute)
 
   handleSelect = (time) => {
     this.props.event[this.props.componentId] = this.getDateFromTime(time)
   }
 
-  handleCommit = async (time) => {
+  handleCommit = async ({ hour, minute }) => {
     const { editEvent, event, componentId } = this.props
+    if (hour === undefined) return
+    console.log(hour, minute, this.getDateFromTime({ hour, minute }))
 
     await editEvent({
       eventId: event.id,
       column: componentId,
-      value: this.getDateFromTime(time),
+      value: this.getDateFromTime({ hour, minute }),
     })
 
     // if (event && event.createdAt) {
@@ -58,18 +60,18 @@ export default class extends React.Component {
       >
         <button type="text" className="displayer" readOnly onClick={this.handleClick}>
           {event[componentId] ? format(event[componentId], 'HH:mm') : ''}
+          {this.isSelected && (
+            <TimePicker
+              onSelect={this.handleSelect}
+              onClick={this.handleClick}
+              onBlur={this.handleBlur}
+              onCommit={this.handleCommit}
+              value={event[componentId]}
+              isVisible={this.isVisible}
+              id={monthIndex}
+            />
+          )}
         </button>
-        {this.isSelected && (
-          <TimePicker
-            onSelect={this.handleSelect}
-            onClick={this.handleClick}
-            onBlur={this.handleBlur}
-            onCommit={this.handleCommit}
-            value={event[componentId]}
-            isVisible={this.isVisible}
-            id={monthIndex}
-          />
-        )}
         <style jsx>
           {`
             .displayer {
@@ -80,6 +82,7 @@ export default class extends React.Component {
               background-color: inherit;
               box-sizing: border-box;
               cursor: pointer;
+              position: relative;
             }
             .displayer:focus {
               outline: none;

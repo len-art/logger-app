@@ -41,13 +41,13 @@ export default class extends React.Component {
     if (this.clockRef.current) {
       this.getRadius()
       this.mouseListen(true)
-      this.onOpenWithValue()
+      if (this.props.value) this.onOpenWithValue()
     }
   }
 
   componentWillUnmount() {
     this.mouseListen(false)
-    this.props.onCommit(this.getTimeFromSelection())
+    if (this.selectedHourDeg && this.selectedMinuteDeg) this.props.onCommit(this.getTimeFromSelection())
   }
 
   @computed
@@ -195,6 +195,7 @@ export default class extends React.Component {
   handleClockClick = () => {
     if (this.showHours) {
       this.selection.hour = this.hoverDegrees
+      // if (this.selection.minute === undefined) this.selection.minute = 0
       this.showMinutes()
     } else {
       this.selection.minute = this.hoverDegrees
@@ -207,7 +208,7 @@ export default class extends React.Component {
 
   render() {
     const { radius = 125 } = this.props
-
+    console.log(this.hoverDegrees)
     return (
       <div className="wrapper">
         <div className="pickerWrapper">
