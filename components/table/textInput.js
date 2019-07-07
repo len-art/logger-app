@@ -1,12 +1,19 @@
 import React from 'react'
 
 export default ({
-  onClick, onChange, value = '', onBlur, onFocus, autoFocus,
+  onClick,
+  onChange,
+  value = '',
+  name,
+  onBlur,
+  onFocus,
+  autoFocus,
 }) => (
   <div className="wrapper">
     <input
       autoFocus={autoFocus}
       type="text"
+      name={name}
       onClick={onClick}
       onChange={onChange}
       onBlur={onBlur}
@@ -35,7 +42,7 @@ export default ({
           outline: none;
         }
         input:hover {
-          background: rgba(34, 50, 84, 0.05);
+          background: rgba(34, 50, 84, 0.15);
         }
         .border {
           position: absolute;
