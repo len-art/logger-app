@@ -9,15 +9,6 @@ import TextInput from '../textInput'
 
 @observer
 export default class extends React.Component {
-  // constructor(props) {
-  //   super(props)
-  //   if (props.event && props.event.details) {
-  //     this.inputValue = props.event.details
-  //   }
-  // }
-  // @observable
-  // inputValue = ''
-
   @observable
   showEdit = false
 
@@ -29,42 +20,46 @@ export default class extends React.Component {
     this.props.event.details = e.target.value
   }
 
-  handleInputConfirm = async (e) => {
-    e.preventDefault()
+  handleSave = async (value) => {
+    const { event, editEvent, componentId } = this.props
 
-    const {
-      event, editEvent, addEvent, monthIndex,
-    } = this.props
-
-    if (event && event.createdAt) {
-      /* event exists, send changes */
-      await editEvent({ details: this.inputValue }, event.id)
-    } else if (this.inputValue.length) {
-      /* event doesn't exist yet and user inputs text */
-      await addEvent({ details: this.inputValue, dayInMonth: monthIndex })
-    }
-
+    await editEvent({ eventId: event.id, column: componentId, value })
     this.showEdit = false
   }
 
   handleDelete = (e) => {
-    this.event.details = ''
+    delete this.props.event.details
     this.handleInputConfirm(e)
   }
 
   copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(this.inputValue)
+      await navigator.clipboard.writeText(this.props.event.details)
       // TODO: when this completes, show a checkmark for a couple of seconds
     } catch (error) {
       console.error(`Failed to copy to clipboard: ${error}`)
     }
   }
 
+  handleFormConfirm = (e) => {
+    e.preventDefault()
+    const val = e.target.elements.details.value
+    this.handleSave(val)
+  }
+
+  handleInputConfirm = (e) => {
+    const val = e.target.value
+    this.handleSave(val)
+  }
+
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
     return (
-      <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
+      <div
+        className={`details${weekend ? ' weekend' : ''}${
+          dayOfWeek % 2 ? ' highlight' : ''
+        }`}
+      >
         <div className="edit">
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />
@@ -72,15 +67,20 @@ export default class extends React.Component {
             <IconButton onClick={this.handleDelete} text="✗" />
           )}
         </div>
-        <form className="input" onSubmit={this.handleInputConfirm}>
+        <form className="input" onSubmit={this.handleFormConfirm}>
           <TextInput
             onFocus={this.handleShowEdit}
             onChange={this.handleInputChange}
             onBlur={this.handleInputConfirm}
-            value={this.showEdit ? this.inputValue : event.details}
+            value={event.details}
+            name="details"
           />
         </form>
-        <div className={`clipboard${this.showEdit || !event.details ? ' hidden' : ''}`}>
+        <div
+          className={`clipboard${
+            this.showEdit || !event.details ? ' hidden' : ''
+          }`}
+        >
           <IconButton onClick={this.copyToClipboard} Icon={CopyIcon} />
         </div>
         <style jsx>

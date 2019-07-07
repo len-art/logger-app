@@ -42,10 +42,11 @@ class Table extends Component {
   }
 
   editEvent = async ({ eventId, column, value }) => {
-    console.log(value)
     if (value === undefined) return
     try {
-      await this.props.store.editEvent(this.monthList.id, eventId, { [column]: value })
+      await this.props.store.editEvent(this.monthList.id, eventId, {
+        [column]: value,
+      })
     } catch (error) {
       console.log(error)
     }
