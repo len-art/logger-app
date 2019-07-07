@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { observable, computed } from 'mobx'
 
 import setDate from 'date-fns/setDate'
 import setHours from 'date-fns/setHours'
@@ -19,6 +19,11 @@ export default class extends React.Component {
     if (props.event && props.event[id]) {
       this.inputValue = props.event[id]
     }
+  }
+
+  get isSelected() {
+    const { selected, event } = this.props
+    return selected.eventId === event.id && selected.column === 'start'
   }
 
   handleSelect = ({ minute, hour }) => {
@@ -41,31 +46,28 @@ export default class extends React.Component {
     }
   }
 
-  handleClick = () => {
-    const { handleSelectStart, event, id } = this.props
-    handleSelectStart(id, event.id)
+  handleBlur = () => {
+    this.props.handleColumnSelect()
   }
 
-  handleBlur = () => {
-    const { handleUnselectStart, id } = this.props
-    handleUnselectStart(id)
+  handleClick = () => {
+    const { handleColumnSelect, event } = this.props
+    handleColumnSelect({ eventId: event.id, column: 'start' })
   }
 
   render() {
     const {
-      id, event = {}, weekend, dayOfWeek, selectedTimePicker, monthIndex,
+      weekend, monthIndex, dayOfWeek, event,
     } = this.props
-    const isSelected = event.id !== undefined && selectedTimePicker[id] === event.id
-
     return (
-      <div className={`${id}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
+      <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <TimePicker
           onSelect={this.handleSelect}
-          selected={isSelected}
+          selected={this.isSelected}
           onClick={this.handleClick}
           onBlur={this.handleBlur}
           onCommit={this.handleCommit}
-          value={isSelected ? this.inputValue : event[id]}
+          value={this.isSelected ? this.inputValue : event.start}
           isVisible={this.isVisible}
           id={monthIndex}
         />

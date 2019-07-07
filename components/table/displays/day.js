@@ -1,9 +1,7 @@
 import React from 'react'
 import { daysOfWeek } from '../../../constants'
 
-export default ({
-  weekend, monthIndex, dayOfWeek, eventIndex,
-}) => (
+export default ({ monthIndex, weekend, dayOfWeek }) => (
   <div className={`day${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
     {monthIndex + 1}
     <span className="weekNames">{daysOfWeek.names[dayOfWeek]}</span>

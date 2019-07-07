@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
+import { computed, observable, action } from 'mobx'
 
 import Paper from '../paper'
 import Header from './header'
@@ -16,6 +16,24 @@ const displayCol = listColumns.slice(2)
 @inject('store')
 @observer
 class Table extends Component {
+  @observable
+  selected = {
+    eventId: undefined,
+    column: undefined,
+  }
+
+  @action
+  handleColumnSelect = (
+    selected = {
+      start: undefined,
+      end: undefined,
+    },
+  ) => {
+    /* selected?: { eventId, column } */
+    this.selected = selected
+  }
+
+  /* old methods */
   @observable
   selectedTimePicker = {
     start: undefined,
@@ -70,9 +88,27 @@ class Table extends Component {
               <Header columns={listColumns} />
               {this.monthList.daysOfWeek.map((dayOfWeek, monthIndex) => {
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
+                const filteredEvents = this.monthList.events.filter(
+                  ({ dayInMonth }) => dayInMonth === monthIndex,
+                )
+                const monthData = { weekend, monthIndex, dayOfWeek }
                 return (
-                  <React.Fragment>
-                    <displays.day weekend={weekend} monthIndex={monthIndex} dayOfWeek={dayOfWeek} />
+                  <React.Fragment key={monthIndex.toString()}>
+                    <displays.day {...monthData} />
+                    <displays.add {...monthData} />
+                    {filteredEvents.map(e => (
+                      <React.Fragment key={e.id}>
+                        <displays.start
+                          {...monthData}
+                          selected={this.selected}
+                          event={e}
+                          handleColumnSelect={this.handleColumnSelect}
+                        />
+                        {/* <displays.end />
+                        <displays.hours />
+                        <displays.details /> */}
+                      </React.Fragment>
+                    ))}
                   </React.Fragment>
                 )
                 // const filteredEvents = this.monthList.events.filter(
@@ -167,7 +203,7 @@ class Table extends Component {
 
               .weekend {
                 padding: 0px 15px;
-                background-color: rgba(200, 200, 220, 0.3);
+                background-color: rgba(150, 150, 250, 0.3);
                 font-size: 0.9em;
                 grid-row-gap: 5px;
               }
