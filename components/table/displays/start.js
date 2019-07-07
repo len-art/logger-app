@@ -17,10 +17,7 @@ export default class extends React.Component {
     return selected.eventId === event.id && selected.column === componentId
   }
 
-  getDateFromTime = ({ hour, minute }) => setMinutes(
-    setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), hour),
-    minute,
-  )
+  getDateFromTime = ({ hour, minute }) => setMinutes(setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), hour), minute)
 
   handleSelect = (time) => {
     this.props.event[this.props.componentId] = this.getDateFromTime(time)
@@ -57,51 +54,21 @@ export default class extends React.Component {
     const {
       weekend, monthIndex, dayOfWeek, event, componentId,
     } = this.props
+
     return (
       <div
-        className={`${componentId}${weekend ? ' weekend' : ''}${
-          dayOfWeek % 2 ? ' highlight' : ''
-        }`}
+        className={`${componentId}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}
       >
-        <button
-          type="text"
-          className="displayer"
-          readOnly
+        <TimePicker
+          selected={this.isSelected}
+          onSelect={this.handleSelect}
           onClick={this.handleClick}
-        >
-          {event[componentId] ? format(event[componentId], 'HH:mm') : ''}
-          {this.isSelected && (
-            <TimePicker
-              onSelect={this.handleSelect}
-              onClick={this.handleClick}
-              onBlur={this.handleBlur}
-              onCommit={this.handleCommit}
-              value={event[componentId]}
-              isVisible={this.isVisible}
-              id={monthIndex}
-            />
-          )}
-        </button>
-        <style jsx>
-          {`
-            .displayer {
-              width: 100%;
-              height: 100%;
-              border: none;
-              padding: 10px;
-              background-color: inherit;
-              box-sizing: border-box;
-              cursor: pointer;
-              position: relative;
-            }
-            .displayer:focus {
-              outline: none;
-            }
-            .displayer:hover {
-              background: rgba(34, 50, 84, 0.15);
-            }
-          `}
-        </style>
+          onBlur={this.handleBlur}
+          onCommit={this.handleCommit}
+          value={event[componentId]}
+          isVisible={this.isVisible}
+          id={monthIndex}
+        />
       </div>
     )
   }
