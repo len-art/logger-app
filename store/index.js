@@ -129,12 +129,12 @@ export default class {
   }
 
   @action
-  setSelectedMonth(nextState) {
+  setSelectedMonth = (nextState) => {
     this.selectedMonth = nextState
   }
 
   @action
-  setSelectedProject(nextState) {
+  setSelectedProject = (nextState) => {
     this.selectedProject = nextState
   }
 

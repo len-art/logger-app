@@ -67,7 +67,7 @@ export default class extends React.Component {
             <IconButton onClick={this.handleDelete} text="✗" />
           )}
         </div>
-        <form className="input" onSubmit={this.handleFormConfirm}>
+        <form className="input" autoComplete="off" onSubmit={this.handleFormConfirm}>
           <TextInput
             onFocus={this.handleShowEdit}
             onChange={this.handleInputChange}
