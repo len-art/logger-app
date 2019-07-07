@@ -55,11 +55,7 @@ export default class extends React.Component {
   render() {
     const { weekend, dayOfWeek, event = {} } = this.props
     return (
-      <div
-        className={`details${weekend ? ' weekend' : ''}${
-          dayOfWeek % 2 ? ' highlight' : ''
-        }`}
-      >
+      <div className={`details${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
         <div className="edit">
           {this.showEdit ? (
             <IconButton onClick={this.handleInputConfirm} text="✓" />
@@ -76,11 +72,7 @@ export default class extends React.Component {
             name="details"
           />
         </form>
-        <div
-          className={`clipboard${
-            this.showEdit || !event.details ? ' hidden' : ''
-          }`}
-        >
+        <div className={`clipboard${this.showEdit || !event.details ? ' hidden' : ''}`}>
           <IconButton onClick={this.copyToClipboard} Icon={CopyIcon} />
         </div>
         <style jsx>
