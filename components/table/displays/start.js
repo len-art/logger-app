@@ -1,6 +1,7 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { observable, computed } from 'mobx'
+import { computed } from 'mobx'
+import format from 'date-fns/format'
 
 import setDate from 'date-fns/setDate'
 import setHours from 'date-fns/setHours'
@@ -10,40 +11,32 @@ import TimePicker from '../../timePicker'
 
 @observer
 export default class extends React.Component {
-  @observable
-  inputValue
-
-  constructor(props) {
-    super(props)
-    const { id } = props
-    if (props.event && props.event[id]) {
-      this.inputValue = props.event[id]
-    }
-  }
-
+  @computed
   get isSelected() {
-    const { selected, event } = this.props
-    return selected.eventId === event.id && selected.column === 'start'
+    const { selected, event, componentId } = this.props
+    return selected.eventId === event.id && selected.column === componentId
   }
 
-  handleSelect = ({ minute, hour }) => {
-    const { startsAt, monthIndex } = this.props
-    const date = setMinutes(setHours(setDate(startsAt, monthIndex + 1), hour), minute)
-    this.inputValue = date
+  getDateFromTime = ({ minute, hour }) => setMinutes(setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), hour), minute)
+
+  handleSelect = (time) => {
+    this.props.event[this.props.componentId] = this.getDateFromTime(time)
   }
 
-  handleCommit = async () => {
-    const {
-      editEvent, addEvent, event, id, monthIndex,
-    } = this.props
+  handleCommit = async (time) => {
+    const { editEvent, event, componentId } = this.props
 
-    if (!this.inputValue) return
+    await editEvent({
+      eventId: event.id,
+      column: componentId,
+      value: this.getDateFromTime(time),
+    })
 
-    if (event && event.createdAt) {
-      await editEvent({ [id]: this.inputValue }, event.id)
-    } else {
-      await addEvent({ [id]: this.inputValue, dayInMonth: monthIndex })
-    }
+    // if (event && event.createdAt) {
+    //   await editEvent({ [id]: this.inputValue }, event.id)
+    // } else {
+    //   await addEvent({ [id]: this.inputValue, dayInMonth: monthIndex })
+    // }
   }
 
   handleBlur = () => {
@@ -51,26 +44,51 @@ export default class extends React.Component {
   }
 
   handleClick = () => {
-    const { handleColumnSelect, event } = this.props
-    handleColumnSelect({ eventId: event.id, column: 'start' })
+    const { handleColumnSelect, event, componentId } = this.props
+    handleColumnSelect({ eventId: event.id, column: componentId })
   }
 
   render() {
     const {
-      weekend, monthIndex, dayOfWeek, event,
+      weekend, monthIndex, dayOfWeek, event, componentId,
     } = this.props
     return (
-      <div className={`start${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
-        <TimePicker
-          onSelect={this.handleSelect}
-          selected={this.isSelected}
-          onClick={this.handleClick}
-          onBlur={this.handleBlur}
-          onCommit={this.handleCommit}
-          value={this.isSelected ? this.inputValue : event.start}
-          isVisible={this.isVisible}
-          id={monthIndex}
-        />
+      <div
+        className={`${componentId}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}
+      >
+        <button type="text" className="displayer" readOnly onClick={this.handleClick}>
+          {event[componentId] ? format(event[componentId], 'HH:mm') : ''}
+        </button>
+        {this.isSelected && (
+          <TimePicker
+            onSelect={this.handleSelect}
+            onClick={this.handleClick}
+            onBlur={this.handleBlur}
+            onCommit={this.handleCommit}
+            value={event[componentId]}
+            isVisible={this.isVisible}
+            id={monthIndex}
+          />
+        )}
+        <style jsx>
+          {`
+            .displayer {
+              width: 100%;
+              height: 100%;
+              border: none;
+              padding: 10px;
+              background-color: inherit;
+              box-sizing: border-box;
+              cursor: pointer;
+            }
+            .displayer:focus {
+              outline: none;
+            }
+            .displayer:hover {
+              background: rgba(34, 50, 84, 0.05);
+            }
+          `}
+        </style>
       </div>
     )
   }

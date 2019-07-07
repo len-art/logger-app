@@ -40,20 +40,14 @@ export default class extends React.Component {
   componentDidMount() {
     if (this.clockRef.current) {
       this.getRadius()
+      this.mouseListen(true)
+      this.onOpenWithValue()
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.selected && !this.props.selected) {
-      this.mouseListen(false)
-      this.props.onCommit()
-      this.reset()
-    } else if (!prevProps.selected && this.props.selected) {
-      this.mouseListen(true)
-      if (this.props.value) {
-        this.onOpenWithValue()
-      }
-    }
+  componentWillUnmount() {
+    this.mouseListen(false)
+    this.props.onCommit(this.getTimeFromSelection())
   }
 
   @computed
@@ -77,14 +71,10 @@ export default class extends React.Component {
     return Object.values(this.selection).every(v => v !== undefined)
   }
 
-  reset() {
-    this.showEdit = false
-    this.showHours = true
-    this.hoverDegrees = undefined
-    this.selection = {
-      hour: undefined,
-      minute: undefined,
-    }
+  getTimeFromSelection = () => {
+    const hour = Math.round(clockHelper.getHourFromDegrees(this.selection.hour))
+    const minute = Math.round(clockHelper.getMinuteFromDegrees(this.selection.minute))
+    return { hour, minute }
   }
 
   onOpenWithValue = () => {
@@ -211,30 +201,16 @@ export default class extends React.Component {
     }
     const { onSelect } = this.props
     if (this.isSelectionDone && typeof onSelect === 'function') {
-      const hour = Math.round(clockHelper.getHourFromDegrees(this.selection.hour))
-      const minute = Math.round(clockHelper.getMinuteFromDegrees(this.selection.minute))
-      onSelect({ hour, minute })
+      onSelect(this.getTimeFromSelection())
     }
   }
 
   render() {
-    const {
-      onChange, value, radius = 125, onClick, id, selected,
-    } = this.props
-    const inputValue = value ? format(value, 'HH:mm') : ''
+    const { radius = 125 } = this.props
+
     return (
       <div className="wrapper">
-        <button
-          type="text"
-          className="displayer"
-          onChange={onChange}
-          readOnly
-          onClick={() => onClick(id)}
-          value={inputValue}
-        >
-          {inputValue}
-        </button>
-        <div className={selected ? 'pickerWrapper visible' : 'pickerWrapper'}>
+        <div className="pickerWrapper">
           {!this.showHours && (
             <IconButton
               Icon={Back}
@@ -399,12 +375,6 @@ export default class extends React.Component {
               background: #fff;
               z-index: 10;
               box-shadow: 2px 3px 7px -1px rgba(50, 50, 50, 0.6);
-              opacity: 0;
-              z-index: -1000;
-            }
-            .visible {
-              opacity: 1;
-              z-index: 10;
             }
             .wrapper {
               width: 100%;
@@ -413,21 +383,6 @@ export default class extends React.Component {
               margin: 0;
               padding: 0;
               position: relative;
-            }
-            .displayer {
-              width: 100%;
-              height: 100%;
-              border: none;
-              padding: 10px;
-              background-color: inherit;
-              box-sizing: border-box;
-              cursor: pointer;
-            }
-            .displayer:focus {
-              outline: none;
-            }
-            .displayer:hover {
-              background: rgba(34, 50, 84, 0.05);
             }
 
             .smaller {

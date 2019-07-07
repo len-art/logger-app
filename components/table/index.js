@@ -33,6 +33,14 @@ class Table extends Component {
     this.selected = selected
   }
 
+  editEvent = async ({ eventId, column, value }) => {
+    try {
+      await this.props.store.editEvent(this.monthList.id, eventId, { [column]: value })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   /* old methods */
   @observable
   selectedTimePicker = {
@@ -50,13 +58,13 @@ class Table extends Component {
 
   handleToClipboard = () => {}
 
-  editEvent = async (payload, eventId) => {
-    try {
-      await this.props.store.editEvent(this.monthList.id, eventId, payload)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // editEvent = async (payload, eventId) => {
+  //   try {
+  //     await this.props.store.editEvent(this.monthList.id, eventId, payload)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   addEvent = async (payload) => {
     try {
@@ -88,27 +96,36 @@ class Table extends Component {
               <Header columns={listColumns} />
               {this.monthList.daysOfWeek.map((dayOfWeek, monthIndex) => {
                 const weekend = dayOfWeek === 0 || dayOfWeek === 6
-                const filteredEvents = this.monthList.events.filter(
+                const events = this.monthList.events.filter(
                   ({ dayInMonth }) => dayInMonth === monthIndex,
                 )
-                const monthData = { weekend, monthIndex, dayOfWeek }
+                const monthData = {
+                  weekend,
+                  monthIndex,
+                  dayOfWeek,
+                  startsAt: this.monthList.startsAt,
+                }
                 return (
                   <React.Fragment key={monthIndex.toString()}>
                     <displays.day {...monthData} />
                     <displays.add {...monthData} />
-                    {filteredEvents.map(e => (
-                      <React.Fragment key={e.id}>
-                        <displays.start
-                          {...monthData}
-                          selected={this.selected}
-                          event={e}
-                          handleColumnSelect={this.handleColumnSelect}
-                        />
-                        {/* <displays.end />
-                        <displays.hours />
-                        <displays.details /> */}
-                      </React.Fragment>
-                    ))}
+                    {events.map((e) => {
+                      const props = {
+                        ...monthData,
+                        selected: this.selected,
+                        event: e,
+                        handleColumnSelect: this.handleColumnSelect,
+                        editEvent: this.editEvent,
+                      }
+                      return (
+                        <React.Fragment key={e.id}>
+                          <displays.start {...props} componentId="start" />
+                          <displays.end {...props} componentId="end" />
+                          <displays.hours {...props} componentId="hours" />
+                          <displays.details {...props} componentId="details" />
+                        </React.Fragment>
+                      )
+                    })}
                   </React.Fragment>
                 )
                 // const filteredEvents = this.monthList.events.filter(

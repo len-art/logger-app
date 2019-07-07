@@ -9,37 +9,24 @@ import TextInput from '../textInput'
 
 @observer
 export default class extends React.Component {
-  constructor(props) {
-    super(props)
-    if (props.event && props.event.details) {
-      this.inputValue = props.event.details
-    }
-  }
+  // constructor(props) {
+  //   super(props)
+  //   if (props.event && props.event.details) {
+  //     this.inputValue = props.event.details
+  //   }
+  // }
+  // @observable
+  // inputValue = ''
 
   @observable
   showEdit = false
 
-  @observable
-  inputValue = ''
-
   handleShowEdit = () => {
     this.showEdit = !this.showEdit
-    const { event } = this.props
-    if (event && event.details) {
-      this.inputValue = event.details
-    }
   }
 
   handleInputChange = (e) => {
-    this.inputValue = e.target.value
-  }
-
-  handleInputCancel = () => {
-    this.showEdit = false
-    const { event } = this.props
-    if (event && event.details) {
-      this.inputValue = event.details
-    }
+    this.props.event.details = e.target.value
   }
 
   handleInputConfirm = async (e) => {
@@ -61,7 +48,7 @@ export default class extends React.Component {
   }
 
   handleDelete = (e) => {
-    this.inputValue = ''
+    this.event.details = ''
     this.handleInputConfirm(e)
   }
 
