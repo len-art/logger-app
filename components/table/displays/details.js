@@ -55,6 +55,7 @@ export default class extends React.Component {
   copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(this.inputValue)
+      // TODO: when this completes, show a checkmark for a couple of seconds
     } catch (error) {
       console.error(`Failed to copy to clipboard: ${error}`)
     }

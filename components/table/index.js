@@ -22,6 +22,14 @@ class Table extends Component {
     column: undefined,
   }
 
+  @computed
+  get monthList() {
+    const { months, selectedMonth } = this.props.store
+    if (!months) return []
+    const month = months.find(({ id }) => id === selectedMonth)
+    return month || []
+  }
+
   @action
   handleColumnSelect = (
     selected = {
@@ -43,50 +51,12 @@ class Table extends Component {
     }
   }
 
-  /* old methods */
-  @observable
-  selectedTimePicker = {
-    start: undefined,
-    end: undefined,
-  }
-
-  @computed
-  get monthList() {
-    const { months, selectedMonth } = this.props.store
-    if (!months) return []
-    const month = months.find(({ id }) => id === selectedMonth)
-    return month || []
-  }
-
-  handleToClipboard = () => {}
-
-  // editEvent = async (payload, eventId) => {
-  //   try {
-  //     await this.props.store.editEvent(this.monthList.id, eventId, payload)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
   addEvent = async (payload) => {
     try {
       await this.props.store.addEvent(this.monthList.id, payload)
     } catch (error) {
       console.log(error)
     }
-  }
-
-  addLocalDetail = (dayInMonth) => {
-    const exists = this.monthList.events.find(e => e.dayInMonth === dayInMonth)
-    if (exists) this.monthList.events.push({ dayInMonth })
-  }
-
-  handleSelectStart = (field, eventId) => {
-    this.selectedTimePicker[field] = eventId
-  }
-
-  handleUnselectStart = (field) => {
-    this.selectedTimePicker[field] = undefined
   }
 
   render() {
@@ -110,7 +80,7 @@ class Table extends Component {
                 return (
                   <React.Fragment key={monthIndex.toString()}>
                     <displays.day {...monthData} />
-                    <displays.add {...monthData} />
+                    <displays.add {...monthData} addEvent={this.addEvent} />
                     {events.map((e) => {
                       const props = {
                         ...monthData,
@@ -118,6 +88,7 @@ class Table extends Component {
                         event: e,
                         handleColumnSelect: this.handleColumnSelect,
                         editEvent: this.editEvent,
+                        addEvent: this.addEvent,
                       }
                       return (
                         <React.Fragment key={e.id}>
