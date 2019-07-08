@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { computed } from 'mobx'
 
 import setDate from 'date-fns/setDate'
 import setHours from 'date-fns/setHours'
@@ -10,62 +10,54 @@ import TimePicker from '../../timePicker'
 
 @observer
 export default class extends React.Component {
-  @observable
-  inputValue
-
-  constructor(props) {
-    super(props)
-    const { id } = props
-    if (props.event && props.event[id]) {
-      this.inputValue = props.event[id]
-    }
+  @computed
+  get isSelected() {
+    const { selected, event, componentId } = this.props
+    return selected.eventId === event.id && selected.column === componentId
   }
 
-  handleSelect = ({ minute, hour }) => {
-    const { startsAt, monthIndex } = this.props
-    const date = setMinutes(setHours(setDate(startsAt, monthIndex + 1), hour), minute)
-    this.inputValue = date
+  getDateFromTime = ({ hour, minute }) => setMinutes(setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), hour), minute)
+
+  handleSelect = (time) => {
+    this.props.event[this.props.componentId] = this.getDateFromTime(time)
   }
 
-  handleCommit = async () => {
-    const {
-      editEvent, addEvent, event, id, monthIndex,
-    } = this.props
+  handleCommit = async ({ hour, minute }) => {
+    const { editEvent, event, componentId } = this.props
+    if (hour === undefined) return
 
-    if (!this.inputValue) return
-
-    if (event && event.createdAt) {
-      await editEvent({ [id]: this.inputValue }, event.id)
-    } else {
-      await addEvent({ [id]: this.inputValue, dayInMonth: monthIndex })
-    }
-  }
-
-  handleClick = () => {
-    const { handleSelectStart, event, id } = this.props
-    handleSelectStart(id, event.id)
+    await editEvent({
+      eventId: event.id,
+      column: componentId,
+      value: this.getDateFromTime({ hour, minute }),
+    })
   }
 
   handleBlur = () => {
-    const { handleUnselectStart, id } = this.props
-    handleUnselectStart(id)
+    this.props.handleColumnSelect()
+  }
+
+  handleClick = () => {
+    const { handleColumnSelect, event, componentId } = this.props
+    handleColumnSelect({ eventId: event.id, column: componentId })
   }
 
   render() {
     const {
-      id, event = {}, weekend, dayOfWeek, selectedTimePicker, monthIndex,
+      weekend, monthIndex, dayOfWeek, event, componentId,
     } = this.props
-    const isSelected = event.id !== undefined && selectedTimePicker[id] === event.id
 
     return (
-      <div className={`${id}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}>
+      <div
+        className={`${componentId}${weekend ? ' weekend' : ''}${dayOfWeek % 2 ? ' highlight' : ''}`}
+      >
         <TimePicker
+          selected={this.isSelected}
           onSelect={this.handleSelect}
-          selected={isSelected}
           onClick={this.handleClick}
           onBlur={this.handleBlur}
           onCommit={this.handleCommit}
-          value={isSelected ? this.inputValue : event[id]}
+          value={event[componentId]}
           isVisible={this.isVisible}
           id={monthIndex}
         />

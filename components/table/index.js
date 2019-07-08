@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { computed, observable } from 'mobx'
-import isSameMonth from 'date-fns/isSameMonth'
+import { computed, observable, action } from 'mobx'
 
 import Paper from '../paper'
 import Header from './header'
@@ -11,16 +10,17 @@ import { columnData } from '../../constants'
 
 const { listColumns } = columnData
 
-const controlCol = listColumns.slice(0, 2)
-const displayCol = listColumns.slice(2)
+// TODO: do we still need this?
+// const controlCol = listColumns.slice(0, 2)
+// const displayCol = listColumns.slice(2)
 
 @inject('store')
 @observer
 class Table extends Component {
   @observable
-  selectedTimePicker = {
-    start: undefined,
-    end: undefined,
+  selected = {
+    eventId: undefined,
+    column: undefined,
   }
 
   @computed
@@ -28,16 +28,26 @@ class Table extends Component {
     const { months, selectedMonth } = this.props.store
     if (!months) return []
     const month = months.find(({ id }) => id === selectedMonth)
-    const now = new Date()
-    if (!isSameMonth(now, month.startsAt)) return month || []
-    return { ...month, daysOfWeek: month.daysOfWeek.slice(0, now.getDate()) }
+    return month || []
   }
 
-  handleToClipboard = () => {}
+  @action
+  handleColumnSelect = (
+    selected = {
+      start: undefined,
+      end: undefined,
+    },
+  ) => {
+    /* selected?: { eventId, column } */
+    this.selected = selected
+  }
 
-  editEvent = async (payload, eventId) => {
+  editEvent = async ({ eventId, column, value }) => {
+    if (value === undefined) return
     try {
-      await this.props.store.editEvent(this.monthList.id, eventId, payload)
+      await this.props.store.editEvent(this.monthList.id, eventId, {
+        [column]: value,
+      })
     } catch (error) {
       console.log(error)
     }
@@ -51,19 +61,6 @@ class Table extends Component {
     }
   }
 
-  addLocalDetail = (dayInMonth) => {
-    const exists = this.monthList.events.find(e => e.dayInMonth === dayInMonth)
-    if (exists) this.monthList.events.push({ dayInMonth })
-  }
-
-  handleSelectStart = (field, eventId) => {
-    this.selectedTimePicker[field] = eventId
-  }
-
-  handleUnselectStart = (field) => {
-    this.selectedTimePicker[field] = undefined
-  }
-
   render() {
     return (
       <Paper>
@@ -72,31 +69,40 @@ class Table extends Component {
             <>
               <Header columns={listColumns} />
               {this.monthList.daysOfWeek.map((dayOfWeek, monthIndex) => {
-                const filteredEvents = this.monthList.events.filter(
+                const weekend = dayOfWeek === 0 || dayOfWeek === 6
+                const events = this.monthList.events.filter(
                   ({ dayInMonth }) => dayInMonth === monthIndex,
                 )
-
-                const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
-                const weekend = dayOfWeek === 0 || dayOfWeek === 6
-                return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
-                  key: col.id,
-                  id: col.id,
-                  dayOfWeek,
-                  event,
-                  eventIndex,
-                  events,
-                  monthIndex,
+                const monthData = {
                   weekend,
-                  addEvent: this.addEvent,
-                  editEvent: this.editEvent,
-                  addLocalDetail: this.addLocalDetail,
-                  handleSelectStart: this.handleSelectStart,
-                  handleToClipboard: this.handleToClipboard,
-                  handleUnselectStart: this.handleUnselectStart,
-                  monthId: this.monthList.id,
-                  selectedTimePicker: this.selectedTimePicker,
+                  monthIndex,
+                  dayOfWeek,
                   startsAt: this.monthList.startsAt,
-                })))
+                }
+                return (
+                  <React.Fragment key={monthIndex.toString()}>
+                    <displays.day {...monthData} />
+                    <displays.add {...monthData} addEvent={this.addEvent} />
+                    {events.map((e) => {
+                      const props = {
+                        ...monthData,
+                        selected: this.selected,
+                        event: e,
+                        handleColumnSelect: this.handleColumnSelect,
+                        editEvent: this.editEvent,
+                        addEvent: this.addEvent,
+                      }
+                      return (
+                        <React.Fragment key={e.id}>
+                          <displays.start {...props} componentId="start" />
+                          <displays.end {...props} componentId="end" />
+                          <displays.hours {...props} componentId="hours" />
+                          <displays.details {...props} componentId="details" />
+                        </React.Fragment>
+                      )
+                    })}
+                  </React.Fragment>
+                )
               })}
             </>
           )}
@@ -165,7 +171,7 @@ class Table extends Component {
 
               .weekend {
                 padding: 0px 15px;
-                background-color: rgba(200, 200, 220, 0.3);
+                background-color: rgba(150, 150, 250, 0.3);
                 font-size: 0.9em;
                 grid-row-gap: 5px;
               }
