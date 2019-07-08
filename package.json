@@ -13,7 +13,7 @@
   "dependencies": {
     "@sentry/browser": "^4.5.1",
     "classnames": "^2.2.6",
-    "date-fns": "^2.0.0-alpha.27",
+    "date-fns": "^v2.0.0-beta.2",
     "jwt-decode": "^2.2.0",
     "mobx": "^5.9.0",
     "mobx-react": "^5.2.8",

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import { computed, observable } from 'mobx'
+import isSameMonth from 'date-fns/isSameMonth'
 
 import Paper from '../paper'
 import Header from './header'
@@ -27,7 +28,9 @@ class Table extends Component {
     const { months, selectedMonth } = this.props.store
     if (!months) return []
     const month = months.find(({ id }) => id === selectedMonth)
-    return month || []
+    const now = new Date()
+    if (!isSameMonth(now, month.startsAt)) return month || []
+    return { ...month, daysOfWeek: month.daysOfWeek.slice(0, now.getDate()) }
   }
 
   handleToClipboard = () => {}
