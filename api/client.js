@@ -34,6 +34,7 @@ export default class {
         throw new Error(message)
       }
     } catch (error) {
+      console.log(error)
       rej(error)
     }
   })
