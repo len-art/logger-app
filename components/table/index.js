@@ -42,8 +42,15 @@ class Table extends Component {
     this.selected = selected
   }
 
+  addEvent = async (payload) => {
+    try {
+      await this.props.store.addEvent(this.monthList.id, payload)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   editEvent = async ({ eventId, column, value }) => {
-    if (value === undefined) return
     try {
       await this.props.store.editEvent(this.monthList.id, eventId, {
         [column]: value,
@@ -53,9 +60,9 @@ class Table extends Component {
     }
   }
 
-  addEvent = async (payload) => {
+  deleteEvent = async ({ eventId }) => {
     try {
-      await this.props.store.addEvent(this.monthList.id, payload)
+      await this.props.store.deleteEvent(this.monthList.id, eventId)
     } catch (error) {
       console.log(error)
     }
@@ -82,18 +89,20 @@ class Table extends Component {
                 return (
                   <React.Fragment key={monthIndex.toString()}>
                     <displays.day {...monthData} />
-                    <displays.add {...monthData} addEvent={this.addEvent} />
-                    {events.map((e) => {
+                    {events.map((e, eventIndex) => {
                       const props = {
                         ...monthData,
                         selected: this.selected,
                         event: e,
+                        eventIndex,
                         handleColumnSelect: this.handleColumnSelect,
                         editEvent: this.editEvent,
                         addEvent: this.addEvent,
+                        deleteEvent: this.deleteEvent,
                       }
                       return (
                         <React.Fragment key={e.id}>
+                          <displays.add {...props} />
                           <displays.start {...props} componentId="start" />
                           <displays.end {...props} componentId="end" />
                           <displays.hours {...props} componentId="hours" />

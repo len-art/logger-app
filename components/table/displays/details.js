@@ -21,14 +21,10 @@ export default class extends React.Component {
   }
 
   handleSave = async (value) => {
-    if (!value) {
-      this.handleShowEdit()
-      return
-    }
     const { event, editEvent, componentId } = this.props
 
-    await editEvent({ eventId: event.id, column: componentId, value })
     this.showEdit = false
+    await editEvent({ eventId: event.id, column: componentId, value })
   }
 
   handleDelete = (e) => {
