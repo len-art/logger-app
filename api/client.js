@@ -40,4 +40,6 @@ export default class {
   })
 
   post = (url, args, settings) => this.call(url, 'POST', args, settings)
+
+  delete = (url, args, settings) => this.call(url, 'DELETE', args, settings)
 }
