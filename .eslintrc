@@ -9,6 +9,7 @@
     "no-nested-ternary": 0,
     "no-return-assign": 0,
     "semi": [2, "never"],
+    "jsx-a11y/no-autofocus": [0],
     "react/sort-comp": 0,
     "react/destructuring-assignment": 0,
     "react/prefer-stateless-function": 0,

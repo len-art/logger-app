@@ -10,8 +10,9 @@ import { columnData } from '../../constants'
 
 const { listColumns } = columnData
 
-const controlCol = listColumns.slice(0, 2)
-const displayCol = listColumns.slice(2)
+// TODO: do we still need this?
+// const controlCol = listColumns.slice(0, 2)
+// const displayCol = listColumns.slice(2)
 
 @inject('store')
 @observer
@@ -102,30 +103,6 @@ class Table extends Component {
                     })}
                   </React.Fragment>
                 )
-                // const filteredEvents = this.monthList.events.filter(
-                //   ({ dayInMonth }) => dayInMonth === monthIndex,
-                // )
-                // const events = filteredEvents.length ? filteredEvents : [{ id: monthIndex }]
-                // const weekend = dayOfWeek === 0 || dayOfWeek === 6
-                // return events.map((event, eventIndex) => listColumns.map(col => React.createElement(displays[col.id], {
-                //   key: col.id,
-                //   id: col.id,
-                //   dayOfWeek,
-                //   event,
-                //   eventIndex,
-                //   events,
-                //   monthIndex,
-                //   weekend,
-                //   addEvent: this.addEvent,
-                //   editEvent: this.editEvent,
-                //   addLocalDetail: this.addLocalDetail,
-                //   handleSelectStart: this.handleSelectStart,
-                //   handleToClipboard: this.handleToClipboard,
-                //   handleUnselectStart: this.handleUnselectStart,
-                //   monthId: this.monthList.id,
-                //   selectedTimePicker: this.selectedTimePicker,
-                //   startsAt: this.monthList.startsAt,
-                // })))
               })}
             </>
           )}
