@@ -10,7 +10,7 @@ or
 
 To run locally:
 
-`npm run dev` or `yarn dev`
+`npm start` or `yarn start`
 
 Explanation of what is used follows below:
 
