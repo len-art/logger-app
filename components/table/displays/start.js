@@ -1,7 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { computed } from 'mobx'
-import format from 'date-fns/format'
 
 import setDate from 'date-fns/setDate'
 import setHours from 'date-fns/setHours'
@@ -26,19 +25,12 @@ export default class extends React.Component {
   handleCommit = async ({ hour, minute }) => {
     const { editEvent, event, componentId } = this.props
     if (hour === undefined) return
-    console.log(hour, minute, this.getDateFromTime({ hour, minute }))
 
     await editEvent({
       eventId: event.id,
       column: componentId,
       value: this.getDateFromTime({ hour, minute }),
     })
-
-    // if (event && event.createdAt) {
-    //   await editEvent({ [id]: this.inputValue }, event.id)
-    // } else {
-    //   await addEvent({ [id]: this.inputValue, dayInMonth: monthIndex })
-    // }
   }
 
   handleBlur = () => {

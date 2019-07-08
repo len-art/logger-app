@@ -96,7 +96,3 @@ const Footer = inject('store')(
 )
 
 export default Footer
-
-// const month = (11 - i + 1) % 12
-//           const date = new Date(2010, month, 1)
-//           return <button key={month}>{format(date, 'MMM')}</button>
