@@ -16,20 +16,25 @@ export default class extends React.Component {
     return selected.eventId === event.id && selected.column === componentId
   }
 
-  getDateFromTime = ({ hour, minute }) => setMinutes(setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), hour), minute)
+  getDateFromTime = (i) => {
+    if (!i.hour || i.minute) return undefined
+    return setMinutes(
+      setHours(setDate(this.props.startsAt, this.props.monthIndex + 1), i.hour),
+      i.minute,
+    )
+  }
 
   handleSelect = (time) => {
     this.props.event[this.props.componentId] = this.getDateFromTime(time)
   }
 
-  handleCommit = async ({ hour, minute }) => {
+  handleCommit = async (input = {}) => {
     const { editEvent, event, componentId } = this.props
-    if (hour === undefined) return
 
     await editEvent({
       eventId: event.id,
       column: componentId,
-      value: this.getDateFromTime({ hour, minute }),
+      value: this.getDateFromTime(input),
     })
   }
 
@@ -40,6 +45,12 @@ export default class extends React.Component {
   handleClick = () => {
     const { handleColumnSelect, event, componentId } = this.props
     handleColumnSelect({ eventId: event.id, column: componentId })
+  }
+
+  handleDelete = () => {
+    delete this.props.event[this.props.componentId]
+    this.handleCommit({ hour: undefined, minute: undefined })
+    // this.handleInputConfirm(e)
   }
 
   render() {
@@ -57,6 +68,7 @@ export default class extends React.Component {
           onClick={this.handleClick}
           onBlur={this.handleBlur}
           onCommit={this.handleCommit}
+          handleDelete={this.handleDelete}
           value={event[componentId]}
           isVisible={this.isVisible}
           id={monthIndex}

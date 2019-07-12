@@ -215,6 +215,11 @@ export default class extends React.Component {
     }
   }
 
+  handleDelete = () => {
+    this.reset()
+    this.props.handleDelete()
+  }
+
   render() {
     const {
       radius = 125, selected, value, onClick,
@@ -230,6 +235,13 @@ export default class extends React.Component {
               Icon={Back}
               onClick={this.toggleShowHours}
               buttonStyles="position: absolute; left: 0; top: 0;"
+            />
+          )}
+          {this.isSelectionDone && (
+            <IconButton
+              text="x"
+              onClick={this.handleDelete}
+              buttonStyles="position: absolute; right: 0; top: 0;"
             />
           )}
           {/* hours ring */}

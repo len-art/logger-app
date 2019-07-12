@@ -1,14 +1,14 @@
 import day from './day'
 import add from './add'
-import start from './start'
+import time from './time'
 import hours from './hours'
 import details from './details'
 
 export default {
   day,
   add,
-  start,
-  end: start,
+  start: time,
+  end: time,
   hours,
   details,
 }
