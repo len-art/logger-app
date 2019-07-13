@@ -61,7 +61,6 @@ export default class extends React.Component {
   handleDelete = () => {
     delete this.props.event[this.props.componentId]
     this.handleCommit({ hour: undefined, minute: undefined })
-    // this.handleInputConfirm(e)
   }
 
   render() {
