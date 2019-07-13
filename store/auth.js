@@ -66,8 +66,8 @@ export default class {
     this.getUserData(data)
   }
 
-  handleRegister = ({ email, name, password }) => {
-    this.client.post('users/register', { email, name, password })
+  handleRegister = async ({ email, name, password }) => {
+    await this.client.post('users/register', { email, name, password })
   }
 
   @action
