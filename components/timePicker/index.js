@@ -39,11 +39,11 @@ export default class extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (!this.clockRef.current) return
-    if (this.props.selected && !prevProps.selected) {
+    if (!prevProps.selected && this.props.selected) {
       this.getRadius()
       this.mouseListen(true)
       if (this.props.value) this.onOpenWithValue()
-    } else if (!this.props.selected && prevProps.selected) {
+    } else if (prevProps.selected && !this.props.selected) {
       this.mouseListen(false)
       if (this.selectedHourDeg && this.selectedMinuteDeg) this.props.onCommit(this.getTimeFromSelection())
       this.reset()
@@ -218,6 +218,7 @@ export default class extends React.Component {
   handleDelete = () => {
     this.reset()
     this.props.handleDelete()
+    this.props.onBlur()
   }
 
   render() {

@@ -118,6 +118,12 @@ export default class {
     this.updateMonths(agregate.toMonth(data.month))
   }
 
+  async deleteEventField(monthId, eventId, field) {
+    const data = await this.client.post(`months/${monthId}/edit/${eventId}`, { field })
+
+    this.updateMonths(agregate.toMonth(data.month))
+  }
+
   async deleteEvent(monthId, eventId) {
     const data = await this.client.delete(`months/${monthId}/delete/${eventId}`)
     this.updateMonths(agregate.toMonth(data.month))
