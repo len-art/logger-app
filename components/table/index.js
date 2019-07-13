@@ -50,6 +50,14 @@ class Table extends Component {
     }
   }
 
+  deleteEventField = async ({ eventId, field }) => {
+    try {
+      await this.props.store.deleteEventField(this.monthList.id, eventId, field)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   editEvent = async ({ eventId, column, value }) => {
     try {
       await this.props.store.editEvent(this.monthList.id, eventId, {
@@ -99,6 +107,7 @@ class Table extends Component {
                         editEvent: this.editEvent,
                         addEvent: this.addEvent,
                         deleteEvent: this.deleteEvent,
+                        deleteEventField: this.deleteEventField,
                       }
                       return (
                         <React.Fragment key={e.id}>
