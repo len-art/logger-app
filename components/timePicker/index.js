@@ -21,13 +21,18 @@ export default class extends React.Component {
   @observable
   hoverDegrees
 
-  mouseIsInsideClock
-
   @observable
   selection = {
     hour: undefined,
+    is24h: false,
     minute: undefined,
   }
+
+  mouseIsInsideClock
+
+  innerRingOffset = 25
+
+  isInnerRingHover = false
 
   clockRef = React.createRef()
 
@@ -82,7 +87,8 @@ export default class extends React.Component {
   }
 
   getTimeFromSelection = () => {
-    const hour = Math.round(clockHelper.getHourFromDegrees(this.selection.hour))
+    let hour = Math.round(clockHelper.getHourFromDegrees(this.selection.hour))
+    if (this.selection.is24h) hour += 12
     const minute = Math.round(clockHelper.getMinuteFromDegrees(this.selection.minute))
     return { hour, minute }
   }
@@ -114,13 +120,13 @@ export default class extends React.Component {
 
   getX = (deg, isHours) => {
     let adjustedRadius = this.radius
-    if (isHours && !this.showHours) adjustedRadius -= 30
+    if (!isHours) adjustedRadius -= this.innerRingOffset
     return -Math.sin(this.toRad(deg)) * adjustedRadius
   }
 
   getY = (deg, isHours) => {
     let adjustedRadius = this.radius
-    if (isHours && !this.showHours) adjustedRadius -= 30
+    if (!isHours) adjustedRadius -= this.innerRingOffset
     return -Math.cos(this.toRad(deg)) * adjustedRadius
   }
 
@@ -172,6 +178,9 @@ export default class extends React.Component {
   }) => {
     const cx = left + width / 2
     const cy = top + height / 2
+
+    this.isInnerRingHover = clockHelper.getDistanceBetween([cx, cy], [mx, my]) < this.radius - this.innerRingOffset / 2
+
     this.hoverDegrees = this.getTanDegrees({
       mx,
       my,
@@ -205,6 +214,7 @@ export default class extends React.Component {
   handleClockClick = () => {
     if (this.showHours) {
       this.selection.hour = this.hoverDegrees
+      this.selection.is24h = this.isInnerRingHover
       this.showMinutes()
     } else {
       this.selection.minute = this.hoverDegrees
@@ -225,6 +235,7 @@ export default class extends React.Component {
     const {
       radius = 125, selected, value, onClick,
     } = this.props
+
     return (
       <div className="wrapper">
         <button type="text" className="displayer" readOnly onClick={onClick}>
@@ -248,12 +259,15 @@ export default class extends React.Component {
           {/* hours ring */}
           {/* eslint-disable-next-line */}
           <div onClick={this.handleClockClick} role="button" ref={this.clockRef} className="clock">
-            {this.hours.map(h => (
+            {this.hours.map((h, i) => (
               <button
                 className={`hours${this.showHours ? '' : ' seeThrough'}`}
                 key={h.h}
                 style={{
-                  transform: `translate(${this.getX(h.deg, true)}px, ${this.getY(h.deg, true)}px)`,
+                  transform: `translate(${this.getX(h.deg, i >= 12)}px, ${this.getY(
+                    h.deg,
+                    i >= 12,
+                  )}px)`,
                 }}
               >
                 {h.h}
@@ -274,7 +288,9 @@ export default class extends React.Component {
             {this.hoverDegrees !== undefined && (
               <div
                 style={{ transform: `rotate(${-this.hoverDegrees}deg)` }}
-                className={`hover${this.showHours ? '' : 'Minute'}`}
+                className={`hover${this.showHours ? '' : 'Minute'}${
+                  this.isInnerRingHover ? ' innerHover' : ''
+                }`}
               />
             )}
             {/* selected hour display */}
@@ -323,6 +339,9 @@ export default class extends React.Component {
             .hover {
               height: calc(50% - 43px);
               width: 0px;
+            }
+            .innerHover {
+              height: calc(50% - 68px);
             }
             .selectedMinute,
             .hoverMinute {
