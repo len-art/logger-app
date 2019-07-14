@@ -1,8 +1,8 @@
-const hToI = h => 12 - h
+const hToI = h => 24 - h
 const mToI = m => 60 - m * 5
 const degFromI = i => i * 30
 
-const createHours = () => Array.from(new Array(12), (_, i) => {
+const createHours = () => Array.from(new Array(24), (_, i) => {
   const h = hToI(i)
   const deg = degFromI(i)
   return { h, deg }
@@ -25,6 +25,8 @@ const toRad = deg => (deg * Math.PI) / 180
 
 const toDeg = rad => (rad * 180) / Math.PI
 
+const getDistanceBetween = ([x1, y1], [x2, y2]) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
 export default {
   hToI,
   mToI,
@@ -35,4 +37,5 @@ export default {
   getMinuteFromDegrees,
   toRad,
   toDeg,
+  getDistanceBetween,
 }
