@@ -279,7 +279,12 @@ export default class extends React.Component {
                 <button
                   className="hours smaller"
                   key={m.m}
-                  style={{ transform: `translate(${this.getX(m.deg)}px, ${this.getY(m.deg)}px)` }}
+                  style={{
+                    transform: `translate(${this.getX(m.deg, true)}px, ${this.getY(
+                      m.deg,
+                      true,
+                    )}px)`,
+                  }}
                 >
                   {m.m}
                 </button>
